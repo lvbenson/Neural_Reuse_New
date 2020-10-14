@@ -2,6 +2,13 @@
 __pycache__/
 *.py[cod]
 *$py.class
+*npy
+Exp_2x10_dedicated
+Exp_2x20_dedicated
+Exp_4t_2x5_dedicated
+Alife_Data
+Ind_Tasks_Dedicated_2x5
+
 
 # C extensions
 *.so
