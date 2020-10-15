@@ -12,8 +12,9 @@ import sys
 id = 2
 
 # ANN Params
-nI = 3+4+3 #+2
-nI = 5
+#nI = 3+4+3 #+2
+nI = 7
+#nI = 5
 nH1 = 5 #20
 nH2 = 5 #10
 nO = 1+1+3 #+1 #output activation needs to account for 3 outputs in leggedwalker
@@ -91,18 +92,22 @@ def fitnessFunction(genotype):
             body.theta = theta
             body.theta_dot = theta_dot
             for t in time_IP:
-                # nn.step(np.concatenate((body.state(),np.zeros(4),np.zeros(3),np.zeros(2)))) #arrays for inputs for each task
-                #b = nn.step(np.concatenate((body.state(),np.zeros(4),np.zeros(3)))) #arrays for inputs for each task
-                nn.step(np.concatenate(((body.state(), np.zeros(1), np.zeros(1)))))
+                #create single array for shared inputs.
+                st = body.state()[0]
+                ct = body.state()[1]
+                td = body.state()[2]
+                i = np.concatenate((st,ct,td,np.zeros(4)), axis=None) #sintheta, costheta, thetadot, ....
+                nn.step(i)
 
-                #print(b[1:3]) #ju
                 #combine sensory information
                 #input task 1: sintheta, costheta, thetadot
                 #input task 2: theta, thetadot, x, xdot
                 #input task 3: theta, thetadot, footstate
                 #inputs necessary: 1 for sintheta, 1 for costheta, 1 for thetadot, 1 for theta, 1 for x, 1 for xdot, 1 for footstate (7 total)
 
-
+                #output task 1:
+                #output task 2:
+                #output task 3:
 
                 f = body.step(stepsize_IP, np.array([nn.output()[0]]))
                 fit += f    # Minimize the cost of moving the pole up
@@ -123,9 +128,15 @@ def fitnessFunction(genotype):
                     body.x = x
                     body.x_dot = x_dot
                     for t in time_CP:
-                        # nn.step(np.concatenate((np.zeros(3),body.state(),np.zeros(3),np.zeros(2))))
-                        #nn.step(np.concatenate((np.zeros(3),body.state(),np.zeros(3))))
-                        nn.step(body.state())
+
+                        t_c = body.state()[0]
+                        td_c = body.state()[1]
+                        x = body.state()[2]
+                        xd = body.state()[3]
+
+                        c = np.concatenate((np.zeros(2),td_c,t_c,x,xd,np.zeros(1)), axis = None) #_, _ , thetadot, theta, x, xdot
+                        nn.step(c)
+
                         f,done = body.step(stepsize_CP, np.array([nn.output()[1]]))
                         fit += f  # (Maximize) Amount of time pole is balanced
                         ###
@@ -144,8 +155,16 @@ def fitnessFunction(genotype):
             body.angle = theta
             body.omega = omega
             for t in time_LW:
-                # nn.step(np.concatenate((np.zeros(3),np.zeros(4),body.state(),np.zeros(2))))
-                nn.step(np.concatenate((np.zeros(3),np.zeros(4),body.state())))
+
+                #input leggedwalker: theta, thetadot, footstate
+
+                t_l = body.state()[0]
+                td_l = body.state()[1]
+                f_l = body.state()[2]
+
+                l = np.concatenate((np.zeros(2),td_l,t_l,np.zeros(2),f_l), axis = None)
+                nn.step(l)
+                #nn.step(np.concatenate((np.zeros(3),np.zeros(4),body.state())))
                 body.step(stepsize_LW, np.array(nn.output()[2:5]))
             fit += body.cx/duration_LW # Maximize the final forward distance covered
     fitness3 = (fit/total_trials_LW)/MaxFit
