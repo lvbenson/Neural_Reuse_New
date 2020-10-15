@@ -3,7 +3,7 @@ import ffann                #Controller
 import invpend              #Task 1
 import cartpole             #Task 2
 import leggedwalker         #Task 3
-import mountaincar          #Task 4
+#import mountaincar          #Task 4
 
 import numpy as np
 import sys
