@@ -329,3 +329,11 @@ af,bf,bi = ga.fitStats()
 np.save('average_history_'+id+'.npy',ga.avgHistory)
 np.save('best_history_'+id+'.npy',ga.bestHistory)
 np.save('best_individual_'+id+'.npy',bi)
+
+#incremental evolution
+#for EACH evlutionary run, evolve incrementally so that I'm only evolving ONCE,
+#first, evolve for A, if A reaches a certain threshold, then add 2, if B reaches
+#certain threshold, then add C
+#within an ensemble, successful e. runs will have passed all three thresholds 
+#idea: set up parameterized fitness function
+#ga = mga.Microbial(fitnessFunction(1,0,0,0), popsize, genesize, recombProb, mutatProb, demeSize, generations, boundaries)

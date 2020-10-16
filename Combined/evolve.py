@@ -13,11 +13,12 @@ id = 2
 
 # ANN Params
 #nI = 3+4+3 #+2
-nI = 7
+nI = 4
 #nI = 5
 nH1 = 5 #20
 nH2 = 5 #10
-nO = 1+1+3 #+1 #output activation needs to account for 3 outputs in leggedwalker
+#nO = 1+1+3+1#+1 #output activation needs to account for 3 outputs in leggedwalker
+nO = 3
 WeightRange = 15.0
 BiasRange = 15.0
 
@@ -37,12 +38,12 @@ duration_CP = 10.0 #50
 stepsize_CP = 0.05
 duration_LW = 220.0 #220.0
 stepsize_LW = 0.1
-# duration_MC = 10.0 #220.0
-# stepsize_MC = 0.05
+duration_MC = 10.0 #220.0
+stepsize_MC = 0.05
 time_IP = np.arange(0.0,duration_IP,stepsize_IP)
 time_CP = np.arange(0.0,duration_CP,stepsize_CP)
 time_LW = np.arange(0.0,duration_LW,stepsize_LW)
-# time_MC = np.arange(0.0,duration_MC,stepsize_MC)
+time_MC = np.arange(0.0,duration_MC,stepsize_MC)
 
 MaxFit = 0.627 #Leggedwalker
 
@@ -73,12 +74,12 @@ trials_omega_LW = 3
 omega_range_LW = np.linspace(-1.0, 1.0, num=trials_omega_LW)
 total_trials_LW = trials_theta * trials_omega_LW
 
-# Mountain Car
-# trials_position_MC = 3 #6
-# trials_velocity_MC = 3 #6
-# total_trials_MC = trials_position_MC*trials_velocity_MC
-# position_range_MC = np.linspace(0.1, 0.1, num=trials_position_MC)
-# velocity_range_MC = np.linspace(0.01,0.01, num=trials_velocity_MC)
+#Mountain Car
+trials_position_MC = 3 #6
+trials_velocity_MC = 3 #6
+total_trials_MC = trials_position_MC*trials_velocity_MC
+position_range_MC = np.linspace(0.1, 0.1, num=trials_position_MC)
+velocity_range_MC = np.linspace(0.01,0.01, num=trials_velocity_MC)
 
 # Fitness function
 def fitnessFunction(genotype):
@@ -93,21 +94,23 @@ def fitnessFunction(genotype):
             body.theta_dot = theta_dot
             for t in time_IP:
                 #create single array for shared inputs.
-                st = body.state()[0]
-                ct = body.state()[1]
-                td = body.state()[2]
-                i = np.concatenate((st,ct,td,np.zeros(4)), axis=None) #sintheta, costheta, thetadot, ....
-                nn.step(i)
+                #st = body.state()[0]
+                #ct = body.state()[1]
+                #td = body.state()[2]
+                #i = np.concatenate((st,ct,td,np.zeros(4)), axis=None) #sintheta, costheta, thetadot, ....
+                nn.step(np.concatenate((body.state(),np.zeros(1))))
+                #nn.step(i)
 
                 #combine sensory information
                 #input task 1: sintheta, costheta, thetadot
                 #input task 2: theta, thetadot, x, xdot
                 #input task 3: theta, thetadot, footstate
-                #inputs necessary: 1 for sintheta, 1 for costheta, 1 for thetadot, 1 for theta, 1 for x, 1 for xdot, 1 for footstate (7 total)
+                #inputs necessary: 4 total
 
                 #output task 1:
                 #output task 2:
                 #output task 3:
+                #output task 4
 
                 f = body.step(stepsize_IP, np.array([nn.output()[0]]))
                 fit += f    # Minimize the cost of moving the pole up
@@ -129,15 +132,15 @@ def fitnessFunction(genotype):
                     body.x_dot = x_dot
                     for t in time_CP:
 
-                        t_c = body.state()[0]
-                        td_c = body.state()[1]
-                        x = body.state()[2]
-                        xd = body.state()[3]
+                        #t_c = body.state()[0]
+                        #td_c = body.state()[1]
+                        #x = body.state()[2]
+                        #xd = body.state()[3]
 
-                        c = np.concatenate((np.zeros(2),td_c,t_c,x,xd,np.zeros(1)), axis = None) #_, _ , thetadot, theta, x, xdot
-                        nn.step(c)
+                        #c = np.concatenate((np.zeros(2),td_c,t_c,x,xd,np.zeros(1)), axis = None) #_, _ , thetadot, theta, x, xdot
+                        nn.step(body.state())
 
-                        f,done = body.step(stepsize_CP, np.array([nn.output()[1]]))
+                        f,done = body.step(stepsize_CP, np.array([nn.output()[0]]))
                         fit += f  # (Maximize) Amount of time pole is balanced
                         ###
                         if done:
@@ -158,35 +161,37 @@ def fitnessFunction(genotype):
 
                 #input leggedwalker: theta, thetadot, footstate
 
-                t_l = body.state()[0]
-                td_l = body.state()[1]
-                f_l = body.state()[2]
+                #t_l = body.state()[0]
+                #td_l = body.state()[1]
+                #f_l = body.state()[2]
 
-                l = np.concatenate((np.zeros(2),td_l,t_l,np.zeros(2),f_l), axis = None)
-                nn.step(l)
-                #nn.step(np.concatenate((np.zeros(3),np.zeros(4),body.state())))
-                body.step(stepsize_LW, np.array(nn.output()[2:5]))
+                #l = np.concatenate((np.zeros(2),td_l,t_l,np.zeros(2),f_l), axis = None)
+                #nn.step(l)
+                nn.step(np.concatenate((body.state(),np.zeros(1))))
+                #nn.step(np.concatenate((body.state(),np.zeros(1))))))
+                body.step(stepsize_LW, np.array(nn.output()[0:3]))
             fit += body.cx/duration_LW # Maximize the final forward distance covered
     fitness3 = (fit/total_trials_LW)/MaxFit
     if fitness3 < 0.0:
         fitness3 = 0.0
 
     # # Task 4
-    # body = mountaincar.MountainCar()
-    # fit = 0.0
-    # for position in position_range_MC:
-    #     for velocity in velocity_range_MC:
-    #         body.position = position
-    #         body.velocity = velocity
-    #         for t in time_MC:
-    #             nn.step(np.concatenate((np.zeros(3),np.zeros(4),np.zeros(3),body.state())))
-    #             f,done = body.step(stepsize_MC, np.array([nn.output()[5]]))
-    #             fit += f
-    #             if done:
-    #                 break
-    # fitness4 = ((fit/(duration_MC*total_trials_MC)) + 1.0)/0.65
-    # return fitness1*fitness2*fitness3*fitness4
-    return fitness1*fitness2*fitness3
+    body = mountaincar.MountainCar()
+    fit = 0.0
+    for position in position_range_MC:
+        for velocity in velocity_range_MC:
+            body.position = position
+            body.velocity = velocity
+            for t in time_MC:
+                nn.step(np.concatenate((body.state(),np.zeros(2))))
+                
+                f,done = body.step(stepsize_MC, np.array([nn.output()[0]]))
+                fit += f
+                if done:
+                    break
+    fitness4 = ((fit/(duration_MC*total_trials_MC)) + 1.0)/0.65
+    return fitness1*fitness2*fitness3*fitness4
+    #return fitness1*fitness2*fitness3
 
 # Evolve and visualize fitness over generations
 ga = mga.Microbial(fitnessFunction, popsize, genesize, recombProb, mutatProb, demeSize, generations, boundaries)
