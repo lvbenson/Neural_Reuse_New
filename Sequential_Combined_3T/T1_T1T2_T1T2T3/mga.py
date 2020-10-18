@@ -2,9 +2,14 @@ import random
 import numpy as np
 import matplotlib.pyplot as plt
 
+#sequential training: evolve for each task incrementally
+
+
 class Microbial():
-    def __init__(self, fitnessFunction, popsize, genesize, recombProb, mutatProb, demeSize, generations, boundaries):
-        self.fitnessFunction = fitnessFunction
+    def __init__(self, fitnessFunctionIP, fitnessFunctionCP, fitnessFunctionLW, popsize, genesize, recombProb, mutatProb, demeSize, generations, boundaries):
+        self.fitnessFunctionIP = fitnessFunctionIP
+        self.fitnessFunctionCP = fitnessFunctionCP
+        self.fitnessFunctionLW = fitnessFunctionLW
         self.popsize = popsize
         self.genesize = genesize
         self.recombProb = recombProb

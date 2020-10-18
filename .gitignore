@@ -2,7 +2,8 @@
 __pycache__/
 *.py[cod]
 *$py.class
-*npy
+*.npy
+
 Exp_2x10_dedicated
 Exp_2x20_dedicated
 Exp_4t_2x5_dedicated
