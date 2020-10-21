@@ -8,6 +8,7 @@ import leggedwalker         #Task 3
 import mountaincar          #Task 4
 import matplotlib.pyplot as plt
 import sys
+import os
 
 dir = str(sys.argv[1])
 start = int(sys.argv[2])
@@ -15,10 +16,10 @@ finish = int(sys.argv[3])
 reps = finish-start
 
 # ANN Params
-nI = 3+4+3+2
+nI = 4
 nH1 = 5
 nH2 = 5
-nO = 1+1+3+1 
+nO = 3
 WeightRange = 15.0
 BiasRange = 15.0
 
@@ -493,6 +494,7 @@ def find_all_mis(dir,ind):
     # plt.show()
 
 gens = len(np.load(dir+"/average_history_0.npy"))
+#print(gens)
 gs=len(np.load(dir+"/best_individual_0.npy"))
 af = np.zeros((reps,gens))
 bf = np.zeros((reps,gens))
@@ -504,7 +506,7 @@ for i in range(start,finish):
     af[index] = np.load(dir+"/average_history_"+str(i)+".npy")
     bf[index] = np.load(dir+"/best_history_"+str(i)+".npy")
     bi[index] = np.load(dir+"/best_individual_"+str(i)+".npy")
-    if bf[index][-1]>0.8:
+    if bf[index][-1]>0.0:
         #print("rep:",i)
         count += 1
         f,m1,m2,m3,m4,ns1,ns2,ns3,ns4=analysis(bi[index])
