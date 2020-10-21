@@ -93,24 +93,8 @@ def fitnessFunction(genotype):
             body.theta = theta
             body.theta_dot = theta_dot
             for t in time_IP:
-                #create single array for shared inputs.
-                #st = body.state()[0]
-                #ct = body.state()[1]
-                #td = body.state()[2]
-                #i = np.concatenate((st,ct,td,np.zeros(4)), axis=None) #sintheta, costheta, thetadot, ....
+
                 nn.step(np.concatenate((body.state(),np.zeros(1))))
-                #nn.step(i)
-
-                #combine sensory information
-                #input task 1: sintheta, costheta, thetadot
-                #input task 2: theta, thetadot, x, xdot
-                #input task 3: theta, thetadot, footstate
-                #inputs necessary: 4 total
-
-                #output task 1:
-                #output task 2:
-                #output task 3:
-                #output task 4
 
                 f = body.step(stepsize_IP, np.array([nn.output()[0]]))
                 fit += f    # Minimize the cost of moving the pole up
@@ -132,12 +116,6 @@ def fitnessFunction(genotype):
                     body.x_dot = x_dot
                     for t in time_CP:
 
-                        #t_c = body.state()[0]
-                        #td_c = body.state()[1]
-                        #x = body.state()[2]
-                        #xd = body.state()[3]
-
-                        #c = np.concatenate((np.zeros(2),td_c,t_c,x,xd,np.zeros(1)), axis = None) #_, _ , thetadot, theta, x, xdot
                         nn.step(body.state())
 
                         f,done = body.step(stepsize_CP, np.array([nn.output()[0]]))
@@ -159,14 +137,6 @@ def fitnessFunction(genotype):
             body.omega = omega
             for t in time_LW:
 
-                #input leggedwalker: theta, thetadot, footstate
-
-                #t_l = body.state()[0]
-                #td_l = body.state()[1]
-                #f_l = body.state()[2]
-
-                #l = np.concatenate((np.zeros(2),td_l,t_l,np.zeros(2),f_l), axis = None)
-                #nn.step(l)
                 nn.step(np.concatenate((body.state(),np.zeros(1))))
                 #nn.step(np.concatenate((body.state(),np.zeros(1))))))
                 body.step(stepsize_LW, np.array(nn.output()[0:3]))

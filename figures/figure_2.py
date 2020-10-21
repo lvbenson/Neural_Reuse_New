@@ -48,7 +48,7 @@ def fitness_traces(dir):
 
     # Plotting best
     plt.plot(bfs[best_run], "xkcd:reddish", label=best_label)  # "xkcd:ultramarine")
-    plt.title("2x10")
+    plt.title("Combined sensors/motors")
     #plt.legend()
     plt.xlabel("Generations")
     plt.ylabel("Fitness")
