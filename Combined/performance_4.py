@@ -547,8 +547,8 @@ for i in range(start,finish):
         # plt.show()
 
         find_all_lesions(dir,i)
-        find_all_var(dir,i)
-        find_all_mis(dir,i)
+        #find_all_var(dir,i)
+        #find_all_mis(dir,i)
     index += 1
 
 #print("Ensemble count:", count)
