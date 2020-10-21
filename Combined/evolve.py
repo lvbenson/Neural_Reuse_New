@@ -17,7 +17,6 @@ nI = 4
 #nI = 5
 nH1 = 5 #20
 nH2 = 5 #10
-#nO = 1+1+3+1#+1 #output activation needs to account for 3 outputs in leggedwalker
 nO = 3
 WeightRange = 15.0
 BiasRange = 15.0
