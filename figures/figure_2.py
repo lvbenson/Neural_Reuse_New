@@ -53,8 +53,8 @@ def fitness_traces(dir):
     plt.xlabel("Generations")
     plt.ylabel("Fitness")
     plt.tight_layout()
-    plt.savefig("./Combined/Experiments/Separate/Figures/fitness_traces_LW.pdf")
+    plt.savefig("./Combined/Experiments/Separate/Figures/fitness_traces_IP.pdf")
     plt.show()
 
 
-fitness_traces("./Combined/Experiments/Separate/Data_LW")
+fitness_traces("./Combined/Experiments/Separate/Data_IP")
