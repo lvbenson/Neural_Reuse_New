@@ -8,8 +8,9 @@ import os
 import numpy as np
 import sys
 
-#id = str(sys.argv[1])
-id = 'lw_new'
+id = str(sys.argv[1])
+outputdir = str(sys.argv[2])
+#id = 'lw_new'
 
 # ANN Params
 #nI = 3+4+3 #+2
@@ -22,12 +23,12 @@ WeightRange = 15.0
 BiasRange = 15.0
 
 # EA Params
-popsize = 50
+popsize = 25
 genesize = (nI*nH1) + (nH1*nH2) + (nH1*nO) + nH1 + nH2 + nO # 115 parameters
 recombProb = 0.5
 mutatProb = 0.05 # 1/genesize # 1/g = 0.0086 we can make it 0.01 because with 1/g, avg seemed to trail close to best.
 demeSize = 49
-generations = 50 #1000 # With 150 (17hours), lots of progress, but more possible easily (with 300, 34hours);
+generations = 10 #1000 # With 150 (17hours), lots of progress, but more possible easily (with 300, 34hours);
 boundaries = 0
 
 # Task Params
@@ -184,10 +185,9 @@ ga.showFitness()
 
 # Get best evolved network and show its activity
 af,bf,bi = ga.fitStats()
-
-np.save('average_history_'+id+'.npy',ga.avgHistory)
-np.save('best_history_'+id+'.npy',ga.bestHistory)
-np.save('best_individual_'+id+'.npy',bi)
+np.save(os.path.join(outputdir,'average_historyLW_'+id+'.npy'),ga.avgHistory)
+np.save('best_historyLW_'+id+'.npy',ga.bestHistory)
+np.save('best_individualLW_'+id+'.npy',bi)
 
 
 """
@@ -283,4 +283,11 @@ af,bf,bi = ga.fitStats()
 np.save('average_history_'+id+'.npy',ga.avgHistory)
 np.save('best_history_'+id+'.npy',ga.bestHistory)
 np.save('best_individual_'+id+'.npy',bi)
+"""
+
+"""
+{
+    "python.pythonPath": "C:\\Users\\benso\\Anaconda3\\python.exe",
+    "terminal.integrated.shell.windows": "C:/Windows/System32/cmd.exe"
+}
 """

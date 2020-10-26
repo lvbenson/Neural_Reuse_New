@@ -8,8 +8,8 @@ import mountaincar          #Task 4
 import numpy as np
 import sys
 
-#id = str(sys.argv[1])
-id = 'multi'
+id = str(sys.argv[1])
+#id = 'multi'
 
 # ANN Params
 #nI = 3+4+3 #+2
@@ -27,7 +27,7 @@ genesize = (nI*nH1) + (nH1*nH2) + (nH1*nO) + nH1 + nH2 + nO # 115 parameters
 recombProb = 0.5
 mutatProb = 0.05 # 1/genesize # 1/g = 0.0086 we can make it 0.01 because with 1/g, avg seemed to trail close to best.
 demeSize = 49
-generations = 100 #1000 # With 150 (17hours), lots of progress, but more possible easily (with 300, 34hours);
+generations = 1000 #1000 # With 150 (17hours), lots of progress, but more possible easily (with 300, 34hours);
 boundaries = 0
 
 # Task Params
@@ -36,7 +36,7 @@ stepsize_IP = 0.05
 duration_CP = 10.0 #50
 stepsize_CP = 0.05
 duration_LW = 220.0 #220.0
-stepsize_LW = 0.1
+stepsize_LW = 0.05
 duration_MC = 10.0 #220.0
 stepsize_MC = 0.05
 time_IP = np.arange(0.0,duration_IP,stepsize_IP)
@@ -67,11 +67,11 @@ x_range_CP = np.linspace(0.0, 0.0, num=trials_x_CP) #x_range_CP = np.linspace(-0
 xdot_range_CP = np.linspace(0.0, 0.0, num=trials_xdot_CP) #xdot_range_CP = np.linspace(-0.05, 0.05, num=trials_xdot_CP)
 
 #Legged walker ## 9 * 2200 = 19,800 updates ==> 4 * 1100 = 4400
-trials_theta = 1
-theta_range_LW = np.linspace(-np.pi/6, np.pi/6, num=trials_theta)
+trials_theta_LW = 1
 trials_omega_LW = 1
-omega_range_LW = np.linspace(-1.0, 1.0, num=trials_omega_LW)
-total_trials_LW = trials_theta * trials_omega_LW
+theta_range_LW = np.linspace(0.0, 0.0, num=trials_theta_LW)
+omega_range_LW = np.linspace(0.0, 0.0, num=trials_omega_LW)
+total_trials_LW = trials_theta_LW * trials_omega_LW
 
 #Mountain Car
 trials_position_MC = 3 #6
@@ -95,7 +95,8 @@ def fitnessFunction(genotype):
 
                 nn.step(np.concatenate((body.state(),np.zeros(1))))
 
-                f = body.step(stepsize_IP, np.array([nn.output()[0]]))
+                #f = body.step(stepsize_IP, np.array([nn.output()[0]]))
+                f = body.step(stepsize_IP,nn.output())
                 fit += f    # Minimize the cost of moving the pole up
     fitness1 = fit/(duration_IP*total_trials_IP)
     fitness1 = (fitness1+7.65)/7 # Normalize to run between 0 and 1
@@ -117,7 +118,8 @@ def fitnessFunction(genotype):
 
                         nn.step(body.state())
 
-                        f,done = body.step(stepsize_CP, np.array([nn.output()[0]]))
+                        #f,done = body.step(stepsize_CP, np.array([nn.output()[0]]))
+                        f,done = body.step(stepsize_CP, nn.output())
                         fit += f  # (Maximize) Amount of time pole is balanced
                         ###
                         if done:
@@ -138,7 +140,8 @@ def fitnessFunction(genotype):
 
                 nn.step(body.state())
                 #nn.step(np.concatenate((body.state(),np.zeros(1))))))
-                body.step(stepsize_LW, np.array([nn.output()[0]]))
+                #body.step(stepsize_LW, np.array([nn.output()[0]]))
+                body.step(stepsize_LW, nn.output())
             fit += body.cx/duration_LW # Maximize the final forward distance covered
     fitness3 = (fit/total_trials_LW)/MaxFit
     if fitness3 < 0.0:
@@ -154,7 +157,8 @@ def fitnessFunction(genotype):
             for t in time_MC:
                 nn.step(np.concatenate((body.state(),np.zeros(2))))
                 
-                f,done = body.step(stepsize_MC, np.array([nn.output()[0]]))
+                #f,done = body.step(stepsize_MC, np.array([nn.output()[0]]))
+                f,done = body.step(stepsize_MC, nn.output())
                 fit += f
                 if done:
                     break
