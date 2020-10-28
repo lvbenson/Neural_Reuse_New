@@ -463,13 +463,13 @@ def calculate_mi(filename, nbins=50, nreps=4):
 
     # estimate entropy
     var_ids = [0]*nI + [-1]*nH
-    print(var_ids,'var ids')
+    #print(var_ids,'var ids')
     ent =  it.entropy(var_ids)
-    print(ent,'entropy')
+    #print(ent,'entropy')
 
     # estimate mutual information
     for i in range(nI,nI+nH):
-        print("\tNeuron # {}".format(i+1))
+        #print("\tNeuron # {}".format(i+1))
         var_ids[i] = 1
         mi = it.mutual_info(var_ids)
         var_ids[i] = -1
@@ -478,14 +478,14 @@ def calculate_mi(filename, nbins=50, nreps=4):
     return mis
 
 def find_all_mis(dir,ind):
-    mi = np.zeros((4,4))
+    mi = np.zeros((4,10))
     mi[0] = calculate_mi("./{}/state_IP_{}.npy".format(dir,ind))
     mi[1] = calculate_mi("./{}/state_CP_{}.npy".format(dir,ind))
     mi[2] = calculate_mi("./{}/state_LW_{}.npy".format(dir,ind))
     mi[3] = calculate_mi("./{}/state_MC_{}.npy".format(dir,ind))
     max = np.max(mi,axis=0)
-    norm_mi = np.zeros((10,4))
-    for i in range(10):
+    norm_mi = np.zeros((4,4))
+    for i in range(4):
         if max[i] > 0.0:
             norm_mi[i] = mi.T[i]/max[i]
         else:
@@ -521,7 +521,7 @@ for i in range(start,finish):
     if bf[index][-1]>0.5:
         count += 1
         f,m1,m2,m3,m4,ns1,ns2,ns3,ns4=analysis(bi[index])
-        """
+        
         np.save(dir+"/perf_"+str(i)+".npy",f)
 
         np.save(dir+"/perfmap_IP_"+str(i)+".npy",m1)
@@ -557,10 +557,10 @@ for i in range(start,finish):
         # plt.title("Legged Walker")
         # plt.savefig(dir+"/perfmap_LW_"+str(i)+".png")
         # plt.show()
-        """
+        
         find_all_lesions(dir,i)
         find_all_var(dir,i)
-        find_all_mis(dir,i)
+        #find_all_mis(dir,i)
     index += 1
 
 #print("Ensemble count:", count)
