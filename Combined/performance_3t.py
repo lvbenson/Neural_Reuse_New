@@ -1,17 +1,10 @@
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
-"""
-Created on Thu Aug 27 16:06:33 2020
-
-@author: lvbenson
-"""
-
 import numpy as np
 import infotheory
 import ffann                #Controller
 import invpend              #Task 1
 import cartpole             #Task 2
 import leggedwalker         #Task 3
+import mountaincar
 import matplotlib.pyplot as plt
 import sys
 
@@ -21,10 +14,10 @@ finish = int(sys.argv[3])
 reps = finish-start
 
 # ANN Params
-nI = 3+4+3
-nH1 = 20
-nH2 = 20
-nO = 1+1+3 #output activation needs to account for 3 outputs in leggedwalker
+nI = 3
+nH1 = 5
+nH2 = 5
+nO = 1 #output activation needs to account for 3 outputs in leggedwalker
 WeightRange = 15.0
 BiasRange = 15.0
 
@@ -166,7 +159,7 @@ def lesions(genotype,actvalues):
                 n = neuron
             else:
                 n = nH1 + neuron
-            #print("IP:",n)
+            print("IP:",n)
             maxfit = 0.0
             for act in actvalues[:,0,n]:
                 fit = 0.0
@@ -198,7 +191,7 @@ def lesions(genotype,actvalues):
                 n = neuron
             else:
                 n = nH1 + neuron
-            #print("CP:",n)
+            print("CP:",n)
             maxfit = 0.0
             for act in actvalues[:,1,n]:
                 fit = 0.0
@@ -233,7 +226,7 @@ def lesions(genotype,actvalues):
                 n = neuron
             else:
                 n = nH1 + neuron
-            #print("LW:",n)
+            print("LW:",n)
             maxfit = 0.0
             for act in actvalues[:,2,n]:
                 fit = 0.0
@@ -276,7 +269,6 @@ def find_all_lesions(dir,ind):
     ipp = ipp/f[0]
     cpp = cpp/f[1]
     lwp = lwp/f[2]
-
 
     np.save(dir+"/lesions_IP_"+str(ind)+".npy",ipp)
     np.save(dir+"/lesions_CP_"+str(ind)+".npy",cpp)
@@ -348,7 +340,7 @@ def find_all_var(dir,ind):
 def calculate_mi(filename, nbins=50, nreps=3):
 
     dat = np.load(filename)
-    #print(dat.shape)
+    print(dat.shape)
     nI = 10
     nH = 10
 
@@ -372,7 +364,7 @@ def calculate_mi(filename, nbins=50, nreps=3):
 
     # estimate mutual information
     for i in range(nI,nI+nH):
-        #print("\tNeuron # {}".format(i+1))
+        print("\tNeuron # {}".format(i+1))
         var_ids[i] = 1
         mi = it.mutual_info(var_ids)
         var_ids[i] = -1
@@ -381,13 +373,13 @@ def calculate_mi(filename, nbins=50, nreps=3):
     return mis
 
 def find_all_mis(dir,ind):
-    mi = np.zeros((3,40))
+    mi = np.zeros((3,10))
     mi[0] = calculate_mi("./{}/state_IP_{}.npy".format(dir,ind))
     mi[1] = calculate_mi("./{}/state_CP_{}.npy".format(dir,ind))
     mi[2] = calculate_mi("./{}/state_LW_{}.npy".format(dir,ind))
     max = np.max(mi,axis=0)
-    norm_mi = np.zeros((40,3))
-    for i in range(40):
+    norm_mi = np.zeros((10,3))
+    for i in range(10):
         if max[i] > 0.0:
             norm_mi[i] = mi.T[i]/max[i]
         else:
@@ -418,11 +410,11 @@ for i in range(start,finish):
     af[index] = np.load(dir+"/average_history_"+str(i)+".npy")
     bf[index] = np.load(dir+"/best_history_"+str(i)+".npy")
     bi[index] = np.load(dir+"/best_individual_"+str(i)+".npy")
-    if bf[index][-1]>0.80:
-        #print(i)
+    if bf[index][-1]>0.8:
+        print(i)
         count += 1
         f,m1,m2,m3,ns1,ns2,ns3=analysis(bi[index])
-        #print(i,f)
+        print(i,f)
         np.save(dir+"/perf_"+str(i)+".npy",f)
 
         np.save(dir+"/perfmap_IP_"+str(i)+".npy",m1)
@@ -433,7 +425,7 @@ for i in range(start,finish):
         np.save(dir+"/state_CP_"+str(i)+".npy",ns2)
         np.save(dir+"/state_LW_"+str(i)+".npy",ns3)
 
-        #print(i,bf[index][-1],f)
+        print(i,bf[index][-1],f)
 
         # plt.imshow(m1)
         # plt.colorbar()
@@ -457,17 +449,17 @@ for i in range(start,finish):
         # plt.savefig(dir+"/perfmap_LW_"+str(i)+".png")
         # plt.show()
 
-        find_all_lesions(dir,i)
-        #find_all_var(dir,i)
-        #find_all_mis(dir,i)
+        # find_all_lesions(dir,i)
+        # find_all_var(dir,i)
+        # find_all_mis(dir,i)
     index += 1
 
-#print("Ensemble count:", count)
-#print(bf[:,-1])
-plt.plot(af.T,'y')
-plt.plot(bf.T,'b')
-plt.xlabel("Generations")
-plt.ylabel("Fitness")
-plt.title("Evolution")
-plt.savefig(dir+"/evol.png")
-plt.show()
+print("Ensemble count:", count)
+print(bf[:,-1])
+# plt.plot(af.T,'y')
+# plt.plot(bf.T,'b')
+# plt.xlabel("Generations")
+# plt.ylabel("Fitness")
+# plt.title("Evolution")
+# plt.savefig(dir+"/evol.png")
+# plt.show()

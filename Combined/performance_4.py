@@ -19,7 +19,7 @@ reps = finish-start
 nI = 4
 nH1 = 5
 nH2 = 5
-nO = 3
+nO = 1
 WeightRange = 15.0
 BiasRange = 15.0
 
@@ -29,7 +29,7 @@ stepsize_IP = 0.05
 duration_CP = 10 #50
 stepsize_CP = 0.05
 duration_LW = 220 #220.0
-stepsize_LW = 0.1
+stepsize_LW = 0.05
 duration_MC = 10.0 #220.0
 stepsize_MC = 0.05
 time_IP = np.arange(0.0,duration_IP,stepsize_IP)
@@ -56,22 +56,22 @@ trials_xdot_CP = 2
 total_trials_CP = trials_theta_CP*trials_thetadot_CP*trials_x_CP*trials_xdot_CP
 theta_range_CP = np.linspace(-0.05, 0.05, num=trials_theta_CP)
 thetadot_range_CP = np.linspace(-0.05, 0.05, num=trials_thetadot_CP)
-x_range_CP = np.linspace(-0.05, 0.05, num=trials_x_CP)
-xdot_range_CP = np.linspace(-0.05, 0.05, num=trials_xdot_CP)
+x_range_CP = np.linspace(0.0, 0.0, num=trials_x_CP)
+xdot_range_CP = np.linspace(0.0, 0.0, num=trials_xdot_CP)
 
 #Legged walker
 trials_theta = 10
-theta_range_LW = np.linspace(-np.pi/6, np.pi/6, num=trials_theta)
+theta_range_LW = np.linspace(0.0, 0.0, num=trials_theta)
 trials_omega_LW = 10
-omega_range_LW = np.linspace(-1.0, 1.0, num=trials_omega_LW)
+omega_range_LW = np.linspace(0.0, 0.0, num=trials_omega_LW)
 total_trials_LW = trials_theta * trials_omega_LW
 
 #Mountain Car
 trials_position_MC = 10 #6
 trials_velocity_MC = 10 #6
 total_trials_MC = trials_position_MC*trials_velocity_MC
-position_range_MC = np.linspace(-0.1, 0.1, num=trials_position_MC)
-velocity_range_MC = np.linspace(-0.01,0.01, num=trials_velocity_MC)
+position_range_MC = np.linspace(0.1, 0.1, num=trials_position_MC)
+velocity_range_MC = np.linspace(0.01,0.01, num=trials_velocity_MC)
 
 
 # Fitness function
@@ -95,10 +95,12 @@ def analysis(genotype):
             body.theta_dot = theta_dot
             f = 0.0
             for t in time_IP:
-                nn.step(np.concatenate((body.state(),np.zeros(4),np.zeros(3),np.zeros(2)))) #arrays for inputs for each task
+                #nn.step(np.concatenate((body.state(),np.zeros(4),np.zeros(3),np.zeros(2)))) #arrays for inputs for each task
+                nn.step(np.concatenate((body.state(),np.zeros(1))))
                 nn_state_ip[k] = nn.states()
                 k += 1
-                f += body.step(stepsize_IP, np.array([nn.output()[0]]))
+                #f += body.step(stepsize_IP, np.array([nn.output()[0]]))
+                f += body.step(stepsize_IP,nn.output())
             fit_IP[i][j] = ((f/duration_IP)+7.65)/7
             j += 1
         i += 1
@@ -123,10 +125,12 @@ def analysis(genotype):
                     body.x_dot = x_dot
                     f = 0.0
                     for t in time_CP:
-                        nn.step(np.concatenate((np.zeros(3),body.state(),np.zeros(3),np.zeros(2))))
+                        #nn.step(np.concatenate((np.zeros(3),body.state(),np.zeros(3),np.zeros(2))))
+                        nn.step(body.state())
                         nn_state_cp[k] = nn.states()
                         k += 1
-                        f_temp,d = body.step(stepsize_CP, np.array([nn.output()[1]]))
+                        #f_temp,d = body.step(stepsize_CP, np.array([nn.output()[1]]))
+                        f_temp,d = body.step(stepsize_CP, nn.output())
                         f += f_temp
                     f_cumulative += f/duration_CP
             fit_CP[i][j] = f_cumulative/(len(x_range_CP)*len(xdot_range_CP))
@@ -148,10 +152,12 @@ def analysis(genotype):
             body.angle = theta
             body.omega = omega
             for t in time_LW:
-                nn.step(np.concatenate((np.zeros(3),np.zeros(4),body.state(),np.zeros(2))))
+                #nn.step(np.concatenate((np.zeros(3),np.zeros(4),body.state(),np.zeros(2))))
+                nn.step(body.state())
                 nn_state_lw[k] = nn.states()
                 k += 1
-                body.step(stepsize_LW, np.array(nn.output()[2:5]))
+                #body.step(stepsize_LW, np.array(nn.output()[2:5]))
+                body.step(stepsize_LW, nn.output())
             fit_LW[i][j] = (body.cx/duration_LW)/MaxFit
             j += 1
         i += 1
@@ -172,10 +178,12 @@ def analysis(genotype):
             body.velocity = velocity
             fit = 0.0
             for t in time_MC:
-                nn.step(np.concatenate((np.zeros(3),np.zeros(4),np.zeros(3),body.state())))
+                #nn.step(np.concatenate((np.zeros(3),np.zeros(4),np.zeros(3),body.state())))
+                nn.step(np.concatenate((body.state(),np.zeros(2))))
                 nn_state_mc[k] = nn.states()
                 k += 1
-                f,d = body.step(stepsize_MC, np.array([nn.output()[5]]))
+                #f,d = body.step(stepsize_MC, np.array([nn.output()[5]]))
+                f,d = body.step(stepsize_MC, nn.output())
                 fit += f
             fit_MC[i][j] = ((fit/duration_MC) + 1.0)/0.65
             j += 1
@@ -212,8 +220,10 @@ def lesions(genotype,actvalues):
                         body.theta = theta
                         body.theta_dot = theta_dot
                         for t in time_IP:
-                            nn.step_lesioned(np.concatenate((body.state(),np.zeros(4),np.zeros(3),np.zeros(2))),neuron,layer,act)
-                            f = body.step(stepsize_IP, np.array([nn.output()[0]]))
+                            #nn.step_lesioned(np.concatenate((body.state(),np.zeros(4),np.zeros(3),np.zeros(2))),neuron,layer,act)
+                            #nn.step(np.concatenate((body.state(),np.zeros(1))))
+                            nn.step_lesioned(np.concatenate((body.state(),np.zeros(1))),neuron,layer,act)
+                            f = body.step(stepsize_IP, nn.output())
                             fit += f
                 fit = fit/(duration_IP*total_trials_IP)
                 fit = (fit+7.65)/7
@@ -248,8 +258,8 @@ def lesions(genotype,actvalues):
                                 body.x = x
                                 body.x_dot = x_dot
                                 for t in time_CP:
-                                    nn.step_lesioned(np.concatenate((np.zeros(3),body.state(),np.zeros(3),np.zeros(2))),neuron,layer,act)
-                                    f,d = body.step(stepsize_CP, np.array([nn.output()[1]]))
+                                    nn.step_lesioned(body.state(),neuron,layer,act)
+                                    f,d = body.step(stepsize_CP, nn.output())
                                     fit += f
                 fit = fit/(duration_CP*total_trials_CP)
                 if fit < 0.0:
@@ -280,8 +290,8 @@ def lesions(genotype,actvalues):
                         body.angle = theta
                         body.omega = omega
                         for t in time_LW:
-                            nn.step_lesioned(np.concatenate((np.zeros(3),np.zeros(4),body.state(),np.zeros(2))),neuron,layer,act)
-                            body.step(stepsize_LW, np.array(nn.output()[2:5]))
+                            nn.step_lesioned(body.state(),neuron,layer,act)
+                            body.step(stepsize_LW, nn.output())
                         fit += body.cx/duration_LW
                 fit = (fit/total_trials_LW)/MaxFit
                 if fit < 0.0:
@@ -312,8 +322,8 @@ def lesions(genotype,actvalues):
                         body.position = position
                         body.velocity = velocity
                         for t in time_MC:
-                            nn.step_lesioned(np.concatenate((np.zeros(3),np.zeros(4),np.zeros(3),body.state())),neuron,layer,act)
-                            f,d = body.step(stepsize_MC, np.array([nn.output()[5]]))
+                            nn.step_lesioned(np.concatenate((body.state(),np.zeros(2))),neuron,layer,act)
+                            f,d = body.step(stepsize_MC, nn.output())
                             fit += f
                 fit = ((fit/duration_MC) + 1.0)/0.65
                 if fit < 0.0:
@@ -341,7 +351,8 @@ def find_all_lesions(dir,ind):
     steps = 10
     actvalues = np.linspace(0.0, max, num=steps)
 
-    bi = np.load("./{}/best_individual_{}.npy".format(dir,ind))
+    bi = np.load("./{}/best_individualC_{}.npy".format(dir,ind))
+    bi = bi**(1.4)
     f = np.load("./{}/perf_{}.npy".format(dir,ind))
 
     ipp,cpp,lwp,mcp = lesions(bi,actvalues)
@@ -354,7 +365,7 @@ def find_all_lesions(dir,ind):
     np.save(dir+"/lesions_IP_"+str(ind)+".npy",ipp)
     np.save(dir+"/lesions_CP_"+str(ind)+".npy",cpp)
     np.save(dir+"/lesions_LW_"+str(ind)+".npy",lwp)
-    np.save(dir+"/lesions_MC_"+str(ind)+".npy",lwp)
+    np.save(dir+"/lesions_MC_"+str(ind)+".npy",mcp)
 
     # Stats on neurons for Ablations
     Threshold = 0.95
@@ -397,9 +408,9 @@ def find_all_lesions(dir,ind):
     #plt.show()
 
 def find_all_var(dir,ind):
-    nI = 12
+    nI = 4
     nH = 10
-    v = np.zeros((4,12))
+    v = np.zeros((4,10))
     nn = np.load("./{}/state_IP_{}.npy".format(dir,ind))
     v[0] = np.var(nn[:,nI:nI+nH],axis=0)
     nn = np.load("./{}/state_CP_{}.npy".format(dir,ind))
@@ -410,7 +421,7 @@ def find_all_var(dir,ind):
     v[3] = np.var(nn[:,nI:nI+nH],axis=0)
     max = np.max(v,axis=0)
     norm_var = np.zeros((10,4))
-    for i in range(12):
+    for i in range(10):
         if max[i] > 0.0:
             norm_var[i] = v.T[i]/max[i]
         else:
@@ -433,8 +444,8 @@ def find_all_var(dir,ind):
 def calculate_mi(filename, nbins=50, nreps=4):
 
     dat = np.load(filename)
-    print(dat.shape)
-    nI = 12
+    #print(dat.shape)
+    nI = 4
     nH = 10
 
     # to iterate through all neurons
@@ -473,7 +484,7 @@ def find_all_mis(dir,ind):
     mi[3] = calculate_mi("./{}/state_MC_{}.npy".format(dir,ind))
     max = np.max(mi,axis=0)
     norm_mi = np.zeros((10,4))
-    for i in range(12):
+    for i in range(10):
         if max[i] > 0.0:
             norm_mi[i] = mi.T[i]/max[i]
         else:
@@ -493,9 +504,9 @@ def find_all_mis(dir,ind):
     # plt.savefig(dir+"/NormMI_"+str(ind)+".png")
     # plt.show()
 
-gens = len(np.load(dir+"/average_history_0.npy"))
+gens = len(np.load(dir+"/average_historyC_0.npy"))
 #print(gens)
-gs=len(np.load(dir+"/best_individual_0.npy"))
+gs=len(np.load(dir+"/best_individualC_0.npy"))
 af = np.zeros((reps,gens))
 bf = np.zeros((reps,gens))
 bi = np.zeros((reps,gs))
@@ -503,10 +514,13 @@ bi = np.zeros((reps,gs))
 index = 0
 count = 0
 for i in range(start,finish):
-    af[index] = np.load(dir+"/average_history_"+str(i)+".npy")
-    bf[index] = np.load(dir+"/best_history_"+str(i)+".npy")
-    bi[index] = np.load(dir+"/best_individual_"+str(i)+".npy")
-    if bf[index][-1]>0.0:
+    af[index] = np.load(dir+"/average_historyC_"+str(i)+".npy")
+    af[index] = af[index]**(1/4)
+    bf[index] = np.load(dir+"/best_historyC_"+str(i)+".npy")
+    bf[index] = bf[index]**(1/4)
+    bi[index] = np.load(dir+"/best_individualC_"+str(i)+".npy")
+    bi[index] = bi[index]**(1/4)
+    if bf[index][-1]>0.8:
         #print("rep:",i)
         count += 1
         f,m1,m2,m3,m4,ns1,ns2,ns3,ns4=analysis(bi[index])
