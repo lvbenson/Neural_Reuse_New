@@ -20,6 +20,8 @@ def fitness_traces(dir):
     bfs = []
     for i, file in enumerate(files):
         fits = np.load(file)
+        print(fits)
+        print(fits.shape)
         fits = fits**(1/4) #elevate for the number of tasks
         bfs.append(fits)
         best_final_fits[i] = fits[-1]

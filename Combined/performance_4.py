@@ -189,7 +189,7 @@ def analysis(genotype):
             j += 1
         i += 1
     fitness[3] = np.mean(fit_MC)
-    # return fitness1*fitness2*fitness3*fitness4
+    #return fitness1*fitness2*fitness3*fitness4
 
 
     
@@ -352,7 +352,6 @@ def find_all_lesions(dir,ind):
     actvalues = np.linspace(0.0, max, num=steps)
 
     bi = np.load("./{}/best_individualC_{}.npy".format(dir,ind))
-    bi = bi**(1.4)
     f = np.load("./{}/perf_{}.npy".format(dir,ind))
 
     ipp,cpp,lwp,mcp = lesions(bi,actvalues)
@@ -464,11 +463,13 @@ def calculate_mi(filename, nbins=50, nreps=4):
 
     # estimate entropy
     var_ids = [0]*nI + [-1]*nH
+    print(var_ids,'var ids')
     ent =  it.entropy(var_ids)
+    print(ent,'entropy')
 
     # estimate mutual information
     for i in range(nI,nI+nH):
-        #print("\tNeuron # {}".format(i+1))
+        print("\tNeuron # {}".format(i+1))
         var_ids[i] = 1
         mi = it.mutual_info(var_ids)
         var_ids[i] = -1
@@ -477,7 +478,7 @@ def calculate_mi(filename, nbins=50, nreps=4):
     return mis
 
 def find_all_mis(dir,ind):
-    mi = np.zeros((4,10))
+    mi = np.zeros((4,4))
     mi[0] = calculate_mi("./{}/state_IP_{}.npy".format(dir,ind))
     mi[1] = calculate_mi("./{}/state_CP_{}.npy".format(dir,ind))
     mi[2] = calculate_mi("./{}/state_LW_{}.npy".format(dir,ind))
@@ -515,17 +516,12 @@ index = 0
 count = 0
 for i in range(start,finish):
     af[index] = np.load(dir+"/average_historyC_"+str(i)+".npy")
-    af[index] = af[index]**(1/4)
     bf[index] = np.load(dir+"/best_historyC_"+str(i)+".npy")
-    bf[index] = bf[index]**(1/4)
     bi[index] = np.load(dir+"/best_individualC_"+str(i)+".npy")
-    bi[index] = bi[index]**(1/4)
-    if bf[index][-1]>0.8:
-        #print("rep:",i)
+    if bf[index][-1]>0.5:
         count += 1
         f,m1,m2,m3,m4,ns1,ns2,ns3,ns4=analysis(bi[index])
-        #print(i,f)
-        #print("mc score",m4,ns4)
+        """
         np.save(dir+"/perf_"+str(i)+".npy",f)
 
         np.save(dir+"/perfmap_IP_"+str(i)+".npy",m1)
@@ -561,10 +557,10 @@ for i in range(start,finish):
         # plt.title("Legged Walker")
         # plt.savefig(dir+"/perfmap_LW_"+str(i)+".png")
         # plt.show()
-
+        """
         find_all_lesions(dir,i)
-        #find_all_var(dir,i)
-        #find_all_mis(dir,i)
+        find_all_var(dir,i)
+        find_all_mis(dir,i)
     index += 1
 
 #print("Ensemble count:", count)

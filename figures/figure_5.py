@@ -15,7 +15,8 @@ import seaborn as sns
 def all_lesion_data():
     plt.figure(figsize=[4, 3])
     # load data
-    dir = "../New"
+    #dir = "../New"
+    dir = "./Combined/Experiments/Comb_4T_2x5_NEW/Data"
     files = glob.glob(os.path.join(dir, "perf_*.npy"))
     files.sort()
     print("Found {} files in {}".format(len(files), dir))
@@ -26,13 +27,14 @@ def all_lesion_data():
     for i, file in enumerate(files):
         fits = np.load(file)
         # if np.prod(fits) > 0.8:
-        if np.min(fits) > 0.85:
+        if np.min(fits) > 0.8:
             run_num = file.split("/")[-1].split(".")[-2].split("_")[-1]
-            lesion_data = np.load("../New/lesions_IP_{}.npy".format(run_num))
+            #lesion_data = np.load("../New/lesions_IP_{}.npy".format(run_num))
+            lesion_data = np.load("./Combined/Experiments/Comb_4T_2x5_NEW/Data/lesions_IP_{}.npy".format(run_num))
             plt.scatter(np.arange(1, 11), lesion_data, s=5, alpha=0.7)
-            lesion_data = np.load("../New/lesions_CP_{}.npy".format(run_num))
+            lesion_data = np.load("./Combined/Experiments/Comb_4T_2x5_NEW/Data/lesions_CP_{}.npy".format(run_num))
             plt.scatter(np.arange(1, 11), lesion_data, s=5, alpha=0.7)
-            lesion_data = np.load("../New/lesions_LW_{}.npy".format(run_num))
+            lesion_data = np.load("./Combined/Experiments/Comb_4T_2x5_NEW/Data/lesions_LW_{}.npy".format(run_num))
             plt.scatter(np.arange(1, 11), lesion_data, s=5, alpha=0.7)
 
     # plt.plot([0.5,10.5],[0.8,0.8], "k--", alpha=0.7)
@@ -55,7 +57,7 @@ def plot_lesion_analysis(run_num):
     for i in np.arange(1, 10):
         plt.plot([i + 0.5, i + 0.5], [-0.05, 1.1], "gray", alpha=0.5)
 
-    lesion_data = np.load("../New/lesions_IP_{}.npy".format(run_num))
+    lesion_data = np.load("./Combined/Experiments/Comb_4T_2x5_NEW/Data/lesions_IP_{}.npy".format(run_num))
     plt.scatter(
         np.arange(1, 11) - 0.05,
         lesion_data,
@@ -64,11 +66,11 @@ def plot_lesion_analysis(run_num):
         c="xkcd:tomato",
         label="IP",
     )
-    lesion_data = np.load("../New/lesions_CP_{}.npy".format(run_num))
+    lesion_data = np.load("./Combined/Experiments/Comb_4T_2x5_NEW/Data/lesions_CP_{}.npy".format(run_num))
     plt.scatter(
         np.arange(1, 11), lesion_data, s=50, alpha=0.7, c="xkcd:azure", label="CP"
     )
-    lesion_data = np.load("../New/lesions_LW_{}.npy".format(run_num))
+    lesion_data = np.load("./Combined/Experiments/Comb_4T_2x5_NEW/Data/lesions_LW_{}.npy".format(run_num))
     plt.scatter(
         np.arange(1, 11) + 0.05,
         lesion_data,
@@ -85,7 +87,7 @@ def plot_lesion_analysis(run_num):
     plt.xlabel("Neuron #")
     plt.ylabel("Fitness after lesion")
 
-    dir = "../New"
+    dir = "./Combined/Experiments/Comb_4T_2x5_NEW/Data/"
     files = glob.glob(os.path.join(dir, "perf_*.npy"))
     files.sort()
 
@@ -97,9 +99,10 @@ def plot_lesion_analysis(run_num):
         # if np.prod(fits) > 0.8:
         if np.min(fits) > 0.85:
             ind = file.split("/")[-1].split(".")[-2].split("_")[-1]
-            ipp = np.load("../New/lesions_IP_" + str(ind) + ".npy")
-            cpp = np.load("../New/lesions_CP_" + str(ind) + ".npy")
-            lwp = np.load("../New/lesions_LW_" + str(ind) + ".npy")
+            ipp = np.load("./Combined/Experiments/Comb_4T_2x5_NEW/Data/lesions_IP_" + str(ind) + ".npy")
+            cpp = np.load("./Combined/Experiments/Comb_4T_2x5_NEW/Data/lesions_CP_" + str(ind) + ".npy")
+            lwp = np.load("./Combined/Experiments/Comb_4T_2x5_NEW/Data/lesions_LW_" + str(ind) + ".npy")
+            mcp = np.load("./Combined/Experiments/Comb_4T_2x5_NEW/Data/lesions_LW_" + str(ind) + ".npy")
 
             # Stats on neurons for Ablations
             Threshold = 0.85
@@ -198,4 +201,4 @@ def plot_lesion_analysis(run_num):
     plt.show()
 
 
-plot_lesion_analysis(65)
+plot_lesion_analysis(12)
