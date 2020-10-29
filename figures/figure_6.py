@@ -186,8 +186,8 @@ def plot_mi_analysis(run_num):
     ax.legend_.remove()
 
     plt.tight_layout()
-    plt.savefig("figure_6a.pdf")
-    plt.savefig("figure_6a.png")
+    plt.savefig("figure_6a_mi.pdf")
+    plt.savefig("figure_6a_mi.png")
     plt.show()
 
 
