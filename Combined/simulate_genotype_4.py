@@ -10,21 +10,21 @@ import matplotlib.pyplot as plt
 import sys
 
 # ANN Params
-nI = 3 + 4 + 3 + 2
+nI = 4
 nH1 = 5
 nH2 = 5
-nO = 1 + 1 + 3 + 1  # output activation needs to account for 3 outputs in leggedwalker
+nO = 1  # output activation needs to account for 3 outputs in leggedwalker
 WeightRange = 15.0
 BiasRange = 15.0
 
 # Task Params
-duration_IP = 10
+duration_IP = 15.0
 stepsize_IP = 0.05
-duration_CP = 10  # 50
+duration_CP = 15.0  # 50
 stepsize_CP = 0.05
 duration_LW = 220  # 220.0
 stepsize_LW = 0.1
-duration_MC = 10.0 #220.0
+duration_MC = 15.0 #220.0
 stepsize_MC = 0.05
 time_IP = np.arange(0.0, duration_IP, stepsize_IP)
 time_CP = np.arange(0.0, duration_CP, stepsize_CP)
@@ -73,7 +73,7 @@ velocity_range_MC = np.linspace(-0.01,0.01, num=trials_velocity_MC)
 # Fitness function
 def simulate_individual(save_dir, run_num):
     # Common setup
-    genotype = np.load("./2x10/best_individual_" + "53" + ".npy")
+    genotype = np.load("./Combined/Experiments/Comb_4T_2x5_NEW/Data/best_individualC_" + "47" + ".npy")
     nn = ffann.ANN(nI, nH1, nH2, nO)
     nn.setParameters(genotype, WeightRange, BiasRange)
     fitness = np.zeros(4)
@@ -93,11 +93,13 @@ def simulate_individual(save_dir, run_num):
             f = 0.0
             theta_trace = []
             for t in time_IP:
-                nn.step(
-                    np.concatenate((body.state(), np.zeros(4), np.zeros(3), np.zeros(2)))
-                )  # arrays for inputs for each task
+                #nn.step(
+                    #np.concatenate((body.state(), np.zeros(4), np.zeros(3), np.zeros(2)))
+                #)  # arrays for inputs for each task
+                nn.step(np.concatenate((body.state(),np.zeros(1))))
                 k += 1
-                f += body.step(stepsize_IP, np.array([nn.output()[0]]))
+                #f += body.step(stepsize_IP, np.array([nn.output()[0]]))
+                f = body.step(stepsize_IP,nn.output())
                 theta_trace.append(np.rad2deg(body.theta))
             j += 1
             theta_traces_IP.append(theta_trace)
@@ -135,11 +137,12 @@ def simulate_individual(save_dir, run_num):
                     body.x_dot = x_dot
                     f = 0.0
                     for t in time_CP:
-                        nn.step(
-                            np.concatenate((np.zeros(3), body.state(), np.zeros(3), np.zeros(2)))
-                        )
+                        #nn.step(
+                        #    np.concatenate((np.zeros(3), body.state(), np.zeros(3), np.zeros(2)))
+                        #)
+                        nn.step(body.state())
                         k += 1
-                        f_temp, d = body.step(stepsize_CP, np.array([nn.output()[1]]))
+                        f_temp, d = body.step(stepsize_CP, nn.output())
                         theta_trace.append(np.rad2deg(body.theta))
                     theta_traces_CP.append(theta_trace)
             j += 1
@@ -166,9 +169,11 @@ def simulate_individual(save_dir, run_num):
             body.omega = omega
             theta_trace = []
             for t in time_LW:
-                nn.step(np.concatenate((np.zeros(3), np.zeros(4), body.state(), np.zeros(2))))
+                #nn.step(np.concatenate((np.zeros(3), np.zeros(4), body.state(), np.zeros(2))))
+                nn.step(body.state())
                 k += 1
-                body.step(stepsize_LW, np.array(nn.output()[2:5]))
+                #body.step(stepsize_LW, np.array(nn.output()[2:5]))
+                body.step(stepsize_LW, nn.output())
                 theta_trace.append(np.rad2deg(body.angle))
             theta_traces_LW.append(theta_trace)
             j += 1
@@ -195,9 +200,10 @@ def simulate_individual(save_dir, run_num):
             body.velocity = velocity
             position_trace = []
             for t in time_MC:
-                nn.step(np.concatenate((np.zeros(3),np.zeros(4),np.zeros(3),body.state())))
+                #nn.step(np.concatenate((np.zeros(3),np.zeros(4),np.zeros(3),body.state())))
+                nn.step(np.concatenate((body.state(),np.zeros(2))))
                 k += 1
-                f,d = body.step(stepsize_MC, np.array([nn.output()[5]]))
+                f,d = body.step(stepsize_MC, nn.output())
                 position_trace.append(body.position)
             position_traces_MC.append(position_trace)
             j += 1
@@ -213,5 +219,5 @@ def simulate_individual(save_dir, run_num):
     
 
 
-individual_id = 53
-simulate_individual("./2x10", individual_id)
+individual_id = 47
+simulate_individual("./Combined/Experiments/Comb_4T_2x5_NEW/Data", individual_id)

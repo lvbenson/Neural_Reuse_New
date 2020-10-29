@@ -26,24 +26,30 @@ def all_lesion_data():
     count = 0
     for i, file in enumerate(files):
         fits = np.load(file)
+        fits = fits**(1/4)
         # if np.prod(fits) > 0.8:
-        if np.min(fits) > 0.8:
+        if np.min(fits) > 0.0:
             run_num = file.split("/")[-1].split(".")[-2].split("_")[-1]
             #lesion_data = np.load("../New/lesions_IP_{}.npy".format(run_num))
             lesion_data = np.load("./Combined/Experiments/Comb_4T_2x5_NEW/Data/lesions_IP_{}.npy".format(run_num))
-            plt.scatter(np.arange(1, 11), lesion_data, s=5, alpha=0.7)
+            plt.scatter(np.arange(1, 11), lesion_data, c='blue', s=5, alpha=0.7, label = 'IP' )
             lesion_data = np.load("./Combined/Experiments/Comb_4T_2x5_NEW/Data/lesions_CP_{}.npy".format(run_num))
-            plt.scatter(np.arange(1, 11), lesion_data, s=5, alpha=0.7)
+            plt.scatter(np.arange(1, 11), lesion_data, c='green',s=5, alpha=0.7, label='CP')
             lesion_data = np.load("./Combined/Experiments/Comb_4T_2x5_NEW/Data/lesions_LW_{}.npy".format(run_num))
-            plt.scatter(np.arange(1, 11), lesion_data, s=5, alpha=0.7)
+            plt.scatter(np.arange(1, 11), lesion_data, c='red',s=5, alpha=0.7,label='LW')
+            lesion_data = np.load("./Combined/Experiments/Comb_4T_2x5_NEW/Data/lesions_MC_{}.npy".format(run_num))
+            plt.scatter(np.arange(1, 11), lesion_data, c='yellow',s=5, alpha=0.7,label='MC')
 
     # plt.plot([0.5,10.5],[0.8,0.8], "k--", alpha=0.7)
     plt.xticks(np.arange(1, 11))
 
     plt.xlim([0.5, 10.5])
+    plt.ylim([-0.03,1.1])
     plt.xlabel("Neuron #")
     plt.ylabel("Fitness after lesion")
+    plt.legend(bbox_to_anchor=(1.05, 1), loc='upper left')
     plt.tight_layout()
+    plt.savefig("./Combined/Experiments/Comb_4T_2x5_NEW/Figures/figure_5_lesions.pdf")
     plt.show()
 
 all_lesion_data()
@@ -59,16 +65,25 @@ def plot_lesion_analysis(run_num):
 
     lesion_data = np.load("./Combined/Experiments/Comb_4T_2x5_NEW/Data/lesions_IP_{}.npy".format(run_num))
     plt.scatter(
-        np.arange(1, 11) - 0.05,
+        np.arange(1, 11) - 0.1,
         lesion_data,
         s=50,
         alpha=0.7,
-        c="xkcd:tomato",
+        c="xkcd:azure",
         label="IP",
     )
     lesion_data = np.load("./Combined/Experiments/Comb_4T_2x5_NEW/Data/lesions_CP_{}.npy".format(run_num))
     plt.scatter(
-        np.arange(1, 11), lesion_data, s=50, alpha=0.7, c="xkcd:azure", label="CP"
+        np.arange(1, 11)-0.05, lesion_data, s=50, alpha=0.7, c="xkcd:teal green", label="CP"
+    )
+    lesion_data = np.load("./Combined/Experiments/Comb_4T_2x5_NEW/Data/lesions_LW_{}.npy".format(run_num))
+    plt.scatter(
+        np.arange(1, 11),
+        lesion_data,
+        s=50,
+        alpha=0.7,
+        c="xkcd:tomato",
+        label="LW",
     )
     lesion_data = np.load("./Combined/Experiments/Comb_4T_2x5_NEW/Data/lesions_LW_{}.npy".format(run_num))
     plt.scatter(
@@ -76,7 +91,7 @@ def plot_lesion_analysis(run_num):
         lesion_data,
         s=50,
         alpha=0.7,
-        c="xkcd:teal green",
+        c="xkcd:yellow",
         label="LW",
     )
 
@@ -201,4 +216,4 @@ def plot_lesion_analysis(run_num):
     plt.show()
 
 
-plot_lesion_analysis(12)
+plot_lesion_analysis(3)

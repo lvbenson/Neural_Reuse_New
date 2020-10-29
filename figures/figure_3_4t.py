@@ -22,10 +22,10 @@ def connected_swarms(dir):
     dat = []
     for i, file in enumerate(files):
         fits = np.load(file)
-        print(fits)
-        #fits = fits**(1/4)
-        if np.prod(fits) >= 0.8:
-            print('found')
+        fits = fits**(1/4)
+        print(np.prod(fits),'prod fits')
+        if np.prod(fits) >= 0.0:
+            #print('found')
             
             fits = np.round(fits, decimals=4)
             print(i, file, fits, np.prod(fits))
@@ -33,7 +33,7 @@ def connected_swarms(dir):
             dat.append(np.concatenate([[i], ["CP"], [fits[1]]]))
             dat.append(np.concatenate([[i], ["LW"], [fits[2]]]))
             dat.append(np.concatenate([[i], ["MC"], [fits[3]]]))
-    print(dat,'dat')
+    #print(dat,'dat')
     # make DataFrame and plot
     df = pd.DataFrame(dat, columns=["id","task", "fitness"])
     ax = sns.swarmplot(
@@ -64,7 +64,7 @@ def connected_swarms(dir):
         ind += 1
 
     plt.tight_layout()
-    plt.savefig("figure_3_4t_comb.pdf")
+    plt.savefig("./Combined/Experiments/Comb_4T_2x5_NEW/Figures/figure_3_4t_comb.pdf")
     plt.show()
 
 
