@@ -22,13 +22,14 @@ def connected_swarms(dir):
     dat = []
     for i, file in enumerate(files):
         fits = np.load(file)
-        #fits = fits**(1/4)
-        print(np.prod(fits),'prod fits')
-        if np.prod(fits) >= 0.0:
+        fits = fits**(1/4)
+        #print(np.prod(fits),'prod fits')
+        if np.prod(fits) >= 0.8:
             #print('found')
+            #print(i)
             
             fits = np.round(fits, decimals=4)
-            print(i, file, fits, np.prod(fits))
+            #print(i, file, fits, np.prod(fits))
             dat.append(np.concatenate([[i], ["IP"], [fits[0]]]))
             dat.append(np.concatenate([[i], ["CP"], [fits[1]]]))
             dat.append(np.concatenate([[i], ["LW"], [fits[2]]]))
@@ -64,7 +65,7 @@ def connected_swarms(dir):
         ind += 1
 
     plt.tight_layout()
-    plt.savefig("./Combined/Experiments/Comb_4T_2x5_NEW/Figures/figure_3_4t_comb.pdf")
+    plt.savefig("figure_3_4t_comb.pdf")
     plt.show()
 
 

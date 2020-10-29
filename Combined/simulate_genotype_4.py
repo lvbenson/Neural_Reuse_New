@@ -36,34 +36,35 @@ MaxFit = 0.627  # Leggedwalker
 
 # Fitness initialization ranges
 # Inverted Pendulum
-trials_theta_IP = 5
-trials_thetadot_IP = 2
+trials_theta_IP = 3
+trials_thetadot_IP = 3
 total_trials_IP = trials_theta_IP * trials_thetadot_IP
 theta_range_IP = np.linspace(-np.pi, np.pi, num=trials_theta_IP)
 thetadot_range_IP = np.linspace(-1.0, 1.0, num=trials_thetadot_IP)
 
 # Cartpole
-trials_theta_CP = 7
-trials_thetadot_CP = 2
-trials_x_CP = 2
-trials_xdot_CP = 2
+trials_theta_CP = 3
+trials_thetadot_CP = 3
+trials_x_CP = 1
+trials_xdot_CP = 1
 total_trials_CP = trials_theta_CP * trials_thetadot_CP * trials_x_CP * trials_xdot_CP
-theta_range_CP = np.linspace(-np.deg2rad(6), np.deg2rad(6), num=trials_theta_CP)
+theta_range_CP = np.linspace(-0.05, 0.05, num=trials_theta_CP)
+#theta_range_CP = np.linspace(-np.deg2rad(6), np.deg2rad(6), num=trials_theta_CP)
 thetadot_range_CP = np.linspace(-0.05, 0.05, num=trials_thetadot_CP)
 x_range_CP = np.linspace(-0.05, 0.05, num=trials_x_CP)
 xdot_range_CP = np.linspace(-0.05, 0.05, num=trials_xdot_CP)
 
 # Legged walker
-trials_theta_LW = 5
+trials_theta_LW = 1
 theta_range_LW = np.linspace(-np.pi / 6, np.pi / 6, num=trials_theta_LW)
-trials_omega_LW = 2
+trials_omega_LW = 1
 omega_range_LW = np.linspace(-1.0, 1.0, num=trials_omega_LW)
 total_trials_LW = trials_theta_LW * trials_omega_LW
 
 
 #Mountain Car
-trials_position_MC = 5
-trials_velocity_MC = 2
+trials_position_MC = 3
+trials_velocity_MC = 3
 total_trials_MC = trials_position_MC * trials_velocity_MC
 position_range_MC = np.linspace(-0.1, 0.1, num=trials_position_MC)
 velocity_range_MC = np.linspace(-0.01,0.01, num=trials_velocity_MC)
@@ -73,7 +74,7 @@ velocity_range_MC = np.linspace(-0.01,0.01, num=trials_velocity_MC)
 # Fitness function
 def simulate_individual(save_dir, run_num):
     # Common setup
-    genotype = np.load("./Combined/Experiments/Comb_4T_2x5_NEW/Data/best_individualC_" + "47" + ".npy")
+    genotype = np.load("./Combined/Experiments/Comb_4T_2x5_NEW/Data/best_individualC_" + "26" + ".npy")
     nn = ffann.ANN(nI, nH1, nH2, nO)
     nn.setParameters(genotype, WeightRange, BiasRange)
     fitness = np.zeros(4)
@@ -219,5 +220,5 @@ def simulate_individual(save_dir, run_num):
     
 
 
-individual_id = 47
+individual_id = 26
 simulate_individual("./Combined/Experiments/Comb_4T_2x5_NEW/Data", individual_id)

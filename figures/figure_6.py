@@ -25,9 +25,9 @@ def all_mi_data():
     count = 0
     for i, file in enumerate(files):
         fits = np.load(file)
-        fits = fits**(1/4)
-        # if np.prod(fits) > 0.8:
-        if np.min(fits) > 0.0:
+        #fits = fits**(1/4)
+        #if np.prod(fits)**(1/4) > 0.8:
+        if np.min(fits)**(1/4) > 0.0:
             run_num = file.split("/")[-1].split(".")[-2].split("_")[-1]
             mi_data = np.load("./Combined/Experiments/Comb_4T_2x5_NEW/Data/NormMI_IP_{}.npy".format(run_num))
             print(mi_data.shape)
@@ -210,7 +210,7 @@ def plot_mi_analysis(run_num):
     plt.savefig("figure_6a_mi.pdf")
     plt.savefig("figure_6a_mi.png")
     plt.show()
-    
+
 plot_mi_analysis(37)
 
 """

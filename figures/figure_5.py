@@ -28,7 +28,7 @@ def all_lesion_data():
         fits = np.load(file)
         fits = fits**(1/4)
         # if np.prod(fits) > 0.8:
-        if np.min(fits) > 0.0:
+        if np.min(fits) > 0.8:
             run_num = file.split("/")[-1].split(".")[-2].split("_")[-1]
             #lesion_data = np.load("../New/lesions_IP_{}.npy".format(run_num))
             lesion_data = np.load("./Combined/Experiments/Comb_4T_2x5_NEW/Data/lesions_IP_{}.npy".format(run_num))
@@ -93,7 +93,7 @@ def plot_lesion_analysis(run_num):
         s=50,
         alpha=0.7,
         c="xkcd:yellow",
-        label="LW",
+        label="MC",
     )
 
     plt.legend()
@@ -114,7 +114,7 @@ def plot_lesion_analysis(run_num):
         fits = np.load(file)
         # if np.prod(fits) > 0.8:
         fits = fits**(1/4)
-        if np.min(fits) > 0.0:
+        if np.min(fits) > 0.8:
             ind = file.split("/")[-1].split(".")[-2].split("_")[-1]
             ipp = np.load("./Combined/Experiments/Comb_4T_2x5_NEW/Data/lesions_IP_" + str(ind) + ".npy")
             cpp = np.load("./Combined/Experiments/Comb_4T_2x5_NEW/Data/lesions_CP_" + str(ind) + ".npy")
