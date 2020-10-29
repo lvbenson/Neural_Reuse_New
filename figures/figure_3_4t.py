@@ -22,7 +22,7 @@ def connected_swarms(dir):
     dat = []
     for i, file in enumerate(files):
         fits = np.load(file)
-        fits = fits**(1/4)
+        #fits = fits**(1/4)
         print(np.prod(fits),'prod fits')
         if np.prod(fits) >= 0.0:
             #print('found')

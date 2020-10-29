@@ -42,17 +42,17 @@ MaxFit = 0.627 #Leggedwalker
 
 # Fitness initialization ranges
 #Inverted Pendulum
-trials_theta_IP = 10
-trials_thetadot_IP = 10
+trials_theta_IP = 3
+trials_thetadot_IP = 3
 total_trials_IP = trials_theta_IP*trials_thetadot_IP
 theta_range_IP = np.linspace(-np.pi, np.pi, num=trials_theta_IP)
 thetadot_range_IP = np.linspace(-1.0,1.0, num=trials_thetadot_IP)
 
 #Cartpole
-trials_theta_CP = 10
-trials_thetadot_CP = 10
-trials_x_CP = 2
-trials_xdot_CP = 2
+trials_theta_CP = 3
+trials_thetadot_CP = 3
+trials_x_CP = 1
+trials_xdot_CP = 1
 total_trials_CP = trials_theta_CP*trials_thetadot_CP*trials_x_CP*trials_xdot_CP
 theta_range_CP = np.linspace(-0.05, 0.05, num=trials_theta_CP)
 thetadot_range_CP = np.linspace(-0.05, 0.05, num=trials_thetadot_CP)
@@ -60,15 +60,15 @@ x_range_CP = np.linspace(0.0, 0.0, num=trials_x_CP)
 xdot_range_CP = np.linspace(0.0, 0.0, num=trials_xdot_CP)
 
 #Legged walker
-trials_theta = 10
+trials_theta = 1
 theta_range_LW = np.linspace(0.0, 0.0, num=trials_theta)
-trials_omega_LW = 10
+trials_omega_LW = 1
 omega_range_LW = np.linspace(0.0, 0.0, num=trials_omega_LW)
 total_trials_LW = trials_theta * trials_omega_LW
 
 #Mountain Car
-trials_position_MC = 10 #6
-trials_velocity_MC = 10 #6
+trials_position_MC = 3 #6
+trials_velocity_MC = 3 #6
 total_trials_MC = trials_position_MC*trials_velocity_MC
 position_range_MC = np.linspace(0.1, 0.1, num=trials_position_MC)
 velocity_range_MC = np.linspace(0.01,0.01, num=trials_velocity_MC)
@@ -486,7 +486,7 @@ def find_all_mis(dir,ind):
     max = np.max(mi,axis=0)
     norm_mi = np.zeros((10,4))
     for i in range(10):
-        if max[i] > 0.0:
+        if max[i] > 0.8:
             norm_mi[i] = mi.T[i]/max[i]
         else:
             norm_mi[i] = 0.0
@@ -514,15 +514,26 @@ bi = np.zeros((reps,gs))
 
 index = 0
 count = 0
+#plt.figure(figsize=[6, 4])
 for i in range(start,finish):
     af[index] = np.load(dir+"/average_historyC_"+str(i)+".npy")
     bf[index] = np.load(dir+"/best_historyC_"+str(i)+".npy")
     bi[index] = np.load(dir+"/best_individualC_"+str(i)+".npy")
-    if bf[index][-1]>0.5:
+    #evol_fit = bf[index][-1]**(1/4)
+    if bf[index][-1]**(1/4) > 0.8:
+        #plt.scatter(np.arange(1, 11), evol_fit, c='blue',s=5, alpha=0.7)
         count += 1
         f,m1,m2,m3,m4,ns1,ns2,ns3,ns4=analysis(bi[index])
+        #print('perf:',np.prod(f)**(1/4))
+        #print('evol:',bf[index][-1]**(1/4))
+        #plt.scatter(np.arange(1, 11), f, c='red',s=5, alpha=0.7)
+        #plt.scatter(np.prod(f)**(1/4), bf[index][-1]**(1/4), c='blue',s=5, alpha=0.7)
+        
         
         np.save(dir+"/perf_"+str(i)+".npy",f)
+        #print(f,'analysis performance')
+        
+        
 
         np.save(dir+"/perfmap_IP_"+str(i)+".npy",m1)
         np.save(dir+"/perfmap_CP_"+str(i)+".npy",m2)
@@ -534,7 +545,7 @@ for i in range(start,finish):
         np.save(dir+"/state_LW_"+str(i)+".npy",ns3)
         np.save(dir+"/state_MC_"+str(i)+".npy",ns4)
 
-        #print(i,bf[index][-1],f)
+        #print(i,bf[index][-1]**(1/4),f)
 
         # plt.imshow(m1)
         # plt.colorbar()
@@ -558,10 +569,22 @@ for i in range(start,finish):
         # plt.savefig(dir+"/perfmap_LW_"+str(i)+".png")
         # plt.show()
         
-        #find_all_lesions(dir,i)
-        #find_all_var(dir,i)
+        find_all_lesions(dir,i)
+        find_all_var(dir,i)
         find_all_mis(dir,i)
+        
     index += 1
+    #plt.xticks(np.arange(1, 11))
+    #plt.xlim([0.5, 10.5])
+    #plt.ylim([-0.03,1.1])
+    #plt.xlabel("Run")
+    #plt.ylabel("fitness and performance")
+    #plt.legend(bbox_to_anchor=(1.05, 1), loc='upper left')
+    #plt.tight_layout()
+    #plt.savefig("./Combined/Experiments/Comb_4T_2x5_NEW/Figures/figure_5_lesions.pdf")
+#plt.xlabel("performance")
+#plt.ylabel("evolved fitness")
+#plt.show()
 
 #print("Ensemble count:", count)
 #print(bf[:,-1])

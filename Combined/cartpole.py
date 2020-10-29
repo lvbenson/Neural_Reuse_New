@@ -36,5 +36,5 @@ class Cartpole:
     def state(self):
 
         #return self.x*self.x_dot*self.theta*self.theta_dot
-        return np.array([self.theta, self.theta_dot, self.x, self.x_dot])
-        #return np.array([self.x, self.x_dot, self.theta, self.theta_dot])
+        #return np.array([self.theta, self.theta_dot, self.x, self.x_dot])
+        return np.array([self.x, self.x_dot, self.theta, self.theta_dot])

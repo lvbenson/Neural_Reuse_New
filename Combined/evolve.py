@@ -8,7 +8,8 @@ import mountaincar          #Task 4
 import numpy as np
 import sys
 
-id = str(sys.argv[1])
+id = 1
+#id = str(sys.argv[1])
 #id = 'multi'
 
 # ANN Params
@@ -22,12 +23,12 @@ WeightRange = 15.0
 BiasRange = 15.0
 
 # EA Params
-popsize = 50
+popsize = 10
 genesize = (nI*nH1) + (nH1*nH2) + (nH1*nO) + nH1 + nH2 + nO # 115 parameters
 recombProb = 0.5
 mutatProb = 0.05 # 1/genesize # 1/g = 0.0086 we can make it 0.01 because with 1/g, avg seemed to trail close to best.
 demeSize = 49
-generations = 1000 #1000 # With 150 (17hours), lots of progress, but more possible easily (with 300, 34hours);
+generations = 10 #1000 # With 150 (17hours), lots of progress, but more possible easily (with 300, 34hours);
 boundaries = 0
 
 # Task Params
@@ -163,14 +164,14 @@ def fitnessFunction(genotype):
                 if done:
                     break
     fitness4 = ((fit/(duration_MC*total_trials_MC)) + 1.0)/0.65
+    print(fitness1*fitness2*fitness3*fitness4)
     return fitness1*fitness2*fitness3*fitness4
     #return fitness1*fitness2*fitness3
 
 # Evolve and visualize fitness over generations
 ga = mga.Microbial(fitnessFunction, popsize, genesize, recombProb, mutatProb, demeSize, generations, boundaries)
 ga.run()
-ga.showFitness()
-
+#ga.showFitness()
 # Get best evolved network and show its activity
 af,bf,bi = ga.fitStats()
 
