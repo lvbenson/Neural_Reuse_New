@@ -484,8 +484,8 @@ def find_all_mis(dir,ind):
     mi[2] = calculate_mi("./{}/state_LW_{}.npy".format(dir,ind))
     mi[3] = calculate_mi("./{}/state_MC_{}.npy".format(dir,ind))
     max = np.max(mi,axis=0)
-    norm_mi = np.zeros((4,4))
-    for i in range(4):
+    norm_mi = np.zeros((10,4))
+    for i in range(10):
         if max[i] > 0.0:
             norm_mi[i] = mi.T[i]/max[i]
         else:

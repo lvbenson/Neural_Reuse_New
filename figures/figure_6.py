@@ -13,9 +13,9 @@ import seaborn as sns
 
 
 def all_mi_data():
-    plt.figure(figsize=[4, 3])
+    plt.figure(figsize=[6, 4])
     # load data
-    dir = "../2x10"
+    dir = "./Combined/Experiments/Comb_4T_2x5_NEW/Data"
     files = glob.glob(os.path.join(dir, "perf_*.npy"))
     files.sort()
     print("Found {} files in {}".format(len(files), dir))
@@ -25,25 +25,32 @@ def all_mi_data():
     count = 0
     for i, file in enumerate(files):
         fits = np.load(file)
+        fits = fits**(1/4)
         # if np.prod(fits) > 0.8:
-        if np.min(fits) > 0.85:
+        if np.min(fits) > 0.0:
             run_num = file.split("/")[-1].split(".")[-2].split("_")[-1]
-            mi_data = np.load("../New/NormMI_IP_{}.npy".format(run_num))
-            plt.scatter(np.arange(1, 11), mi_data, s=5, alpha=0.7)
-            mi_data = np.load("../New/NormMI_CP_{}.npy".format(run_num))
-            plt.scatter(np.arange(1, 11), mi_data, s=5, alpha=0.7)
-            mi_data = np.load("../New/NormMI_LW_{}.npy".format(run_num))
-            plt.scatter(np.arange(1, 11), mi_data, s=5, alpha=0.7)
+            mi_data = np.load("./Combined/Experiments/Comb_4T_2x5_NEW/Data/NormMI_IP_{}.npy".format(run_num))
+            plt.scatter(np.arange(0, 11), mi_data, s=5, alpha=0.7)
+            mi_data = np.load("./Combined/Experiments/Comb_4T_2x5_NEW/Data/NormMI_CP_{}.npy".format(run_num))
+            plt.scatter(np.arange(0, 11), mi_data, s=5, alpha=0.7)
+            mi_data = np.load("./Combined/Experiments/Comb_4T_2x5_NEW/Data/NormMI_LW_{}.npy".format(run_num))
+            plt.scatter(np.arange(0, 11), mi_data, s=5, alpha=0.7)
+            mi_data = np.load("./Combined/Experiments/Comb_4T_2x5_NEW/Data/NormMI_MC_{}.npy".format(run_num))
+            plt.scatter(np.arange(0, 11), mi_data, s=5, alpha=0.7)
 
     # plt.plot([0.5,10.5],[0.8,0.8], "k--", alpha=0.7)
     plt.xticks(np.arange(1, 11))
 
     plt.xlim([0.5, 10.5])
+    plt.ylim([-0.03,1.1])
     plt.xlabel("Neuron #")
     plt.ylabel("Contribution estimated by\nMutual Information")
     plt.tight_layout()
-    plt.show()
+    plt.savefig("./Combined/Experiments/Comb_4T_2x5_NEW/Figures/figure_6_MI.pdf")
+    #plt.show()
 
+all_mi_data()
+"""
 
 def plot_mi_analysis(run_num):
     plt.figure(figsize=[8, 5])
@@ -77,6 +84,7 @@ def plot_mi_analysis(run_num):
     plt.ylim([-0.05, 1.05])
     plt.xlabel("Neuron #")
     plt.ylabel("Contribution estimated using\nMutual Information")
+    plt.show()
 
     ### Prep for rest of tthe panelss
     dir = "../New"
@@ -192,3 +200,4 @@ def plot_mi_analysis(run_num):
 
 
 plot_mi_analysis(74)
+"""

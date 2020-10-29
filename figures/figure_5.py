@@ -32,6 +32,7 @@ def all_lesion_data():
             run_num = file.split("/")[-1].split(".")[-2].split("_")[-1]
             #lesion_data = np.load("../New/lesions_IP_{}.npy".format(run_num))
             lesion_data = np.load("./Combined/Experiments/Comb_4T_2x5_NEW/Data/lesions_IP_{}.npy".format(run_num))
+            print(lesion_data.shape)
             plt.scatter(np.arange(1, 11), lesion_data, c='blue', s=5, alpha=0.7, label = 'IP' )
             lesion_data = np.load("./Combined/Experiments/Comb_4T_2x5_NEW/Data/lesions_CP_{}.npy".format(run_num))
             plt.scatter(np.arange(1, 11), lesion_data, c='green',s=5, alpha=0.7, label='CP')
