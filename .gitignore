@@ -11,10 +11,10 @@ Alife_Data
 Ind_Tasks_Dedicated_2x5
 Old_Stuff
 Neural_Reuse_New_ws.code-workspace
-Combined/Experiments/Separate/Data_CP
-Combined/Experiments/Separate/Data_IP
-Combined/Experiments/Separate/Data_LW
-Combined/Experiments/Separate/Data_MC
+Combined/Separate/Data_CP
+Combined/Separate/Data_IP
+Combined/Separate/Data_LW
+Combined/Separate/Data_MC
 .vscode
 
 # C extensions
