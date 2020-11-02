@@ -24,7 +24,7 @@ def fitness_traces(dir):
         #print(fits.shape)
         #print(len(fits))
         fits = fits**(1/4) #elevate for the number of tasks
-        fits = fits[0:1000]
+        #fits = fits[0:1000]
        
         #print(fits)
         bfs.append(fits)
@@ -63,8 +63,8 @@ def fitness_traces(dir):
     plt.xlabel("Generations")
     plt.ylabel("Fitness")
     plt.tight_layout()
-    plt.savefig("./Combined/Experiments/Comb_4T_2x5_x2/Figures/fitness_traces_4T.pdf")
+    plt.savefig("./Combined/4T_2x5/Figures/figure_2_fitnesstraces.pdf")
     plt.show()
 
 
-fitness_traces("./Combined/Experiments/Comb_4T_2x5_x2/Data")
+fitness_traces("./Combined/4T_2x5/Data")

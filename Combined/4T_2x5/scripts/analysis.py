@@ -96,7 +96,8 @@ def analysis(genotype):
             f = 0.0
             for t in time_IP:
                 #nn.step(np.concatenate((body.state(),np.zeros(4),np.zeros(3),np.zeros(2)))) #arrays for inputs for each task
-                nn.step(np.concatenate((body.state(),np.zeros(1))))
+                #nn.step(np.concatenate((body.state(),np.zeros(1))))
+                nn.step(body.state())
                 nn_state_ip[k] = nn.states()
                 k += 1
                 #f += body.step(stepsize_IP, np.array([nn.output()[0]]))
@@ -179,7 +180,7 @@ def analysis(genotype):
             fit = 0.0
             for t in time_MC:
                 #nn.step(np.concatenate((np.zeros(3),np.zeros(4),np.zeros(3),body.state())))
-                nn.step(np.concatenate((body.state(),np.zeros(2))))
+                nn.step(body.state())
                 nn_state_mc[k] = nn.states()
                 k += 1
                 #f,d = body.step(stepsize_MC, np.array([nn.output()[5]]))
@@ -222,7 +223,8 @@ def lesions(genotype,actvalues):
                         for t in time_IP:
                             #nn.step_lesioned(np.concatenate((body.state(),np.zeros(4),np.zeros(3),np.zeros(2))),neuron,layer,act)
                             #nn.step(np.concatenate((body.state(),np.zeros(1))))
-                            nn.step_lesioned(np.concatenate((body.state(),np.zeros(1))),neuron,layer,act)
+                            nn.step_lesioned(body.state(),neuron,layer,act)
+                            #nn.step(body.state())
                             f = body.step(stepsize_IP, nn.output())
                             fit += f
                 fit = fit/(duration_IP*total_trials_IP)
@@ -258,6 +260,7 @@ def lesions(genotype,actvalues):
                                 body.x = x
                                 body.x_dot = x_dot
                                 for t in time_CP:
+                                    #nn.step_lesioned(body.state(),neuron,layer,act)
                                     nn.step_lesioned(body.state(),neuron,layer,act)
                                     f,d = body.step(stepsize_CP, nn.output())
                                     fit += f
@@ -290,6 +293,7 @@ def lesions(genotype,actvalues):
                         body.angle = theta
                         body.omega = omega
                         for t in time_LW:
+                            #nn.step_lesioned(body.state(),neuron,layer,act)
                             nn.step_lesioned(body.state(),neuron,layer,act)
                             body.step(stepsize_LW, nn.output())
                         fit += body.cx/duration_LW
@@ -322,7 +326,8 @@ def lesions(genotype,actvalues):
                         body.position = position
                         body.velocity = velocity
                         for t in time_MC:
-                            nn.step_lesioned(np.concatenate((body.state(),np.zeros(2))),neuron,layer,act)
+                            #nn.step_lesioned(np.concatenate((body.state(),np.zeros(2))),neuron,layer,act)
+                            nn.step_lesioned(body.state(),neuron,layer,act)
                             f,d = body.step(stepsize_MC, nn.output())
                             fit += f
                 fit = ((fit/duration_MC) + 1.0)/0.65
@@ -339,6 +344,7 @@ def lesions(genotype,actvalues):
 
 def find_all_lesions(dir,ind):
     max = np.zeros((4,nH1+nH2))
+    #/Users/lvbenson/Research_Projects/Neural_Reuse_New/Combined/4T_2x5/Data/state_IP_0.npy
     nn = np.load("./{}/state_IP_{}.npy".format(dir,ind))
     max[0] = np.max(nn[:,nI:nI+nH1+nH2],axis=0)
     nn = np.load("./{}/state_CP_{}.npy".format(dir,ind))
@@ -521,6 +527,7 @@ for i in range(start,finish):
     bi[index] = np.load(dir+"/best_individualC_"+str(i)+".npy")
     #evol_fit = bf[index][-1]**(1/4)
     if bf[index][-1]**(1/4) > 0.8:
+
         #plt.scatter(np.arange(1, 11), evol_fit, c='blue',s=5, alpha=0.7)
         count += 1
         f,m1,m2,m3,m4,ns1,ns2,ns3,ns4=analysis(bi[index])
@@ -569,8 +576,8 @@ for i in range(start,finish):
         # plt.savefig(dir+"/perfmap_LW_"+str(i)+".png")
         # plt.show()
         
-        #find_all_lesions(dir,i)
-        #find_all_var(dir,i)
+        find_all_lesions(dir,i)
+        find_all_var(dir,i)
         find_all_mis(dir,i)
         
     index += 1

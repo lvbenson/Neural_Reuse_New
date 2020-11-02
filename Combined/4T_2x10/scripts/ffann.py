@@ -55,6 +55,18 @@ class ANN:
         self.OutputActivation = sigmoid(np.dot(self.Hidden2Activation,self.wH2O)+self.bO)
         return self.OutputActivation
 
+
+    def step_lesioned(self,Input,Neuron,Layer,Activation):
+        self.Input = np.array(Input)
+        self.Hidden1Activation = relu(np.dot(self.Input.T,self.wIH1)+self.bH1)
+        if (Layer==1):
+            self.Hidden1Activation[Neuron] = Activation
+        self.Hidden2Activation = relu(np.dot(self.Hidden1Activation,self.wH1H2)+self.bH2)
+        if (Layer==2):
+            self.Hidden2Activation[Neuron] = Activation
+        self.OutputActivation = sigmoid(np.dot(self.Hidden2Activation,self.wH2O)+self.bO)
+        return self.OutputActivation
+
     def output(self):
         return self.OutputActivation*2 - 1
 

@@ -24,7 +24,7 @@ def fitness_traces(dir):
         #print(fits.shape)
         #print(len(fits))
         fits = fits**(1/4) #elevate for the number of tasks
-        fits = fits[0:1000]
+        #fits = fits[0:1000]
        
         #print(fits)
         bfs.append(fits)
@@ -57,14 +57,26 @@ def fitness_traces(dir):
             ok_label = None
 
     # Plotting best
+    
     plt.plot(bfs[best_run], "xkcd:reddish", label=best_label)  # "xkcd:ultramarine")
     plt.title("Combined sensors/motors")
     #plt.legend()
     plt.xlabel("Generations")
     plt.ylabel("Fitness")
     plt.tight_layout()
-    plt.savefig("./Combined/Experiments/Comb_4T_2x5_x2/Figures/fitness_traces_4T.pdf")
+    plt.savefig("./Combined/4T_2x10/Figures/figure_2_fitnesstraces.pdf")
     plt.show()
+    
 
 
-fitness_traces("./Combined/Experiments/Comb_4T_2x5_x2/Data")
+fitness_traces("./Combined/4T_2x10/Data")
+"""
+plt.plot(bfs[best_run], "xkcd:reddish", label=best_label)  # "xkcd:ultramarine")
+plt.title("Combined sensors/motors")
+    #plt.legend()
+plt.xlabel("Generations")
+plt.ylabel("Fitness")
+plt.tight_layout()
+plt.savefig("./Combined/4T_2x10/Figures/figure_2_fitnesstraces.pdf")
+plt.show()
+"""
