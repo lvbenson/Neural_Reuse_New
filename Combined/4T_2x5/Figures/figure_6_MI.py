@@ -27,7 +27,7 @@ def all_mi_data():
         fits = np.load(file)
         fits = fits**(1/4)
         #if np.prod(fits)**(1/4) > 0.8:
-        if np.min(fits)**(1/4) > 0.8:
+        if np.min(fits) > 0.8:
             run_num = file.split("/")[-1].split(".")[-2].split("_")[-1]
             mi_data = np.load("./Combined/4T_2x5/Data/NormMI_IP_{}.npy".format(run_num))
             #print(mi_data)
@@ -201,7 +201,7 @@ def plot_mi_analysis(run_num):
     plt.xlim([-0.5, 11.5])
     plt.ylim([-0.5, 11.5])
     plt.tight_layout()
-    plt.savefig("./Combined/4T_2x5/Figures/figure_6_reuse.pdf")
+    plt.savefig("./Combined/4T_2x5/Figures/figure_6_MI_reuse.pdf")
     plt.show()
 
 """
