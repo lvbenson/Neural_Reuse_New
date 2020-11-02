@@ -28,6 +28,7 @@ plt.figure(figsize=[4, 3])
 #fitness_traces("./Combined/4T_2x10/Data", "xkcd:green", "2x5")
 fitness_traces("./Combined/4T_2x5/Data", "xkcd:azure", "2x10")
 fitness_traces("./Combined/4T_2x10/Data", "xkcd:green", "2x5")
+fitness_traces("./Combined/4T_2x20/Data", "xkcd:red", "2x20")
 
 plt.legend()
 plt.xlabel("Generations")

@@ -11,8 +11,8 @@ import sys
 
 # ANN Params
 nI = 4
-nH1 = 5
-nH2 = 5
+nH1 = 10
+nH2 = 10
 nO = 1  # output activation needs to account for 3 outputs in leggedwalker
 WeightRange = 15.0
 BiasRange = 15.0
@@ -74,7 +74,7 @@ velocity_range_MC = np.linspace(-0.01,0.01, num=trials_velocity_MC)
 # Fitness function
 def simulate_individual(save_dir, run_num):
     # Common setup
-    genotype = np.load("./Combined/Experiments/Comb_4T_2x5_NEW/Data/best_individualC_" + "3" + ".npy")
+    genotype = np.load("./Combined/4T_2x10/Data/best_individualS1_" + "1" + ".npy")
     nn = ffann.ANN(nI, nH1, nH2, nO)
     nn.setParameters(genotype, WeightRange, BiasRange)
     fitness = np.zeros(4)
@@ -97,7 +97,8 @@ def simulate_individual(save_dir, run_num):
                 #nn.step(
                     #np.concatenate((body.state(), np.zeros(4), np.zeros(3), np.zeros(2)))
                 #)  # arrays for inputs for each task
-                nn.step(np.concatenate((body.state(),np.zeros(1))))
+                #nn.step(np.concatenate((body.state(),np.zeros(1))))
+                nn.step(body.state())
                 k += 1
                 #f += body.step(stepsize_IP, np.array([nn.output()[0]]))
                 f = body.step(stepsize_IP,nn.output())
@@ -202,7 +203,8 @@ def simulate_individual(save_dir, run_num):
             position_trace = []
             for t in time_MC:
                 #nn.step(np.concatenate((np.zeros(3),np.zeros(4),np.zeros(3),body.state())))
-                nn.step(np.concatenate((body.state(),np.zeros(2))))
+                #nn.step(np.concatenate((body.state(),np.zeros(2))))
+                nn.step(body.state())
                 k += 1
                 f,d = body.step(stepsize_MC, nn.output())
                 position_trace.append(body.position)
@@ -220,5 +222,5 @@ def simulate_individual(save_dir, run_num):
     
 
 
-individual_id = 3
-simulate_individual("./Combined/Experiments/Comb_4T_2x5_NEW/Data", individual_id)
+individual_id = 1
+simulate_individual("./Combined/4T_2x10/Data", individual_id)
