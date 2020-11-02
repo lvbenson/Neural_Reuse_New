@@ -15,7 +15,7 @@ import seaborn as sns
 def all_mi_data():
     plt.figure(figsize=[6, 4])
     # load data
-    dir = "./Combined/Experiments/Comb_4T_2x5_NEW/Data"
+    dir = "./Combined/4T_2x5/Data"
     files = glob.glob(os.path.join(dir, "perf_*.npy"))
     files.sort()
     print("Found {} files in {}".format(len(files), dir))
@@ -29,18 +29,18 @@ def all_mi_data():
         #if np.prod(fits)**(1/4) > 0.8:
         if np.min(fits)**(1/4) > 0.8:
             run_num = file.split("/")[-1].split(".")[-2].split("_")[-1]
-            mi_data = np.load("./Combined/Experiments/Comb_4T_2x5_NEW/Data/NormMI_IP_{}.npy".format(run_num))
-            print(mi_data)
+            mi_data = np.load("./Combined/4T_2x5/Data/NormMI_IP_{}.npy".format(run_num))
+            #print(mi_data)
             #print(mi_data.shape)
-            plt.scatter(np.arange(1, 11), mi_data, s=5, alpha=0.7)
-            mi_data = np.load("./Combined/Experiments/Comb_4T_2x5_NEW/Data/NormMI_CP_{}.npy".format(run_num))
+            plt.scatter(np.arange(1, 11), mi_data, c='blue', s=5, alpha=0.7)
+            mi_data = np.load("./Combined/4T_2x5/Data/NormMI_CP_{}.npy".format(run_num))
             #print(mi_data)
-            plt.scatter(np.arange(1, 11), mi_data, s=5, alpha=0.7)
-            mi_data = np.load("./Combined/Experiments/Comb_4T_2x5_NEW/Data/NormMI_LW_{}.npy".format(run_num))
+            plt.scatter(np.arange(1, 11), mi_data, c='green', s=5, alpha=0.7)
+            mi_data = np.load("./Combined/4T_2x5/Data/NormMI_LW_{}.npy".format(run_num))
             #print(mi_data)
-            plt.scatter(np.arange(1, 11), mi_data, s=5, alpha=0.7)
-            mi_data = np.load("./Combined/Experiments/Comb_4T_2x5_NEW/Data/NormMI_MC_{}.npy".format(run_num))
-            plt.scatter(np.arange(1, 11), mi_data, s=5, alpha=0.7)
+            plt.scatter(np.arange(1, 11), mi_data, c='red', s=5, alpha=0.7)
+            mi_data = np.load("./Combined/4T_2x5/Data/NormMI_MC_{}.npy".format(run_num))
+            plt.scatter(np.arange(1, 11), mi_data, c='yellow', s=5, alpha=0.7)
 
     # plt.plot([0.5,10.5],[0.8,0.8], "k--", alpha=0.7)
     plt.xticks(np.arange(1, 11))
@@ -50,14 +50,14 @@ def all_mi_data():
     plt.xlabel("Neuron #")
     plt.ylabel("Contribution estimated by\nMutual Information")
     plt.tight_layout()
-    plt.savefig("./Combined/Experiments/Comb_4T_2x5_NEW/Figures/figure_6_MI.pdf")
+    plt.savefig("./Combined/4T_2x5/Figures/figure_6_MI.pdf")
     plt.show()
 
 all_mi_data()
 
 
 def plot_mi_analysis(run_num):
-    plt.figure(figsize=[8, 5])
+    plt.figure(figsize=[8, 2.5])
 
     ### PANEL A
     plt.subplot2grid([2, 3], [0, 0])
@@ -66,13 +66,13 @@ def plot_mi_analysis(run_num):
         plt.plot([i + 0.5, i + 0.5], [-0.05, 1.1], "gray", alpha=0.5)
 
     # load and plot data
-    mi_data = 1 - np.load("./Combined/Experiments/Comb_4T_2x5_NEW/Data/NormMI_IP_{}.npy".format(run_num))
+    mi_data = 1 - np.load("./Combined/4T_2x5/Data/NormMI_IP_{}.npy".format(run_num))
     plt.scatter(
         np.arange(1, 11) - 0.10, mi_data, s=50, alpha=0.7, c="xkcd:tomato", label="IP"
     )
-    mi_data = 1 - np.load("./Combined/Experiments/Comb_4T_2x5_NEW/Data/NormMI_CP_{}.npy".format(run_num))
+    mi_data = 1 - np.load("./Combined/4T_2x5/Data/NormMI_CP_{}.npy".format(run_num))
     plt.scatter(np.arange(1, 11) - 0.05, mi_data, s=50, alpha=0.7, c="xkcd:azure", label="CP")
-    mi_data = 1 - np.load("./Combined/Experiments/Comb_4T_2x5_NEW/Data/NormMI_LW_{}.npy".format(run_num))
+    mi_data = 1 - np.load("./Combined/4T_2x5/Data/NormMI_LW_{}.npy".format(run_num))
     plt.scatter(
         np.arange(1, 11),
         mi_data,
@@ -81,7 +81,7 @@ def plot_mi_analysis(run_num):
         c="xkcd:teal green",
         label="LW",
     )
-    mi_data = 1 - np.load("./Combined/Experiments/Comb_4T_2x5_NEW/Data/NormMI_MC_{}.npy".format(run_num))
+    mi_data = 1 - np.load("./Combined/4T_2x5/Data/NormMI_MC_{}.npy".format(run_num))
     plt.scatter(
         np.arange(1, 11) + 0.05,
         mi_data,
@@ -100,7 +100,7 @@ def plot_mi_analysis(run_num):
     plt.show()
 
     ### Prep for rest of tthe panelss
-    dir = "./Combined/Experiments/Comb_4T_2x5_NEW/Data"
+    dir = "./Combined/4T_2x5/Data"
     files = glob.glob(os.path.join(dir, "perf_*.npy"))
     files.sort()
 
@@ -111,11 +111,12 @@ def plot_mi_analysis(run_num):
         fits = np.load(file)
         # if np.prod(fits) > 0.8:
         fits = fits**(1/4)
-        if np.min(fits) > 0.5:
+        if np.min(fits) > 0.8:
             ind = file.split("/")[-1].split(".")[-2].split("_")[-1]
-            ipp = 1 - np.load("./Combined/Experiments/Comb_4T_2x5_NEW/Data/NormMI_IP_" + str(ind) + ".npy")
-            cpp = 1 - np.load("./Combined/Experiments/Comb_4T_2x5_NEW/Data/NormMI_CP_" + str(ind) + ".npy")
-            lwp = 1 - np.load("./Combined/Experiments/Comb_4T_2x5_NEW/Data/NormMI_LW_" + str(ind) + ".npy")
+            ipp = 1 - np.load("./Combined/4T_2x5/Data/NormMI_IP_" + str(ind) + ".npy")
+            cpp = 1 - np.load("./Combined/4T_2x5/Data/NormMI_CP_" + str(ind) + ".npy")
+            lwp = 1 - np.load("./Combined/4T_2x5/Data/NormMI_LW_" + str(ind) + ".npy")
+            mcp = 1 - np.load("./Combined/4T_2x5/Data/NormMI_MC_" + str(ind) + ".npy")
 
             Threshold = 0.85
             count = np.zeros(12)
@@ -172,7 +173,7 @@ def plot_mi_analysis(run_num):
             # making it dataframe ready
             all_counts.append(count)
             categs = ["None","IP","CP","LW","MC","IP+CP","IP+LW","IP+MC","CP+LW","CP+MC","LW+MC","All"]
-            categs = ["None", "IP", "CP", "LW", "IP+CP", "IP+LW", "CP+LW", "All"]
+            #categs = ["None", "IP", "CP", "LW", "IP+CP", "IP+LW", "CP+LW", "All"]
             for cg, ct in zip(categs, count):
                 all_categs.append([cg, ct, i])
 
@@ -199,22 +200,25 @@ def plot_mi_analysis(run_num):
     plt.yticks(np.arange(12), np.arange(12))
     plt.xlim([-0.5, 11.5])
     plt.ylim([-0.5, 11.5])
+    plt.tight_layout()
+    plt.savefig("./Combined/4T_2x5/Figures/figure_6_reuse.pdf")
+    plt.show()
 
-
+"""
         ### PANEL D
     plt.subplot2grid([2, 3], [1, 0], colspan=3)
     df = pd.DataFrame(
         all_categs, columns=["Category", "Number of Neurons", "network_id"]
     )
-    ax = sns.swarmplot(x="Category", y="Number of Neurons", hue="network_id", data=df)
+    ax = sns.stripplot(x="Category", y="Number of Neurons", hue="network_id", data=df)
     ax.legend_.remove()
+"""
+    #plt.tight_layout()
+    #plt.savefig("./Combined/4T_2x5/Figures/figure_6_reuse.pdf")
+    #plt.savefig("figure_6a_mi.png")
+    #plt.show()
 
-    plt.tight_layout()
-    plt.savefig("figure_6a_mi.pdf")
-    plt.savefig("figure_6a_mi.png")
-    plt.show()
-
-plot_mi_analysis(37)
+plot_mi_analysis(0)
 
 """
             # Stats on neurons for Ablations

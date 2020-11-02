@@ -13,7 +13,7 @@ import seaborn as sns
 
 
 def connected_swarms(dir):
-    plt.figure(figsize=[5, 3])
+    plt.figure(figsize=[6, 4])
 
     # load data
     files = glob.glob(os.path.join(dir, "perf_*.npy"))
@@ -37,13 +37,14 @@ def connected_swarms(dir):
     #print(dat,'dat')
     # make DataFrame and plot
     df = pd.DataFrame(dat, columns=["id","task", "fitness"])
-    ax = sns.swarmplot(
+    ax = sns.stripplot(
         x="task",
         y="fitness",
         hue="id",
         data=df,
     )
     #ax._legend.remove()
+    ax.get_legend().remove()
     ax.set_yticks(ax.get_yticks()[::5])
 
     # plot connecting lines
@@ -54,7 +55,7 @@ def connected_swarms(dir):
     ind = 0
     for xi, xj, xk, xl, yi, yj, yk, yl in zip(x1, x2, x3, x4, y1, y2, y3, y4):
         if yi == np.max(y1):  # best of the best
-            print("Max == ", yi, yi * yj * yk * yl)
+            #print("Max == ", yi, yi * yj * yk * yl)
             plt.plot([xi, xj], [yi, yj], "black")
             plt.plot([xj, xk], [yj, yk], "black")
             plt.plot([xk, xl], [yk, yl], "black")
@@ -65,8 +66,8 @@ def connected_swarms(dir):
         ind += 1
 
     plt.tight_layout()
-    plt.savefig("figure_3_4t_comb.pdf")
+    plt.savefig("./Combined/4T_2x5/Figures/figure_3_4T_comb.pdf")
     plt.show()
 
 
-connected_swarms("./Combined/Experiments/Comb_4T_2x5_NEW/Data")
+connected_swarms("./Combined/4T_2x5/Data")

@@ -118,8 +118,8 @@ def behavior_viz(dir, run_num):
     #plt.savefig(
     #    os.path.join(dir, "figure_4_behav_{}.pdf".format(run_num))
     #)
-    plt.savefig("./Combined/Experiments/Comb_4T_2x5_NEW/Figures/figure_4_behav_3.pdf")
+    plt.savefig("./Combined/4T_2x5/Figures/figure_4_behav_5.pdf")
     plt.show()
 
 
-behavior_viz("./Combined/Experiments/Comb_4T_2x5_NEW/Data", 3)
+behavior_viz("./Combined/4T_2x5/Data", 5)
