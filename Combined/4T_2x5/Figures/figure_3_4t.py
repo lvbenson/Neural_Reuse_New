@@ -46,7 +46,7 @@ def connected_swarms(dir):
     #ax._legend.remove()
     ax.get_legend().remove()
     ax.set_yticks(ax.get_yticks()[::5])
-
+    """
     # plot connecting lines
     x1, y1 = np.array(ax.collections[0].get_offsets()).T
     x2, y2 = np.array(ax.collections[1].get_offsets()).T
@@ -64,7 +64,7 @@ def connected_swarms(dir):
             plt.plot([xj, xk], [yj, yk], "gray", alpha=0.3)
             plt.plot([xk, xl], [yk, yl], "gray", alpha=0.3)
         ind += 1
-
+    """
     plt.tight_layout()
     plt.savefig("./Combined/4T_2x5/Figures/figure_3_4T_comb.pdf")
     plt.show()
