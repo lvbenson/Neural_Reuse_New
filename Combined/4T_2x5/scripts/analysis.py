@@ -42,17 +42,17 @@ MaxFit = 0.627 #Leggedwalker
 
 # Fitness initialization ranges
 #Inverted Pendulum
-trials_theta_IP = 3
-trials_thetadot_IP = 3
+trials_theta_IP = 10
+trials_thetadot_IP = 10
 total_trials_IP = trials_theta_IP*trials_thetadot_IP
 theta_range_IP = np.linspace(-np.pi, np.pi, num=trials_theta_IP)
 thetadot_range_IP = np.linspace(-1.0,1.0, num=trials_thetadot_IP)
 
 #Cartpole
-trials_theta_CP = 3
-trials_thetadot_CP = 3
-trials_x_CP = 1
-trials_xdot_CP = 1
+trials_theta_CP = 10
+trials_thetadot_CP = 10
+trials_x_CP = 2
+trials_xdot_CP = 2
 total_trials_CP = trials_theta_CP*trials_thetadot_CP*trials_x_CP*trials_xdot_CP
 theta_range_CP = np.linspace(-0.05, 0.05, num=trials_theta_CP)
 thetadot_range_CP = np.linspace(-0.05, 0.05, num=trials_thetadot_CP)
@@ -60,15 +60,15 @@ x_range_CP = np.linspace(0.0, 0.0, num=trials_x_CP)
 xdot_range_CP = np.linspace(0.0, 0.0, num=trials_xdot_CP)
 
 #Legged walker
-trials_theta = 1
+trials_theta = 10
 theta_range_LW = np.linspace(0.0, 0.0, num=trials_theta)
-trials_omega_LW = 1
+trials_omega_LW = 10
 omega_range_LW = np.linspace(0.0, 0.0, num=trials_omega_LW)
 total_trials_LW = trials_theta * trials_omega_LW
 
 #Mountain Car
-trials_position_MC = 3 #6
-trials_velocity_MC = 3 #6
+trials_position_MC = 6 #6
+trials_velocity_MC = 6 #6
 total_trials_MC = trials_position_MC*trials_velocity_MC
 position_range_MC = np.linspace(0.1, 0.1, num=trials_position_MC)
 velocity_range_MC = np.linspace(0.01,0.01, num=trials_velocity_MC)
@@ -534,7 +534,7 @@ for i in range(start,finish):
         #print('perf:',np.prod(f)**(1/4))
         #print('evol:',bf[index][-1]**(1/4))
         #plt.scatter(np.arange(1, 11), f, c='red',s=5, alpha=0.7)
-        #plt.scatter(np.prod(f)**(1/4), bf[index][-1]**(1/4), c='blue',s=5, alpha=0.7)
+        plt.scatter(np.prod(f)**(1/4), bf[index][-1]**(1/4), c='blue',s=5, alpha=0.7)
         
         
         np.save(dir+"/perf_"+str(i)+".npy",f)
@@ -589,9 +589,10 @@ for i in range(start,finish):
     #plt.legend(bbox_to_anchor=(1.05, 1), loc='upper left')
     #plt.tight_layout()
     #plt.savefig("./Combined/Experiments/Comb_4T_2x5_NEW/Figures/figure_5_lesions.pdf")
-#plt.xlabel("performance")
-#plt.ylabel("evolved fitness")
-#plt.show()
+plt.xlabel("performance")
+plt.ylabel("evolved fitness")
+plt.savefig("./Combined/4T_2x5/Figures/performance_eval.pdf")
+plt.show()
 
 #print("Ensemble count:", count)
 #print(bf[:,-1])
