@@ -43,13 +43,15 @@ plt.show()
 
 ####Distribution plot
 
-def distributions(dir1, dir2, dir3):
+def distributions(dir1, dir2, dir3, dir4):
     files1 = glob.glob(os.path.join(dir1, "best_history*.npy"))
     print("Found {} files in {}".format(len(files1), dir1))
     files2 = glob.glob(os.path.join(dir2, "best_history*.npy"))
     print("Found {} files in {}".format(len(files2), dir2))
     files3 = glob.glob(os.path.join(dir3, "best_history*.npy"))
     print("Found {} files in {}".format(len(files3), dir3))
+    files4 = glob.glob(os.path.join(dir4, "best_history*.npy"))
+    print("Found {} files in {}".format(len(files4), dir4))
     bfs1 = np.zeros(len(files1))
     fits1_list = []
     for i, file in enumerate(files1):
@@ -71,19 +73,28 @@ def distributions(dir1, dir2, dir3):
         bf3 = bf3**(1/4)
         bfs3[i] = bf3[-1]
         fits3_list.append(bfs3[i])
-    return fits1_list,fits2_list,fits3_list
+    bfs4 = np.zeros(len(files4))
+    fits4_list = []
+    for i, file in enumerate(files4):
+        bf4 = np.load(file)
+        bf4 = bf4**(1/4)
+        bfs4[i] = bf4[-1]
+        fits4_list.append(bfs4[i])
+    return fits1_list,fits2_list,fits3_list,fits4_list
 
-exp1,exp2,exp3 = distributions("./Combined/4T_2x5/Data", "./Combined/4T_2x10/Data","./Combined/4T_2x20/Data")
+#exp1,exp2,exp3,exp4 = distributions("./Combined/4T_2x5/Data", "./Combined/4T_2x10/Data","./Combined/4T_2x20/Data","./Combined/4T_2x3/Data")
+exp1,exp2,exp3,exp4 = distributions("/Users/lvbenson/Research_Projects/Neural_Reuse_New/Combined/4T_2x5/Data","/Users/lvbenson/Research_Projects/Neural_Reuse_New/Combined/4T_2x10/Data",
+"/Users/lvbenson/Research_Projects/Neural_Reuse_New/Combined/4T_2x20/Data","/Users/lvbenson/Research_Projects/Neural_Reuse_New/Combined/4T_2x3/Data")
 
-colors = ['#E69F00', '#56B4E9','#009E73']
-names = ['2x5','2x10','2x20']
+colors = ['#E69F00', '#56B4E9','#009E73','#D55E00']
+names = ['2x5','2x10','2x20','2x3']
 
-plt.hist([exp1,exp2,exp3], bins = int(1/.1), color = colors, label=names)
+plt.hist([exp1,exp2,exp3,exp4], bins = int(1/.1), color = colors, label=names)
 
 plt.legend()
 plt.xlabel('fitness')
 plt.ylabel('# of agents')
 plt.title('Fitness distributions')
-plt.savefig("./Combined/4T_2x10/Figures/figure_2_distributions.pdf")
+#plt.savefig("./Combined/4T_2x10/Figures/figure_2_distributions.pdf")
 plt.show()
     
