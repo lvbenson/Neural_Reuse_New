@@ -17,8 +17,8 @@ reps = finish-start
 
 # ANN Params
 nI = 4
-nH1 = 5
-nH2 = 5
+nH1 = 20
+nH2 = 20
 nO = 1
 WeightRange = 15.0
 BiasRange = 15.0
@@ -42,17 +42,17 @@ MaxFit = 0.627 #Leggedwalker
 
 # Fitness initialization ranges
 #Inverted Pendulum
-trials_theta_IP = 3
-trials_thetadot_IP = 3
+trials_theta_IP = 6
+trials_thetadot_IP = 6
 total_trials_IP = trials_theta_IP*trials_thetadot_IP
 theta_range_IP = np.linspace(-np.pi, np.pi, num=trials_theta_IP)
 thetadot_range_IP = np.linspace(-1.0,1.0, num=trials_thetadot_IP)
 
 #Cartpole
-trials_theta_CP = 3
-trials_thetadot_CP = 3
-trials_x_CP = 1
-trials_xdot_CP = 1
+trials_theta_CP = 6
+trials_thetadot_CP = 6
+trials_x_CP = 2
+trials_xdot_CP = 2
 total_trials_CP = trials_theta_CP*trials_thetadot_CP*trials_x_CP*trials_xdot_CP
 theta_range_CP = np.linspace(-0.05, 0.05, num=trials_theta_CP)
 thetadot_range_CP = np.linspace(-0.05, 0.05, num=trials_thetadot_CP)
@@ -60,15 +60,15 @@ x_range_CP = np.linspace(0.0, 0.0, num=trials_x_CP)
 xdot_range_CP = np.linspace(0.0, 0.0, num=trials_xdot_CP)
 
 #Legged walker
-trials_theta = 1
+trials_theta = 3
 theta_range_LW = np.linspace(0.0, 0.0, num=trials_theta)
-trials_omega_LW = 1
+trials_omega_LW = 3
 omega_range_LW = np.linspace(0.0, 0.0, num=trials_omega_LW)
 total_trials_LW = trials_theta * trials_omega_LW
 
 #Mountain Car
-trials_position_MC = 3 #6
-trials_velocity_MC = 3 #6
+trials_position_MC = 6 #6
+trials_velocity_MC = 6 #6
 total_trials_MC = trials_position_MC*trials_velocity_MC
 position_range_MC = np.linspace(0.1, 0.1, num=trials_position_MC)
 velocity_range_MC = np.linspace(0.01,0.01, num=trials_velocity_MC)
@@ -96,7 +96,8 @@ def analysis(genotype):
             f = 0.0
             for t in time_IP:
                 #nn.step(np.concatenate((body.state(),np.zeros(4),np.zeros(3),np.zeros(2)))) #arrays for inputs for each task
-                nn.step(np.concatenate((body.state(),np.zeros(1))))
+                #nn.step(np.concatenate((body.state(),np.zeros(1))))
+                nn.step(body.state())
                 nn_state_ip[k] = nn.states()
                 k += 1
                 #f += body.step(stepsize_IP, np.array([nn.output()[0]]))
@@ -179,7 +180,8 @@ def analysis(genotype):
             fit = 0.0
             for t in time_MC:
                 #nn.step(np.concatenate((np.zeros(3),np.zeros(4),np.zeros(3),body.state())))
-                nn.step(np.concatenate((body.state(),np.zeros(2))))
+                #nn.step(np.concatenate((body.state(),np.zeros(2))))
+                nn.step(body.state())
                 nn_state_mc[k] = nn.states()
                 k += 1
                 #f,d = body.step(stepsize_MC, np.array([nn.output()[5]]))
@@ -222,7 +224,8 @@ def lesions(genotype,actvalues):
                         for t in time_IP:
                             #nn.step_lesioned(np.concatenate((body.state(),np.zeros(4),np.zeros(3),np.zeros(2))),neuron,layer,act)
                             #nn.step(np.concatenate((body.state(),np.zeros(1))))
-                            nn.step_lesioned(np.concatenate((body.state(),np.zeros(1))),neuron,layer,act)
+                            #nn.step_lesioned(np.concatenate((body.state(),np.zeros(1))),neuron,layer,act)
+                            nn.step_lesioned(body.state(),neuron,layer,act)
                             f = body.step(stepsize_IP, nn.output())
                             fit += f
                 fit = fit/(duration_IP*total_trials_IP)
@@ -322,7 +325,8 @@ def lesions(genotype,actvalues):
                         body.position = position
                         body.velocity = velocity
                         for t in time_MC:
-                            nn.step_lesioned(np.concatenate((body.state(),np.zeros(2))),neuron,layer,act)
+                            #nn.step_lesioned(np.concatenate((body.state(),np.zeros(2))),neuron,layer,act)
+                            nn.step_lesioned(body.state(),neuron,layer,act)
                             f,d = body.step(stepsize_MC, nn.output())
                             fit += f
                 fit = ((fit/duration_MC) + 1.0)/0.65
@@ -348,10 +352,10 @@ def find_all_lesions(dir,ind):
     nn = np.load("./{}/state_MC_{}.npy".format(dir,ind))
     max[3] = np.max(nn[:,nI:nI+nH1+nH2],axis=0)
 
-    steps = 10
+    steps = 20
     actvalues = np.linspace(0.0, max, num=steps)
 
-    bi = np.load("./{}/best_individualC_{}.npy".format(dir,ind))
+    bi = np.load("./{}/best_individualS2_{}.npy".format(dir,ind))
     f = np.load("./{}/perf_{}.npy".format(dir,ind))
 
     ipp,cpp,lwp,mcp = lesions(bi,actvalues)
@@ -408,8 +412,8 @@ def find_all_lesions(dir,ind):
 
 def find_all_var(dir,ind):
     nI = 4
-    nH = 10
-    v = np.zeros((4,10))
+    nH = 20
+    v = np.zeros((4,20))
     nn = np.load("./{}/state_IP_{}.npy".format(dir,ind))
     v[0] = np.var(nn[:,nI:nI+nH],axis=0)
     nn = np.load("./{}/state_CP_{}.npy".format(dir,ind))
@@ -419,8 +423,8 @@ def find_all_var(dir,ind):
     nn = np.load("./{}/state_MC_{}.npy".format(dir,ind))
     v[3] = np.var(nn[:,nI:nI+nH],axis=0)
     max = np.max(v,axis=0)
-    norm_var = np.zeros((10,4))
-    for i in range(10):
+    norm_var = np.zeros((20,4))
+    for i in range(20):
         if max[i] > 0.0:
             norm_var[i] = v.T[i]/max[i]
         else:
@@ -445,7 +449,7 @@ def calculate_mi(filename, nbins=50, nreps=4):
     dat = np.load(filename)
     #print(dat.shape)
     nI = 4
-    nH = 10
+    nH = 20
 
     # to iterate through all neurons
     neuron_inds = np.arange(nI,nI+nH)
@@ -478,14 +482,14 @@ def calculate_mi(filename, nbins=50, nreps=4):
     return mis
 
 def find_all_mis(dir,ind):
-    mi = np.zeros((4,10))
+    mi = np.zeros((4,20))
     mi[0] = calculate_mi("./{}/state_IP_{}.npy".format(dir,ind))
     mi[1] = calculate_mi("./{}/state_CP_{}.npy".format(dir,ind))
     mi[2] = calculate_mi("./{}/state_LW_{}.npy".format(dir,ind))
     mi[3] = calculate_mi("./{}/state_MC_{}.npy".format(dir,ind))
     max = np.max(mi,axis=0)
-    norm_mi = np.zeros((10,4))
-    for i in range(10):
+    norm_mi = np.zeros((20,4))
+    for i in range(20):
         if max[i] > 0.0:
             norm_mi[i] = mi.T[i]/max[i]
         else:
@@ -505,9 +509,9 @@ def find_all_mis(dir,ind):
     # plt.savefig(dir+"/NormMI_"+str(ind)+".png")
     # plt.show()
 
-gens = len(np.load(dir+"/average_historyC_0.npy"))
+gens = len(np.load(dir+"/average_historyS2_0.npy"))
 #print(gens)
-gs=len(np.load(dir+"/best_individualC_0.npy"))
+gs=len(np.load(dir+"/best_individualS2_0.npy"))
 af = np.zeros((reps,gens))
 bf = np.zeros((reps,gens))
 bi = np.zeros((reps,gs))
@@ -516,9 +520,9 @@ index = 0
 count = 0
 #plt.figure(figsize=[6, 4])
 for i in range(start,finish):
-    af[index] = np.load(dir+"/average_historyC_"+str(i)+".npy")
-    bf[index] = np.load(dir+"/best_historyC_"+str(i)+".npy")
-    bi[index] = np.load(dir+"/best_individualC_"+str(i)+".npy")
+    af[index] = np.load(dir+"/average_historyS2_"+str(i)+".npy")
+    bf[index] = np.load(dir+"/best_historyS2_"+str(i)+".npy")
+    bi[index] = np.load(dir+"/best_individualS2_"+str(i)+".npy")
     #evol_fit = bf[index][-1]**(1/4)
     if bf[index][-1]**(1/4) > 0.8:
         #plt.scatter(np.arange(1, 11), evol_fit, c='blue',s=5, alpha=0.7)
@@ -527,9 +531,9 @@ for i in range(start,finish):
         #print('perf:',np.prod(f)**(1/4))
         #print('evol:',bf[index][-1]**(1/4))
         #plt.scatter(np.arange(1, 11), f, c='red',s=5, alpha=0.7)
-        #plt.scatter(np.prod(f)**(1/4), bf[index][-1]**(1/4), c='blue',s=5, alpha=0.7)
+        plt.scatter(np.prod(f)**(1/4), bf[index][-1]**(1/4), c='blue',s=5, alpha=0.7)
         
-        
+        """
         np.save(dir+"/perf_"+str(i)+".npy",f)
         #print(f,'analysis performance')
         
@@ -571,8 +575,8 @@ for i in range(start,finish):
         
         #find_all_lesions(dir,i)
         #find_all_var(dir,i)
-        find_all_mis(dir,i)
-        
+        #find_all_mis(dir,i)
+        """
     index += 1
     #plt.xticks(np.arange(1, 11))
     #plt.xlim([0.5, 10.5])
@@ -582,9 +586,10 @@ for i in range(start,finish):
     #plt.legend(bbox_to_anchor=(1.05, 1), loc='upper left')
     #plt.tight_layout()
     #plt.savefig("./Combined/Experiments/Comb_4T_2x5_NEW/Figures/figure_5_lesions.pdf")
-#plt.xlabel("performance")
-#plt.ylabel("evolved fitness")
-#plt.show()
+plt.xlabel("performance")
+plt.ylabel("evolved fitness")
+plt.savefig("./Combined/4T_2x20/Figures/performance_eval.pdf")
+plt.show()
 
 #print("Ensemble count:", count)
 #print(bf[:,-1])
