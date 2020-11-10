@@ -526,7 +526,7 @@ for i in range(start,finish):
     bf[index] = np.load(dir+"/best_history2x3_"+str(i)+".npy")
     bi[index] = np.load(dir+"/best_individual2x3_"+str(i)+".npy")
     #evol_fit = bf[index][-1]**(1/4)
-    if bf[index][-1]**(1/4) > 0.8:
+    if bf[index][-1]**(1/4) > 0.0:
 
         #plt.scatter(np.arange(1, 11), evol_fit, c='blue',s=5, alpha=0.7)
         count += 1
@@ -534,9 +534,9 @@ for i in range(start,finish):
         #print('perf:',np.prod(f)**(1/4))
         #print('evol:',bf[index][-1]**(1/4))
         #plt.scatter(np.arange(1, 11), f, c='red',s=5, alpha=0.7)
-        #plt.scatter(np.prod(f)**(1/4), bf[index][-1]**(1/4), c='blue',s=5, alpha=0.7)
+        plt.scatter(np.prod(f)**(1/4), bf[index][-1]**(1/4), c='blue',s=5, alpha=0.7)
         
-        
+        """
         np.save(dir+"/perf_"+str(i)+".npy",f)
         #print(f,'analysis performance')
         
@@ -576,9 +576,10 @@ for i in range(start,finish):
         # plt.savefig(dir+"/perfmap_LW_"+str(i)+".png")
         # plt.show()
         
-        find_all_lesions(dir,i)
+        #find_all_lesions(dir,i)
         #find_all_var(dir,i)
         #find_all_mis(dir,i)
+        """
         
     index += 1
     #plt.xticks(np.arange(1, 11))
@@ -589,10 +590,10 @@ for i in range(start,finish):
     #plt.legend(bbox_to_anchor=(1.05, 1), loc='upper left')
     #plt.tight_layout()
     #plt.savefig("./Combined/Experiments/Comb_4T_2x5_NEW/Figures/figure_5_lesions.pdf")
-#plt.xlabel("performance")
-#plt.ylabel("evolved fitness")
-#plt.savefig("./Combined/4T_2x5/Figures/performance_eval.pdf")
-#plt.show()
+plt.xlabel("performance")
+plt.ylabel("evolved fitness")
+#plt.savefig("./Combined/4T_2x3/Figures/performance_eval.pdf")
+plt.show()
 
 #print("Ensemble count:", count)
 #print(bf[:,-1])

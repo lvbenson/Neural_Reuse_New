@@ -27,11 +27,11 @@ def connected_swarms(dir):
         fits = np.load(file)
         fits = fits**(1/4)
         # if np.prod(fits) > 0.8:
-        if np.prod(fits) >= 0.8:
+        if (np.prod(fits))**(1/4) >= 0.8:
             count += 1
-            fits = np.round(fits, decimals=4)
+            #fits = np.round(fits, decimals=4)
             all_fits.append(fits)
-            if "perf_5.npy" in file:
+            if "perf_91.npy" in file:
                 best_fits.append(["IP", fits[0], i])
                 best_fits.append(["CP", fits[1], i])
                 best_fits.append(["LW", fits[2], i])
@@ -89,8 +89,8 @@ def connected_swarms(dir):
     plt.ylim([0.85, 1.01])
     plt.yticks(np.arange(0.85, 1.01, 0.05))
     plt.tight_layout()
-    plt.savefig("./Combined/4T_2x5/Figures/figure_3_4T_new.pdf")
+    plt.savefig("./Combined/4T_2x3/Figures/figure_3_4T_new.pdf")
     plt.show()
 
 
-connected_swarms("./Combined/4T_2x5/Data")
+connected_swarms("./Combined/4T_2x3/Data")
