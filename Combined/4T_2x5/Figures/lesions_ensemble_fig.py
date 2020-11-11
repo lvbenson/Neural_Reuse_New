@@ -16,8 +16,8 @@ import matplotlib.pyplot as plt
 import pandas as pd
 import seaborn as sns
 
-dir = "../2x10"
-files = glob.glob(os.path.join(dir, "perfE_*.npy"))
+dir = "../2x5"
+files = glob.glob(os.path.join(dir, "perf_*.npy"))
 files.sort()
 
 all_categs = []
@@ -25,14 +25,14 @@ all_counts = []
 for i, file in enumerate(files):
     fits = np.load(file)
         # if np.prod(fits) > 0.8:
-    if np.min(fits) > 0.80:
+    if np.min(fits) > 0.0:
         ind = file.split("/")[-1].split(".")[-2].split("_")[-1]
-        ipp = np.load("../2x10/lesions_IP_" + str(ind) + ".npy")
-        cpp = np.load("../2x10/lesions_CP_" + str(ind) + ".npy")
-        lwp = np.load("../2x10/lesions_LW_" + str(ind) + ".npy")
+        ipp = np.load("../2x5/lesions_IP_" + str(ind) + ".npy")
+        cpp = np.load("../2x5/lesions_CP_" + str(ind) + ".npy")
+        lwp = np.load("../2x5/lesions_LW_" + str(ind) + ".npy")
 
             # Stats on neurons for Ablations
-        Threshold = 0.80
+        Threshold = 0.85
         count = np.zeros(8)
         for (ip_neuron, cp_neuron, lw_neuron) in zip(ipp, cpp, lwp):
             if (

@@ -11,12 +11,12 @@ import matplotlib.pyplot as plt
 import pandas as pd
 import seaborn as sns
 
-
+"""
 def all_lesion_data():
     plt.figure(figsize=[6, 4])
     # load data
     #dir = "../New"
-    dir = "./Combined/4T_2x5/Data"
+    dir = "./Combined/4T_2x10/Data"
     files = glob.glob(os.path.join(dir, "perf_*.npy"))
     files.sort()
     print("Found {} files in {}".format(len(files), dir))
@@ -31,32 +31,33 @@ def all_lesion_data():
         if np.min(fits) > 0.8:
             run_num = file.split("/")[-1].split(".")[-2].split("_")[-1]
             #lesion_data = np.load("../New/lesions_IP_{}.npy".format(run_num))
-            lesion_data = np.load("./Combined/4T_2x5/Data/lesions_IP_{}.npy".format(run_num))
+            lesion_data = np.load("./Combined/4T_2x10/Data/lesions_IP_{}.npy".format(run_num))
             #print(lesion_data.shape)
-            plt.scatter(np.arange(1, 11), lesion_data, c='blue', s=5, alpha=0.7, label = 'IP' )
-            lesion_data = np.load("./Combined/4T_2x5/Data/lesions_CP_{}.npy".format(run_num))
-            plt.scatter(np.arange(1, 11), lesion_data, c='green',s=5, alpha=0.7, label='CP')
-            lesion_data = np.load("./Combined/4T_2x5/Data/lesions_LW_{}.npy".format(run_num))
-            plt.scatter(np.arange(1, 11), lesion_data, c='red',s=5, alpha=0.7,label='LW')
-            lesion_data = np.load("./Combined/4T_2x5/Data/lesions_MC_{}.npy".format(run_num))
-            plt.scatter(np.arange(1, 11), lesion_data, c='yellow',s=5, alpha=0.7,label='MC')
+            plt.scatter(np.arange(1, 21), lesion_data, c='blue', s=5, alpha=0.7, label = 'IP' )
+            lesion_data = np.load("./Combined/4T_2x10/Data/lesions_CP_{}.npy".format(run_num))
+            plt.scatter(np.arange(1, 21), lesion_data, c='green',s=5, alpha=0.7, label='CP')
+            lesion_data = np.load("./Combined/4T_2x10/Data/lesions_LW_{}.npy".format(run_num))
+            plt.scatter(np.arange(1, 21), lesion_data, c='red',s=5, alpha=0.7,label='LW')
+            lesion_data = np.load("./Combined/4T_2x10/Data/lesions_MC_{}.npy".format(run_num))
+            plt.scatter(np.arange(1, 21), lesion_data, c='yellow',s=5, alpha=0.7,label='MC')
 
     # plt.plot([0.5,10.5],[0.8,0.8], "k--", alpha=0.7)
     plt.xticks(np.arange(1, 11))
 
-    plt.xlim([0.5, 10.5])
+    plt.xlim([0.5, 20.5])
     plt.ylim([-0.03,1.1])
     plt.xlabel("Neuron #")
     plt.ylabel("Fitness after lesion")
     #plt.legend(bbox_to_anchor=(1.05, 1), loc='upper left')
     plt.tight_layout()
-    plt.savefig("./Combined/4T_2x5/Figures/figure_5_lesions.pdf")
+    plt.savefig("./Combined/4T_2x10/Figures/figure_5_lesions.pdf")
     plt.show()
 
 all_lesion_data()
-
+"""
 
 def plot_lesion_analysis(run_num):
+    """
     plt.figure(figsize=[8, 2.5])
 
     plt.subplot2grid([1, 3], [0, 0])
@@ -64,31 +65,31 @@ def plot_lesion_analysis(run_num):
     for i in np.arange(1, 10):
         plt.plot([i + 0.5, i + 0.5], [-0.05, 1.1], "gray", alpha=0.5)
 
-    lesion_data = np.load("./Combined/4T_2x5/Data/lesions_IP_{}.npy".format(run_num))
+    lesion_data = np.load("./Combined/4T_2x10/Data/lesions_IP_{}.npy".format(run_num))
     plt.scatter(
-        np.arange(1, 11) - 0.1,
+        np.arange(1, 21) - 0.1,
         lesion_data,
         s=50,
         alpha=0.7,
         c="xkcd:azure",
         label="IP",
     )
-    lesion_data = np.load("./Combined/4T_2x5/Data/lesions_CP_{}.npy".format(run_num))
+    lesion_data = np.load("./Combined/4T_2x10/Data/lesions_CP_{}.npy".format(run_num))
     plt.scatter(
-        np.arange(1, 11)-0.05, lesion_data, s=50, alpha=0.7, c="xkcd:teal green", label="CP"
+        np.arange(1, 21)-0.05, lesion_data, s=50, alpha=0.7, c="xkcd:teal green", label="CP"
     )
-    lesion_data = np.load("./Combined/4T_2x5/Data/lesions_LW_{}.npy".format(run_num))
+    lesion_data = np.load("./Combined/4T_2x10/Data/lesions_LW_{}.npy".format(run_num))
     plt.scatter(
-        np.arange(1, 11),
+        np.arange(1, 21),
         lesion_data,
         s=50,
         alpha=0.7,
         c="xkcd:tomato",
         label="LW",
     )
-    lesion_data = np.load("./Combined/4T_2x5/Data/lesions_MC_{}.npy".format(run_num))
+    lesion_data = np.load("./Combined/4T_2x10/Data/lesions_MC_{}.npy".format(run_num))
     plt.scatter(
-        np.arange(1, 11) + 0.05,
+        np.arange(1, 21) + 0.05,
         lesion_data,
         s=50,
         alpha=0.7,
@@ -97,29 +98,29 @@ def plot_lesion_analysis(run_num):
     )
 
     plt.legend()
-    plt.xticks(np.arange(1, 11))
-    plt.xlim([0.5, 10.5])
+    plt.xticks(np.arange(1, 21))
+    plt.xlim([0.5, 20.5])
     plt.ylim([-0.1, 1.05])
     plt.xlabel("Neuron #")
     plt.ylabel("Fitness after lesion")
-
-    dir = "./Combined/4T_2x5/Data/"
+    """
+    dir = "./Combined/4T_2x3/Data/"
     files = glob.glob(os.path.join(dir, "perf_*.npy"))
     files.sort()
 
     all_categs = []
     all_counts = []
-
+    
     for i, file in enumerate(files):
         fits = np.load(file)
         # if np.prod(fits) > 0.8:
         fits = fits**(1/4)
         if np.min(fits) > 0.8:
             ind = file.split("/")[-1].split(".")[-2].split("_")[-1]
-            ipp = np.load("./Combined/4T_2x5/Data/lesions_IP_" + str(ind) + ".npy")
-            cpp = np.load("./Combined/4T_2x5/Data/lesions_CP_" + str(ind) + ".npy")
-            lwp = np.load("./Combined/4T_2x5/Data/lesions_LW_" + str(ind) + ".npy")
-            mcp = np.load("./Combined/4T_2x5/Data/lesions_LW_" + str(ind) + ".npy")
+            ipp = np.load("./Combined/4T_2x3/Data/lesions_IP_" + str(ind) + ".npy")
+            cpp = np.load("./Combined/4T_2x3/Data/lesions_CP_" + str(ind) + ".npy")
+            lwp = np.load("./Combined/4T_2x3/Data/lesions_LW_" + str(ind) + ".npy")
+            mcp = np.load("./Combined/4T_2x3/Data/lesions_LW_" + str(ind) + ".npy")
 
             # Stats on neurons for Ablations
             Threshold = 0.85
@@ -177,47 +178,95 @@ def plot_lesion_analysis(run_num):
             # making it dataframe ready
             all_counts.append(count)
             categs = ["None","IP","CP","LW","MC","IP+CP","IP+LW","IP+MC","CP+LW","CP+MC","LW+MC","All"]
-            categs = ["None", "IP", "CP", "LW", "IP+CP", "IP+LW", "CP+LW", "All"]
+            #categs = ["None", "IP", "CP", "LW", "IP+CP", "IP+LW", "CP+LW", "All"]
             for cg, ct in zip(categs, count):
                 all_categs.append([cg, ct, i])
 
     # plot specialization and reuse
-    plt.figure(figsize=[8, 8])
-    ax2 = plt.subplot2grid([1, 3], [0, 2], adjustable="box", aspect=1)
-    ax2.plot([-0.5, 11.5], [11.5, -0.5], "k", linewidth=0.7)
-    count_data = []
+    plt.figure(figsize=[4, 4])
+    #ax2 = plt.subplot2grid([1, 3], [0, 2], adjustable="box", aspect=1)
+    #ax2.plot([-0.5, 21.5], [21.5, -0.5], "k", linewidth=0.7)
+    #ax2 = plt.subplot2grid([1, 4], [0, 4], adjustable="box", aspect=1)
+    plt.plot([0.0, 1.0], [0.0, 1.0], "k", linewidth=0.7)
+    #count_data = []
+    reused_count = []
+    special_count = []
+    #count_data_prop = []
     for count in all_counts:
         # plt.scatter(count[1]+count[2]+count[3], np.sum(count[4:]), c="C0")
-        count_data.append([count[1] + count[2] + count[3] + count[4], np.sum(count[5:])])
+        #count_data.append([count[1] + count[2] + count[3] + count[4], np.sum(count[5:])])
+        #count_data_prop.append([((count[1] + count[2] + count[3] + count[4])/20), ((np.sum(count[5:]))/20)])
+        #count_data_prop.append([((np.sum(count[:4]))/20), ((np.sum(count[5:]))/20)])
+        reused_count.append((np.sum(count[5:]))/6)
+        #special_count.append((np.sum(count[1:5]))/20)
+        special_count.append((count[1]+count[2]+count[3]+count[4])/6)
+        #print(len(count_data_prop))
+    
+    print(len(reused_count))
+    #print(special_count)
+
+    np.save("./Combined/4T_2x3/Data"+"/reused_prop"+".npy",reused_count)
+    np.save("./Combined/4T_2x3/Data"+"/special_prop"+".npy",special_count)
+
+
+
+#NEW REUSE PLOT: PROPORTION OF REUSED NEURONS
+
+    plt.scatter(reused_count,special_count)
+    plt.title("Proportion of Neural Reuse, 2x3")
+    plt.ylabel("Prop. of specialized neurons")
+    plt.xlabel("prop of reused neurons")
+    plt.savefig("./Combined/4T_2x3/Figures"+"/reuse_proportions.png")
+    plt.show()
+
+
+
+    
+
+
+
+    """
     df = pd.DataFrame(
         count_data, columns=["No. of specialized neurons", "No. of reused neurons"]
     )
+    
+    df = pd.DataFrame(
+        count_data_prop, columns=["prop. of specialized neurons", "prop. of reused neurons"]
+    )
+    
     ax = sns.stripplot(
-        x="No. of specialized neurons",
-        y="No. of reused neurons",
+        x="prop. of specialized neurons",
+        y="prop. of reused neurons",
         data=df,
-        palette=dict([(i, "xkcd:velvet") for i in range(12)]),
+        #palette=
+        #palette=dict([(i, "xkcd:velvet") for i in range(10)]),
         alpha=0.8,
         s=7,
     )
-    plt.xticks(np.arange(12), np.arange(12))
-    plt.yticks(np.arange(12), np.arange(12))
-    plt.xlim([-0.5, 11.5])
-    plt.ylim([-0.5, 11.5])
-    #plt.xlabel("Number of Specialized Neurons")
-    # plt.ylabel("Number of Reused Neurons")
+    
+    #plt.xticks(np.arange(22), np.arange(22))
+    plt.xticks(np.arange(10), np.arange(10))
+    plt.yticks(np.arange(10), np.arange(10))
+    #plt.yticks(np.arange(22), np.arange(22))
+    #plt.xticks(0.0,1.0)
+    #plt.xlim([-0.5, 21.5])
+    plt.xlim([0, 10])
+    plt.ylim([0, 1])
+    plt.xlabel("prop of Specialized Neurons")
+    plt.ylabel("prop of Reused Neurons")
 
     # make df and plot
-    """plt.subplot2grid([1, 3], [1, 0], colspan=3)
+   plt.subplot2grid([1, 3], [1, 0], colspan=3)
     df = pd.DataFrame(
         all_categs, columns=["Category", "No. of Neurons", "network_id"]
     )
     ax = sns.swarmplot(x="Category", y="No. of Neurons", hue="network_id", data=df)
-    ax.legend_.remove()"""
+    ax.legend_.remove()
 
     plt.tight_layout()
-    plt.savefig("./Combined/4T_2x5/Figures/figure_5_reuse.pdf")
+    plt.savefig("./Combined/4T_2x10/Figures/figure_5_reuse_prop.pdf")
     plt.show()
+    """
 
 
-plot_lesion_analysis(0)
+plot_lesion_analysis(11)

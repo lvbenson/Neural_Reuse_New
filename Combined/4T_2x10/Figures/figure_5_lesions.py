@@ -11,7 +11,7 @@ import matplotlib.pyplot as plt
 import pandas as pd
 import seaborn as sns
 
-
+"""
 def all_lesion_data():
     plt.figure(figsize=[6, 4])
     # load data
@@ -54,9 +54,10 @@ def all_lesion_data():
     plt.show()
 
 all_lesion_data()
-
+"""
 
 def plot_lesion_analysis(run_num):
+    """
     plt.figure(figsize=[8, 2.5])
 
     plt.subplot2grid([1, 3], [0, 0])
@@ -102,14 +103,14 @@ def plot_lesion_analysis(run_num):
     plt.ylim([-0.1, 1.05])
     plt.xlabel("Neuron #")
     plt.ylabel("Fitness after lesion")
-
+    """
     dir = "./Combined/4T_2x10/Data/"
     files = glob.glob(os.path.join(dir, "perf_*.npy"))
     files.sort()
 
     all_categs = []
     all_counts = []
-
+    
     for i, file in enumerate(files):
         fits = np.load(file)
         # if np.prod(fits) > 0.8:
@@ -177,47 +178,92 @@ def plot_lesion_analysis(run_num):
             # making it dataframe ready
             all_counts.append(count)
             categs = ["None","IP","CP","LW","MC","IP+CP","IP+LW","IP+MC","CP+LW","CP+MC","LW+MC","All"]
-            categs = ["None", "IP", "CP", "LW", "IP+CP", "IP+LW", "CP+LW", "All"]
+            #categs = ["None", "IP", "CP", "LW", "IP+CP", "IP+LW", "CP+LW", "All"]
             for cg, ct in zip(categs, count):
                 all_categs.append([cg, ct, i])
 
     # plot specialization and reuse
-    plt.figure(figsize=[8, 8])
-    ax2 = plt.subplot2grid([1, 3], [0, 2], adjustable="box", aspect=1)
-    ax2.plot([-0.5, 21.5], [21.5, -0.5], "k", linewidth=0.7)
-    count_data = []
+    plt.figure(figsize=[4, 4])
+    #ax2 = plt.subplot2grid([1, 3], [0, 2], adjustable="box", aspect=1)
+    #ax2.plot([-0.5, 21.5], [21.5, -0.5], "k", linewidth=0.7)
+    #ax2 = plt.subplot2grid([1, 4], [0, 4], adjustable="box", aspect=1)
+    plt.plot([0.0, 1.0], [0.0, 1.0], "k", linewidth=0.7)
+    #count_data = []
+    reused_count = []
+    special_count = []
+    #count_data_prop = []
     for count in all_counts:
         # plt.scatter(count[1]+count[2]+count[3], np.sum(count[4:]), c="C0")
-        count_data.append([count[1] + count[2] + count[3] + count[4], np.sum(count[5:])])
+        #count_data.append([count[1] + count[2] + count[3] + count[4], np.sum(count[5:])])
+        #count_data_prop.append([((count[1] + count[2] + count[3] + count[4])/20), ((np.sum(count[5:]))/20)])
+        #count_data_prop.append([((np.sum(count[:4]))/20), ((np.sum(count[5:]))/20)])
+        reused_count.append((np.sum(count[5:]))/20)
+        special_count.append((count[1]+count[2]+count[3]+count[4])/20)
+        #special_count.append((np.sum(count[1:5]))/20)
+        #print(len(count_data_prop))
+
+    np.save("./Combined/4T_2x10/Data"+"/reused_prop"+".npy",reused_count)
+    np.save("./Combined/4T_2x10/Data"+"/special_prop"+".npy",special_count)
+
+
+
+#NEW REUSE PLOT: PROPORTION OF REUSED NEURONS
+
+    plt.scatter(reused_count,special_count)
+    plt.title("Proportion of Neural Reuse, 2x10")
+    plt.ylabel("Prop. of specialized neurons")
+    plt.xlabel("prop of reused neurons")
+    plt.savefig("./Combined/4T_2x10/Figures"+"/reuse_proportions.png")
+    plt.show()
+
+
+
+    
+
+
+
+    """
     df = pd.DataFrame(
         count_data, columns=["No. of specialized neurons", "No. of reused neurons"]
     )
+    
+    df = pd.DataFrame(
+        count_data_prop, columns=["prop. of specialized neurons", "prop. of reused neurons"]
+    )
+    
     ax = sns.stripplot(
-        x="No. of specialized neurons",
-        y="No. of reused neurons",
+        x="prop. of specialized neurons",
+        y="prop. of reused neurons",
         data=df,
-        palette=dict([(i, "xkcd:velvet") for i in range(22)]),
+        #palette=
+        #palette=dict([(i, "xkcd:velvet") for i in range(10)]),
         alpha=0.8,
         s=7,
     )
-    plt.xticks(np.arange(22), np.arange(22))
-    plt.yticks(np.arange(22), np.arange(22))
-    plt.xlim([-0.5, 21.5])
-    plt.ylim([-0.5, 21.5])
-    #plt.xlabel("Number of Specialized Neurons")
-    # plt.ylabel("Number of Reused Neurons")
+    
+    #plt.xticks(np.arange(22), np.arange(22))
+    plt.xticks(np.arange(10), np.arange(10))
+    plt.yticks(np.arange(10), np.arange(10))
+    #plt.yticks(np.arange(22), np.arange(22))
+    #plt.xticks(0.0,1.0)
+    #plt.xlim([-0.5, 21.5])
+    plt.xlim([0, 10])
+    plt.ylim([0, 1])
+    plt.xlabel("prop of Specialized Neurons")
+    plt.ylabel("prop of Reused Neurons")
 
     # make df and plot
-    """plt.subplot2grid([1, 3], [1, 0], colspan=3)
+   plt.subplot2grid([1, 3], [1, 0], colspan=3)
     df = pd.DataFrame(
         all_categs, columns=["Category", "No. of Neurons", "network_id"]
     )
     ax = sns.swarmplot(x="Category", y="No. of Neurons", hue="network_id", data=df)
-    ax.legend_.remove()"""
+    ax.legend_.remove()
 
     plt.tight_layout()
-    plt.savefig("./Combined/4T_2x10/Figures/figure_5_reuse.pdf")
+    plt.savefig("./Combined/4T_2x10/Figures/figure_5_reuse_prop.pdf")
     plt.show()
+    """
 
 
 plot_lesion_analysis(1)

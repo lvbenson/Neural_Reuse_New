@@ -18,13 +18,13 @@ WeightRange = 15.0
 BiasRange = 15.0
 
 # Task Params
-duration_IP = 15.0
+duration_IP = 10.0
 stepsize_IP = 0.05
-duration_CP = 15.0  # 50
+duration_CP = 10.0  # 50
 stepsize_CP = 0.05
 duration_LW = 220  # 220.0
-stepsize_LW = 0.1
-duration_MC = 15.0 #220.0
+stepsize_LW = 0.05
+duration_MC = 10.0 #220.0
 stepsize_MC = 0.05
 time_IP = np.arange(0.0, duration_IP, stepsize_IP)
 time_CP = np.arange(0.0, duration_CP, stepsize_CP)
@@ -36,45 +36,45 @@ MaxFit = 0.627  # Leggedwalker
 
 # Fitness initialization ranges
 # Inverted Pendulum
-trials_theta_IP = 3
-trials_thetadot_IP = 3
+trials_theta_IP = 10
+trials_thetadot_IP = 10
 total_trials_IP = trials_theta_IP * trials_thetadot_IP
 theta_range_IP = np.linspace(-np.pi, np.pi, num=trials_theta_IP)
 thetadot_range_IP = np.linspace(-1.0, 1.0, num=trials_thetadot_IP)
 
 # Cartpole
-trials_theta_CP = 3
-trials_thetadot_CP = 3
-trials_x_CP = 1
-trials_xdot_CP = 1
+trials_theta_CP = 10
+trials_thetadot_CP = 10
+trials_x_CP = 2
+trials_xdot_CP = 2
 total_trials_CP = trials_theta_CP * trials_thetadot_CP * trials_x_CP * trials_xdot_CP
 theta_range_CP = np.linspace(-0.05, 0.05, num=trials_theta_CP)
 #theta_range_CP = np.linspace(-np.deg2rad(6), np.deg2rad(6), num=trials_theta_CP)
 thetadot_range_CP = np.linspace(-0.05, 0.05, num=trials_thetadot_CP)
-x_range_CP = np.linspace(-0.05, 0.05, num=trials_x_CP)
-xdot_range_CP = np.linspace(-0.05, 0.05, num=trials_xdot_CP)
+x_range_CP = np.linspace(0.0, 0.0, num=trials_x_CP)
+xdot_range_CP = np.linspace(0.0, 0.0, num=trials_xdot_CP)
 
 # Legged walker
-trials_theta_LW = 1
-theta_range_LW = np.linspace(-np.pi / 6, np.pi / 6, num=trials_theta_LW)
-trials_omega_LW = 1
-omega_range_LW = np.linspace(-1.0, 1.0, num=trials_omega_LW)
+trials_theta_LW = 10
+theta_range_LW = np.linspace(0.0, 0.0, num=trials_theta_LW)
+trials_omega_LW = 10
+omega_range_LW = np.linspace(0.0, 0.0, num=trials_omega_LW)
 total_trials_LW = trials_theta_LW * trials_omega_LW
 
 
 #Mountain Car
-trials_position_MC = 3
-trials_velocity_MC = 3
+trials_position_MC = 6
+trials_velocity_MC = 6
 total_trials_MC = trials_position_MC * trials_velocity_MC
-position_range_MC = np.linspace(-0.1, 0.1, num=trials_position_MC)
-velocity_range_MC = np.linspace(-0.01,0.01, num=trials_velocity_MC)
+position_range_MC = np.linspace(0.1, 0.1, num=trials_position_MC)
+velocity_range_MC = np.linspace(0.01,0.01, num=trials_velocity_MC)
 
 
 
 # Fitness function
 def simulate_individual(save_dir, run_num):
     # Common setup
-    genotype = np.load("./Combined/4T_2x5/Data/best_individualC_" + "5" + ".npy")
+    genotype = np.load("./Combined/4T_2x5/Data/best_individualC_" + "78" + ".npy")
     nn = ffann.ANN(nI, nH1, nH2, nO)
     nn.setParameters(genotype, WeightRange, BiasRange)
     fitness = np.zeros(4)
@@ -222,5 +222,5 @@ def simulate_individual(save_dir, run_num):
     
 
 
-individual_id = 5
+individual_id = 78
 simulate_individual("./Combined/4T_2x5/Data", individual_id)

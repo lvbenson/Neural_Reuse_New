@@ -44,10 +44,13 @@ plt.show()
 ####Distribution plot
 
 def distributions(dir1, dir2, dir3, dir4):
+    #files1 = glob.glob(os.path.join(dir1, "perf_*.npy"))
     files1 = glob.glob(os.path.join(dir1, "best_history*.npy"))
     print("Found {} files in {}".format(len(files1), dir1))
+    #files2 = glob.glob(os.path.join(dir1, "perf_*.npy"))
     files2 = glob.glob(os.path.join(dir2, "best_history*.npy"))
     print("Found {} files in {}".format(len(files2), dir2))
+    #files3 = glob.glob(os.path.join(dir3, "perf_*.npy"))
     files3 = glob.glob(os.path.join(dir3, "best_history*.npy"))
     print("Found {} files in {}".format(len(files3), dir3))
     files4 = glob.glob(os.path.join(dir4, "best_history*.npy"))
@@ -89,12 +92,13 @@ exp1,exp2,exp3,exp4 = distributions("/Users/lvbenson/Research_Projects/Neural_Re
 colors = ['#E69F00', '#56B4E9','#009E73','#D55E00']
 names = ['2x5','2x10','2x20','2x3']
 
+plt.figure(figsize=(6,4))
 plt.hist([exp1,exp2,exp3,exp4], bins = int(1/.1), color = colors, label=names)
 
 plt.legend()
 plt.xlabel('fitness')
 plt.ylabel('# of agents')
 plt.title('Fitness distributions')
-#plt.savefig("./Combined/4T_2x10/Figures/figure_2_distributions.pdf")
+plt.savefig("./Combined/4T_2x10/Figures/figure_2_distributions.pdf")
 plt.show()
     

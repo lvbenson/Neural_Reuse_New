@@ -104,7 +104,7 @@ def plot_lesion_analysis(run_num):
     plt.xlabel("Neuron #")
     plt.ylabel("Fitness after lesion")
     """
-    dir = "./Combined/4T_2x5/Data/"
+    dir = "./Combined/4T_2x20/Data/"
     files = glob.glob(os.path.join(dir, "perf_*.npy"))
     files.sort()
 
@@ -117,10 +117,10 @@ def plot_lesion_analysis(run_num):
         fits = fits**(1/4)
         if np.min(fits) > 0.8:
             ind = file.split("/")[-1].split(".")[-2].split("_")[-1]
-            ipp = np.load("./Combined/4T_2x5/Data/lesions_IP_" + str(ind) + ".npy")
-            cpp = np.load("./Combined/4T_2x5/Data/lesions_CP_" + str(ind) + ".npy")
-            lwp = np.load("./Combined/4T_2x5/Data/lesions_LW_" + str(ind) + ".npy")
-            mcp = np.load("./Combined/4T_2x5/Data/lesions_LW_" + str(ind) + ".npy")
+            ipp = np.load("./Combined/4T_2x20/Data/lesions_IP_" + str(ind) + ".npy")
+            cpp = np.load("./Combined/4T_2x20/Data/lesions_CP_" + str(ind) + ".npy")
+            lwp = np.load("./Combined/4T_2x20/Data/lesions_LW_" + str(ind) + ".npy")
+            mcp = np.load("./Combined/4T_2x20/Data/lesions_LW_" + str(ind) + ".npy")
 
             # Stats on neurons for Ablations
             Threshold = 0.85
@@ -197,26 +197,26 @@ def plot_lesion_analysis(run_num):
         #count_data.append([count[1] + count[2] + count[3] + count[4], np.sum(count[5:])])
         #count_data_prop.append([((count[1] + count[2] + count[3] + count[4])/20), ((np.sum(count[5:]))/20)])
         #count_data_prop.append([((np.sum(count[:4]))/20), ((np.sum(count[5:]))/20)])
-        reused_count.append((np.sum(count[5:]))/10)
+        reused_count.append((np.sum(count[5:]))/40)
         #special_count.append((np.sum(count[1:5]))/20)
-        special_count.append((count[1]+count[2]+count[3]+count[4])/10)
+        special_count.append((count[1]+count[2]+count[3]+count[4])/40)
         #print(len(count_data_prop))
     
     print(reused_count)
     print(special_count)
 
-    np.save("./Combined/4T_2x5/Data"+"/reused_prop"+".npy",reused_count)
-    np.save("./Combined/4T_2x5/Data"+"/special_prop"+".npy",special_count)
+    np.save("./Combined/4T_2x20/Data"+"/reused_prop"+".npy",reused_count)
+    np.save("./Combined/4T_2x20/Data"+"/special_prop"+".npy",special_count)
 
 
 
 #NEW REUSE PLOT: PROPORTION OF REUSED NEURONS
 
     plt.scatter(reused_count,special_count)
-    plt.title("Proportion of Neural Reuse, 2x5")
+    plt.title("Proportion of Neural Reuse, 2x20")
     plt.ylabel("Prop. of specialized neurons")
     plt.xlabel("prop of reused neurons")
-    plt.savefig("./Combined/4T_2x5/Figures"+"/reuse_proportions.png")
+    plt.savefig("./Combined/4T_2x20/Figures"+"/reuse_proportions.png")
     plt.show()
 
 

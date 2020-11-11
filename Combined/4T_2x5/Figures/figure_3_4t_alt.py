@@ -13,7 +13,7 @@ import seaborn as sns
 
 
 def connected_swarms(dir):
-    plt.figure(figsize=[4, 2])
+    plt.figure(figsize=[4.5, 3])
 
     # load data
     files = glob.glob(os.path.join(dir, "perf_*.npy"))
@@ -27,11 +27,14 @@ def connected_swarms(dir):
         fits = np.load(file)
         fits = fits**(1/4)
         # if np.prod(fits) > 0.8:
+        #prod_list = []
         if np.prod(fits) >= 0.8:
             count += 1
             fits = np.round(fits, decimals=4)
             all_fits.append(fits)
-            if "perf_5.npy" in file:
+            #prod_list.append(np.prod(fits))
+            
+            if "perf_11.npy" in file:
                 best_fits.append(["IP", fits[0], i])
                 best_fits.append(["CP", fits[1], i])
                 best_fits.append(["LW", fits[2], i])
@@ -43,7 +46,7 @@ def connected_swarms(dir):
             dat.append(["MC", fits[3], i])
     print("Number of networks under considertaion ", count)
     all_fits = np.array(all_fits)
-    # print(np.shape(all_fits), np.min(all_fits,0), np.argmin(all_fits, 0), np.max(all_fits, 0), np.max(np.prod(all_fits,1)))
+    print(np.shape(all_fits), np.min(all_fits,0), np.argmin(all_fits, 0), np.max(all_fits, 0), np.max(np.prod(all_fits,1)))
     #print(best_fits)
 
     # make DataFrame and plot
@@ -88,6 +91,7 @@ def connected_swarms(dir):
 
     plt.ylim([0.85, 1.01])
     plt.yticks(np.arange(0.85, 1.01, 0.05))
+    plt.title('Best Performance on Ind Tasks: Agent 11')
     plt.tight_layout()
     plt.savefig("./Combined/4T_2x5/Figures/figure_3_4T_new.pdf")
     plt.show()
