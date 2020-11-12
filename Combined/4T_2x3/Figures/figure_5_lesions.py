@@ -182,6 +182,53 @@ def plot_lesion_analysis(run_num):
             for cg, ct in zip(categs, count):
                 all_categs.append([cg, ct, i])
 
+
+    ip_mc = []
+    #ip_mc_lab = []
+    #cp_lw = []
+    cp_mc = []
+    #cp_mc_lab = []
+    lw_mc = []
+    all_tasks = []
+    no_tasks = []
+    #lw_mc_lab = []
+    task_labels = []
+    
+
+
+    for count in all_counts:
+        #ip_cp.append(count[5])
+        #ip_lw.append(count[6])
+        ip_mc.append(count[7])
+        #cp_lw.append(count[8])
+        cp_mc.append(count[9])
+        lw_mc.append(count[10])
+        all_tasks.append(count[11])
+        no_tasks.append(count[0])
+        if count[7] > 0:
+            task_labels.append('IPMC')
+        elif count[9] > 0:
+            task_labels.append('CPMC')
+        elif count[10] > 0:
+            task_labels.append('LWMC')
+        elif count[11] > 0:
+            task_labels.append('All')
+        elif count[0] > 0:
+            task_labels.append('None')
+        else:
+            pass
+    
+    print(len(task_labels))
+    np.save("./Combined/4T_2x3/Data"+"/ip_mc"+".npy",ip_mc)
+    np.save("./Combined/4T_2x3/Data"+"/cp_mc"+".npy",cp_mc)
+    np.save("./Combined/4T_2x3/Data"+"/lw_mc"+".npy",lw_mc)
+    np.save("./Combined/4T_2x3/Data"+"/all"+".npy",all_tasks)
+    np.save("./Combined/4T_2x3/Data"+"/none"+".npy",no_tasks)
+
+
+    np.save("./Combined/4T_2x3/Data"+"/task_labels"+".npy",task_labels)
+    print(task_labels)
+    """
     # plot specialization and reuse
     plt.figure(figsize=[4, 4])
     #ax2 = plt.subplot2grid([1, 3], [0, 2], adjustable="box", aspect=1)
@@ -225,7 +272,7 @@ def plot_lesion_analysis(run_num):
 
 
 
-    """
+    
     df = pd.DataFrame(
         count_data, columns=["No. of specialized neurons", "No. of reused neurons"]
     )

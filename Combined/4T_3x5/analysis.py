@@ -377,29 +377,29 @@ def find_all_lesions(dir,ind):
     count = np.zeros(12)
     for (ip_neuron, cp_neuron, lw_neuron, mc_neuron) in zip(ipp,cpp,lwp,mcp):
         if ip_neuron > Threshold and cp_neuron > Threshold and lw_neuron > Threshold and mc_neuron > Threshold: # no task neurons
-            count[0] += 1 #no tasks
+            count[0] += 1
         if ip_neuron <= Threshold and cp_neuron > Threshold and lw_neuron > Threshold and mc_neuron > Threshold: # ip task neurons
-            count[1] += 1 #IP task
+            count[1] += 1
         if ip_neuron > Threshold and cp_neuron <= Threshold and lw_neuron > Threshold and mc_neuron > Threshold: # cp task neurons
-            count[2] += 1 #CP Task
+            count[2] += 1
         if ip_neuron > Threshold and cp_neuron > Threshold and lw_neuron <= Threshold and mc_neuron > Threshold: #lw task neurons
-            count[3] += 1 #LW Task
+            count[3] += 1
         if ip_neuron > Threshold and cp_neuron > Threshold and lw_neuron > Threshold and mc_neuron <= Threshold: #mc task neurons
-            count[4] += 1 #MC Task
+            count[4] += 1
         if ip_neuron <= Threshold and cp_neuron <= Threshold and lw_neuron > Threshold and mc_neuron > Threshold: # ip + cp task neurons
-            count[5] += 1 #IP and CP
+            count[5] += 1
         if ip_neuron <= Threshold and cp_neuron > Threshold and lw_neuron <= Threshold and mc_neuron > Threshold: # ip + lw task neurons
-            count[6] += 1 #IP and LW
+            count[6] += 1
         if ip_neuron <= Threshold and cp_neuron > Threshold and lw_neuron > Threshold and mc_neuron <= Threshold: #ip + mc task neurons
-            count[7] += 1 #IP and MC
+            count[7] += 1
         if ip_neuron > Threshold and cp_neuron <= Threshold and lw_neuron <= Threshold and mc_neuron > Threshold: # cp + lw task neurons
-            count[8] += 1 #CP and LW
+            count[8] += 1
         if ip_neuron > Threshold and cp_neuron <= Threshold and lw_neuron > Threshold and mc_neuron <= Threshold: # cp + mc task neurons
-            count[9] += 1 #CP and MC
+            count[9] += 1
         if ip_neuron > Threshold and cp_neuron > Threshold and lw_neuron <= Threshold and mc_neuron <= Threshold: #lw + mc task neurons 
-            count[10] += 1 #LW and MC
+            count[10] += 1
         if ip_neuron <=  Threshold and cp_neuron <= Threshold and lw_neuron <= Threshold and mc_neuron <= Threshold: # all  task neurons
-            count[11] += 1 #All
+            count[11] += 1
 
     np.save(dir+"/stats_"+str(ind)+".npy",count)
 
