@@ -124,10 +124,10 @@ def plot_lesion_analysis(run_num):
 
             # Stats on neurons for Ablations
             Threshold = 0.85
-            count = np.zeros(12)
+            count = np.zeros(16)
             for (ip_neuron, cp_neuron, lw_neuron, mc_neuron) in zip(ipp, cpp, lwp, mcp):
                 if (
-                    ip_neuron <= Threshold and cp_neuron > Threshold and lw_neuron > Threshold and mc_neuron > Threshold
+                    ip_neuron > Threshold and cp_neuron > Threshold and lw_neuron > Threshold and mc_neuron > Threshold
                 ):  # no task neurons
                     count[0] += 1
                 if (
@@ -170,64 +170,120 @@ def plot_lesion_analysis(run_num):
                     ip_neuron > Threshold and cp_neuron > Threshold and lw_neuron <= Threshold and mc_neuron <= Threshold
                 ):  #lw and mc
                     count[10] += 1
+                if ( 
+                    ip_neuron <= Threshold and cp_neuron <= Threshold and lw_neuron <= Threshold and mc_neuron > Threshold
+                ): #ip, cp, lw
+                    count[11] += 1
+                if ( 
+                    ip_neuron <= Threshold and cp_neuron <= Threshold and lw_neuron > Threshold and mc_neuron <= Threshold
+                ): #ip, cp, mc
+                    count[12] += 1
+                if (
+                    ip_neuron <= Threshold and cp_neuron > Threshold and lw_neuron <= Threshold and mc_neuron <= Threshold
+                ): #ip, lw, mc
+                    count[13] += 1
+                if (
+                    ip_neuron > Threshold and cp_neuron <= Threshold and lw_neuron <= Threshold and mc_neuron <= Threshold
+                ): #cp, lw, mc
+                    count[14] += 1
                 if (
                     ip_neuron <=  Threshold and cp_neuron <= Threshold and lw_neuron <= Threshold and mc_neuron <= Threshold
                 ):  #all 
-                    count[11] += 1
+                    count[15] += 1
+                
 
             # making it dataframe ready
-            all_counts.append(count)
-            categs = ["None","IP","CP","LW","MC","IP+CP","IP+LW","IP+MC","CP+LW","CP+MC","LW+MC","All"]
+            all_counts.append(count) #count is a 1x15 array for each agent. All_counts is 15xensemble size 
+            categs = ["None","IP","CP","LW","MC","IP+CP","IP+LW","IP+MC","CP+LW","CP+MC","LW+MC","IP+CP+LW","IP+CP+MC","IP+LW+MC","CP+LW+MC","All"]
             #categs = ["None", "IP", "CP", "LW", "IP+CP", "IP+LW", "CP+LW", "All"]
-            for cg, ct in zip(categs, count):
+            for cg, ct in zip(categs, count): #15 categories, 15 slots in count, all_categs keeps track of categories for each agent
                 all_categs.append([cg, ct, i])
-
-
+    #print(all_counts)
+    #Pairwise data
+    #ip_inv = []
+    #cp_inv = []
+    #lw_inv = []
+    mc_inv = []
+    #ip_cp = []
+    #ip_lw = []
     ip_mc = []
     #ip_mc_lab = []
     #cp_lw = []
     cp_mc = []
     #cp_mc_lab = []
     lw_mc = []
+    ip_cp_mc = []
+    ip_lw_mc = []
+    cp_lw_mc = []
+
     all_tasks = []
     no_tasks = []
-    #lw_mc_lab = []
     task_labels = []
-    
+    most_pop = []
 
+    for count in all_counts: #each set of categories, in the ensemble (all_counts)
+        #set of categories for each agent
 
-    for count in all_counts:
         #ip_cp.append(count[5])
         #ip_lw.append(count[6])
+        mc_inv.append(count[4]) #number of MC-exclusive neurons in each agent
         ip_mc.append(count[7])
-        #cp_lw.append(count[8])
         cp_mc.append(count[9])
         lw_mc.append(count[10])
-        all_tasks.append(count[11])
+        ip_cp_mc.append(count[12])
+        ip_lw_mc.append(count[13])
+        cp_lw_mc.append(count[14])
+        all_tasks.append(count[15])
         no_tasks.append(count[0])
+        count = list(count)
+        pop = count.index(max(count)) #calculate highest value in count
+        cat_pop = categs[pop] #get corresponding category 
+        most_pop.append(cat_pop)
+    #print(most_pop)
+        
+    
+     
+
+    """
+        all_tasks.append(count[15])
+        no_tasks.append(count[0])
+        if count[4] > 0:
+            task_labels[0] = 'MC'
         if count[7] > 0:
-            task_labels.append('IPMC')
-        elif count[9] > 0:
-            task_labels.append('CPMC')
-        elif count[10] > 0:
-            task_labels.append('LWMC')
-        elif count[11] > 0:
-            task_labels.append('All')
-        elif count[0] > 0:
-            task_labels.append('None')
+            task_labels[1] = 'MC'
+        if count[9] > 0:
+            task_labels[2] = 'CPMC'
+        if count[10] > 0:
+            task_labels[3] = 'LWMC'
+        if count[12] > 0:
+            task_labels[4] = 'IPCPMC'
+        if count[13] > 0:
+            task_labels[5] = 'IPLWMC'
+        if count[14] > 0:
+            task_labels[6] = 'CPLWMC'
+        if count[15] > 0:
+            task_labels[7] = 'All'
+        if count[0] > 0:
+            task_labels[8] = 'None'
         else:
             pass
-    
-    print(len(task_labels))
+        print(len(task_labels))
+        ensemble_labels.append(task_labels)
+    #print(mc_inv)
+    #print(lw_mc)
+    #print(ensemble_labels)
+    """
+    np.save("./Combined/4T_2x3/Data"+"/MC"+".npy",mc_inv)
     np.save("./Combined/4T_2x3/Data"+"/ip_mc"+".npy",ip_mc)
     np.save("./Combined/4T_2x3/Data"+"/cp_mc"+".npy",cp_mc)
     np.save("./Combined/4T_2x3/Data"+"/lw_mc"+".npy",lw_mc)
+    np.save("./Combined/4T_2x3/Data"+"/ip_cp_mc"+".npy",ip_cp_mc)
+    np.save("./Combined/4T_2x3/Data"+"/ip_lw_mc"+".npy",ip_lw_mc)
+    np.save("./Combined/4T_2x3/Data"+"/cp_lw_mc"+".npy",cp_lw_mc)
     np.save("./Combined/4T_2x3/Data"+"/all"+".npy",all_tasks)
     np.save("./Combined/4T_2x3/Data"+"/none"+".npy",no_tasks)
-
-
-    np.save("./Combined/4T_2x3/Data"+"/task_labels"+".npy",task_labels)
-    print(task_labels)
+    print(most_pop)
+    np.save("./Combined/4T_2x3/Data"+"/most_pop_cat"+".npy",most_pop)
     """
     # plot specialization and reuse
     plt.figure(figsize=[4, 4])

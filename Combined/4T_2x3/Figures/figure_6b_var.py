@@ -51,6 +51,7 @@ def all_var_data():
 all_var_data()
 
 def plot_var_analysis(run_num):
+    
     plt.figure(figsize=[8, 5])
 
     ### PANEL A
@@ -191,7 +192,7 @@ def plot_var_analysis(run_num):
     plt.show()
 
     ### PANEL D
-    """
+    
     plt.subplot2grid([2, 3], [1, 0], colspan=3)
     df = pd.DataFrame(
         all_categs, columns=["Category", "Number of Neurons", "network_id"]
@@ -203,7 +204,7 @@ def plot_var_analysis(run_num):
     plt.savefig("figure_6b.pdf")
     plt.savefig("figure_6b.png")
     plt.show()
-    """
+    
 
 
 plot_var_analysis(0)
