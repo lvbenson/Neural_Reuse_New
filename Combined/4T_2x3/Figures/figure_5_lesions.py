@@ -291,8 +291,11 @@ def plot_lesion_analysis(run_num):
     #ax2.plot([-0.5, 21.5], [21.5, -0.5], "k", linewidth=0.7)
     #ax2 = plt.subplot2grid([1, 4], [0, 4], adjustable="box", aspect=1)
     plt.plot([0.0, 1.0], [0.0, 1.0], "k", linewidth=0.7)
-    #count_data = []
+    """
     reused_count = []
+    reused_count_2 = []
+    reused_count_3 = []
+    reused_count_4 = []
     special_count = []
     #count_data_prop = []
     for count in all_counts:
@@ -301,15 +304,27 @@ def plot_lesion_analysis(run_num):
         #count_data_prop.append([((count[1] + count[2] + count[3] + count[4])/20), ((np.sum(count[5:]))/20)])
         #count_data_prop.append([((np.sum(count[:4]))/20), ((np.sum(count[5:]))/20)])
         reused_count.append((np.sum(count[5:]))/6)
+        reused_count_2.append((count[5]+count[6]+count[7]+count[8]+count[9]+count[10])/6)
+        reused_count_3.append((count[1]+count[12]+count[13]+count[14])/6)
+        reused_count_4.append((count[15])/6)
         #special_count.append((np.sum(count[1:5]))/20)
         special_count.append((count[1]+count[2]+count[3]+count[4])/6)
         #print(len(count_data_prop))
     
-    print(len(reused_count))
-    #print(special_count)
+    print(reused_count)
+    print(reused_count_2)
+    print(reused_count_3)
+    print(reused_count_4)
+    print(special_count)
 
     np.save("./Combined/4T_2x3/Data"+"/reused_prop"+".npy",reused_count)
+    np.save("./Combined/4T_2x3/Data"+"/reused_prop_2"+".npy",reused_count_2)
+    np.save("./Combined/4T_2x3/Data"+"/reused_prop_3"+".npy",reused_count_3)
+    np.save("./Combined/4T_2x3/Data"+"/reused_prop_4"+".npy",reused_count_4)
     np.save("./Combined/4T_2x3/Data"+"/special_prop"+".npy",special_count)
+
+
+    """
 
 
 

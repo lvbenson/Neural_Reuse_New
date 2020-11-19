@@ -197,8 +197,13 @@ def plot_lesion_analysis(run_num):
 
             # making it dataframe ready
             all_counts.append(count) #count is a 1x15 array for each agent. All_counts is 15xensemble size 
+            #all categories: reuse and specialization
             categs = ["None","IP","CP","LW","MC","IP+CP","IP+LW","IP+MC","CP+LW","CP+MC","LW+MC","IP+CP+LW","IP+CP+MC","IP+LW+MC","CP+LW+MC","All"]
-            #categs = ["None", "IP", "CP", "LW", "IP+CP", "IP+LW", "CP+LW", "All"]
+            #2-neuron reuse categs:
+            #5,6,7,8,9,10
+            #3-neuron reuse categs:
+            #11,12,13,14
+            #4-neuron reuse categs: 15
             for cg, ct in zip(categs, count): #15 categories, 15 slots in count, all_categs keeps track of categories for each agent
                 all_categs.append([cg, ct, i])
     #print(all_counts)
@@ -296,10 +301,11 @@ def plot_lesion_analysis(run_num):
     #np.save("./Combined/4T_2x5/Data"+"/lw_mc_lab"+".npy",lw_mc_lab)
     
 
-
-
-
-
+#2-neuron reuse categs:
+#5,6,7,8,9,10
+#3-neuron reuse categs:
+#11,12,13,14
+#4-neuron reuse categs: 15
 
     """
 
@@ -309,8 +315,12 @@ def plot_lesion_analysis(run_num):
     #ax2.plot([-0.5, 21.5], [21.5, -0.5], "k", linewidth=0.7)
     #ax2 = plt.subplot2grid([1, 4], [0, 4], adjustable="box", aspect=1)
     plt.plot([0.0, 1.0], [0.0, 1.0], "k", linewidth=0.7)
+    """
     #count_data = []
     reused_count = []
+    reused_count_2 = []
+    reused_count_3 = []
+    reused_count_4 = []
     special_count = []
     #count_data_prop = []
     for count in all_counts:
@@ -319,18 +329,27 @@ def plot_lesion_analysis(run_num):
         #count_data_prop.append([((count[1] + count[2] + count[3] + count[4])/20), ((np.sum(count[5:]))/20)])
         #count_data_prop.append([((np.sum(count[:4]))/20), ((np.sum(count[5:]))/20)])
         reused_count.append((np.sum(count[5:]))/10)
+        reused_count_2.append((count[5]+count[6]+count[7]+count[8]+count[9]+count[10])/10)
+        reused_count_3.append((count[1]+count[12]+count[13]+count[14])/10)
+        reused_count_4.append((count[15])/10)
         #special_count.append((np.sum(count[1:5]))/20)
         special_count.append((count[1]+count[2]+count[3]+count[4])/10)
         #print(len(count_data_prop))
     
     print(reused_count)
+    print(reused_count_2)
+    print(reused_count_3)
+    print(reused_count_4)
     print(special_count)
 
     np.save("./Combined/4T_2x5/Data"+"/reused_prop"+".npy",reused_count)
+    np.save("./Combined/4T_2x5/Data"+"/reused_prop_2"+".npy",reused_count_2)
+    np.save("./Combined/4T_2x5/Data"+"/reused_prop_3"+".npy",reused_count_3)
+    np.save("./Combined/4T_2x5/Data"+"/reused_prop_4"+".npy",reused_count_4)
     np.save("./Combined/4T_2x5/Data"+"/special_prop"+".npy",special_count)
 
 
-
+"""
 #NEW REUSE PLOT: PROPORTION OF REUSED NEURONS
 
     plt.scatter(reused_count,special_count)
