@@ -83,6 +83,7 @@ def simulate_individual(save_dir, run_num):
     print("Simulating IP")
     body = invpend.InvPendulum()
     total_steps = len(theta_range_IP) * len(thetadot_range_IP) * len(time_IP)
+    """
     i = 0
     k = 0
     theta_traces_IP = []
@@ -111,6 +112,7 @@ def simulate_individual(save_dir, run_num):
         theta_traces_IP,
     )
     del theta_traces_IP
+    """
 
     # Task 2
     print("Simulating CP")
@@ -156,6 +158,7 @@ def simulate_individual(save_dir, run_num):
     del theta_traces_CP
 
     # Task 3
+    """
     print("Simulating LW")
     body = leggedwalker.LeggedAgent(0.0, 0.0)
     total_steps = len(theta_range_LW) * len(omega_range_LW) * len(time_LW)
@@ -185,7 +188,7 @@ def simulate_individual(save_dir, run_num):
         theta_traces_LW,
     )
     del theta_traces_LW
-    
+    """
     
     #Task 4
     print("Simulating MC")
@@ -222,5 +225,5 @@ def simulate_individual(save_dir, run_num):
     
 
 
-individual_id = 78
-simulate_individual("./Combined/4T_2x5/Data", individual_id)
+individual_id = 5
+simulate_individual("/Users/lvbenson/Research_Projects/Neural_Reuse_New/Combined/Cog_Models_Project/Data", individual_id)
