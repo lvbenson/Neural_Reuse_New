@@ -17,8 +17,8 @@ reps = finish-start
 
 # ANN Params
 nI = 4
-nH1 = 5
-nH2 = 5
+nH1 = 10
+nH2 = 10
 nO = 1
 WeightRange = 15.0
 BiasRange = 15.0
@@ -49,8 +49,8 @@ theta_range_IP = np.linspace(-np.pi, np.pi, num=trials_theta_IP)
 thetadot_range_IP = np.linspace(-1.0,1.0, num=trials_thetadot_IP)
 
 #Cartpole
-trials_theta_CP = 10
-trials_thetadot_CP = 10
+trials_theta_CP = 5
+trials_thetadot_CP = 5
 trials_x_CP = 2
 trials_xdot_CP = 2
 total_trials_CP = trials_theta_CP*trials_thetadot_CP*trials_x_CP*trials_xdot_CP
@@ -358,7 +358,7 @@ def find_all_lesions(dir,ind):
     max[3] = np.max(nn[:,nI:nI+nH1+nH2],axis=0)
     """
 
-    steps = 10
+    steps = 20
     actvalues = np.linspace(0.0, max, num=steps)
 
     bi = np.load("./{}/best_individualCP_{}.npy".format(dir,ind))
