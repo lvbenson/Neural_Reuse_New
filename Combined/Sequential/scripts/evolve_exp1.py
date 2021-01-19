@@ -21,12 +21,12 @@ WeightRange = 15.0
 BiasRange = 15.0
 
 # EA Params
-popsize = 50 ##
+popsize = 10 ##
 genesize = (nI*nH1) + (nH1*nH2) + (nH1*nO) + nH1 + nH2 + nO #length of the genotype
 recombProb = 0.5
 mutatProb = 0.05 #1/genesize
 demeSize = 49 ##
-generations = 1000 ##
+generations = 20 ##
 boundaries = 0 ##
 
 # Task Params
@@ -165,30 +165,31 @@ def fitnessFunction(genotype):
 ga = mga_seq.Microbial(fitnessFunction, popsize, genesize, recombProb, mutatProb, demeSize, generations, boundaries)
 ga.run(0)
 af,bf,bi = ga.fitStats()
-if bf < 0.8:
+if bf < 0.0001:
     #print('Not good enough')
     pass
 else:
     #print('good so far: 1')
     ga.run(1)
     af,bf,bi = ga.fitStats()
-    if bf < 0.8:
+    if bf < 0.0001:
         pass
     else:
         #print('good so far: 2')
         ga.run(2)
         af,bf,bi = ga.fitStats()
-        if bf < 0.8:
+        if bf < 0.0001:
             pass
         else:
             #print('good so far: 3')
             ga.run(3)
             af,bf,bi = ga.fitStats()
             #only saves the files if they pass all three thresholds
-            id = str(sys.argv[1])
-            np.save('/Users/lvbenson/Research_Projects/Neural_Reuse_New/Combined/Sequential/data/average_history_'+id+'.npy',ga.avgHistory)
-            np.save('/Users/lvbenson/Research_Projects/Neural_Reuse_New/Combined/Sequential/data/best_history_'+id+'.npy',ga.bestHistory)
-            np.save('/Users/lvbenson/Research_Projects/Neural_Reuse_New/Combined/Sequential/data/best_individual_'+id+'.npy',bi)
+            #id = str(sys.argv[1])
+            ga.showFitness()
+            #np.save('/Users/lvbenson/Research_Projects/Neural_Reuse_New/Combined/Sequential/data/average_history_'+id+'.npy',ga.avgHistory)
+            #np.save('/Users/lvbenson/Research_Projects/Neural_Reuse_New/Combined/Sequential/data/best_history_'+id+'.npy',ga.bestHistory)
+            #np.save('/Users/lvbenson/Research_Projects/Neural_Reuse_New/Combined/Sequential/data/best_individual_'+id+'.npy',bi)
 
 
 
