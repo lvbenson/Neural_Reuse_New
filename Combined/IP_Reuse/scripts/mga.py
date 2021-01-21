@@ -41,6 +41,7 @@ class Microbial():
         # Calculate all fitness once
         for i in range(self.popsize):
             self.fitness[i] = self.fitnessFunction(self.pop[i])
+        print(self.fitness)
         # Evolutionary loop
         for g in range(self.generations):
             self.gen = g

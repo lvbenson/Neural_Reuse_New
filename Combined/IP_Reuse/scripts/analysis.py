@@ -17,8 +17,8 @@ reps = finish-start
 
 # ANN Params
 nI = 4
-nH1 = 5
-nH2 = 5
+nH1 = 10
+nH2 = 10
 nO = 1
 WeightRange = 15.0
 BiasRange = 15.0
@@ -358,7 +358,7 @@ def find_all_lesions(dir,ind):
     max[3] = np.max(nn[:,nI:nI+nH1+nH2],axis=0)
     """
 
-    steps = 10
+    steps = 20
     actvalues = np.linspace(0.0, max, num=steps)
 
     bi = np.load("./{}/best_individualIP_{}.npy".format(dir,ind))
@@ -523,6 +523,8 @@ def find_all_mis(dir,ind):
 
 gens = len(np.load(dir+"/average_historyIP_0.npy"))
 #print(gens)
+test = np.load(dir+"/average_historyIP_0.npy")
+#print(test)
 gs=len(np.load(dir+"/best_individualIP_0.npy"))
 af = np.zeros((reps,gens))
 bf = np.zeros((reps,gens))
