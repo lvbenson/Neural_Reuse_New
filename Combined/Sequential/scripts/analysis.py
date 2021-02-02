@@ -42,15 +42,15 @@ MaxFit = 0.627 #Leggedwalker
 
 # Fitness initialization ranges
 #Inverted Pendulum
-trials_theta_IP = 7
-trials_thetadot_IP = 7
+trials_theta_IP = 6
+trials_thetadot_IP = 6
 total_trials_IP = trials_theta_IP*trials_thetadot_IP
 theta_range_IP = np.linspace(-np.pi, np.pi, num=trials_theta_IP)
 thetadot_range_IP = np.linspace(-1.0,1.0, num=trials_thetadot_IP)
 
 #Cartpole
-trials_theta_CP = 7
-trials_thetadot_CP = 7
+trials_theta_CP = 6
+trials_thetadot_CP = 6
 trials_x_CP = 2
 trials_xdot_CP = 2
 total_trials_CP = trials_theta_CP*trials_thetadot_CP*trials_x_CP*trials_xdot_CP
@@ -60,15 +60,15 @@ x_range_CP = np.linspace(0.0, 0.0, num=trials_x_CP)
 xdot_range_CP = np.linspace(0.0, 0.0, num=trials_xdot_CP)
 
 #Legged walker
-trials_theta = 7
+trials_theta = 5
 theta_range_LW = np.linspace(0.0, 0.0, num=trials_theta)
-trials_omega_LW = 7
+trials_omega_LW = 5
 omega_range_LW = np.linspace(0.0, 0.0, num=trials_omega_LW)
 total_trials_LW = trials_theta * trials_omega_LW
 
 #Mountain Car
-trials_position_MC = 6 #6
-trials_velocity_MC = 6 #6
+trials_position_MC = 5 #6
+trials_velocity_MC = 5 #6
 total_trials_MC = trials_position_MC*trials_velocity_MC
 position_range_MC = np.linspace(0.1, 0.1, num=trials_position_MC)
 velocity_range_MC = np.linspace(0.01,0.01, num=trials_velocity_MC)
@@ -357,7 +357,7 @@ def find_all_lesions(dir,ind):
     steps = 10
     actvalues = np.linspace(0.0, max, num=steps)
 
-    bi = np.load("./{}/best_individualC_{}.npy".format(dir,ind))
+    bi = np.load("./{}/best_individual_{}.npy".format(dir,ind))
     f = np.load("./{}/perf_{}.npy".format(dir,ind))
 
     ipp,cpp,lwp,mcp = lesions(bi,actvalues)
@@ -401,7 +401,7 @@ def find_all_lesions(dir,ind):
         if ip_neuron <=  Threshold and cp_neuron <= Threshold and lw_neuron <= Threshold and mc_neuron <= Threshold: # all  task neurons
             count[11] += 1 #All
 
-    np.save(dir+"/stats_"+str(ind)+".npy",count)
+    #np.save(dir+"/stats_"+str(ind)+".npy",count)
 
     #plt.plot(ipp,'ro')
     #plt.plot(cpp,'go')
@@ -526,7 +526,7 @@ for i in range(start,finish):
     bf[index] = np.load(dir+"/best_history_"+str(i)+".npy")
     bi[index] = np.load(dir+"/best_individual_"+str(i)+".npy")
     #evol_fit = bf[index][-1]**(1/4)
-    if bf[index][-1]**(1/4) > 0.0:
+    if bf[index][-1]**(1/4) > 0.8:
 
         #plt.scatter(np.arange(1, 11), evol_fit, c='blue',s=5, alpha=0.7)
         count += 1
@@ -578,7 +578,7 @@ for i in range(start,finish):
         
         find_all_lesions(dir,i)
         find_all_var(dir,i)
-        find_all_mis(dir,i)
+        #find_all_mis(dir,i)
         
     index += 1
     #plt.xticks(np.arange(1, 11))
