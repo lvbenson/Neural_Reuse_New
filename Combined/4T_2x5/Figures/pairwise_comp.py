@@ -2,18 +2,22 @@ import pandas as pd
 import numpy as np
 import seaborn as sns
 import matplotlib.pyplot as plt
-
+import os 
+print(os.getcwd())
 #Reuse data
+
 reused_2x5 = np.load("./Combined/4T_2x5/Data/reused_prop.npy")
 reused_2x3 = np.load("./Combined/4T_2x3/Data/reused_prop.npy")
 reused_2x10 = np.load("./Combined/4T_2x10/Data/reused_prop.npy")
 reused_2x20 = np.load("./Combined/4T_2x20/Data/reused_prop.npy")
+reused_seq = np.load("./Combined/Sequential/Data/reused_prop.npy")
 
 #Specialized data
 special_2x5 = np.load("./Combined/4T_2x5/Data/special_prop.npy")
 special_2x3 = np.load("./Combined/4T_2x3/Data/special_prop.npy")
 special_2x10 = np.load("./Combined/4T_2x10/Data/special_prop.npy")
 special_2x20 = np.load("./Combined/4T_2x20/Data/special_prop.npy")
+special_seq = np.load("./Combined/Sequential/Data/special_prop.npy")
 
 #Pairwise task involvement, MC 2x3
 mc3 = np.load("./Combined/4T_2x3/Data/MC.npy")
@@ -69,6 +73,20 @@ cplwmc2 = np.load("./Combined/4T_2x20/Data/cp_lw_mc.npy")
 all_2 = np.load("./Combined/4T_2x20/Data/all.npy")
 none_2 = np.load("./Combined/4T_2x20/Data/none.npy")
 
+#Pairwise task involvement, MC Sequential (2x5)
+#Pairwise task involvement, MC 2x20
+mc4 = np.load("./Combined/Sequential/Data/MC.npy")
+ipmc4 = np.load("./Combined/Sequential/Data/ip_mc.npy")
+cpmc4 = np.load("./Combined/Sequential/Data/cp_mc.npy")
+lwmc4 = np.load("./Combined/Sequential/Data/lw_mc.npy")
+
+ipcpmc4 = np.load("./Combined/Sequential/Data/ip_cp_mc.npy")
+iplwmc4 = np.load("./Combined/Sequential/Data/ip_lw_mc.npy")
+cplwmc4 = np.load("./Combined/Sequential/Data/cp_lw_mc.npy")
+
+all_4 = np.load("./Combined/Sequential/Data/all.npy")
+none_4 = np.load("./Combined/Sequential/Data/none.npy")
+
 
 #Most Popular Category
 
@@ -76,7 +94,7 @@ most_pop = np.load("./Combined/4T_2x5/Data/most_pop_cat.npy")
 most_pop1 = np.load("./Combined/4T_2x10/Data/most_pop_cat.npy")
 most_pop2 = np.load("./Combined/4T_2x20/Data/most_pop_cat.npy")
 most_pop3 = np.load("./Combined/4T_2x3/Data/most_pop_cat.npy")
-
+most_pop4 = np.load("./Combined/Sequential/Data/most_pop_cat.npy")
 
 #2x5
 mc_pairs = {'Most Popular Cat': most_pop,
@@ -98,7 +116,7 @@ mc_pairs = {'Most Popular Cat': most_pop,
 
 df = pd.DataFrame(mc_pairs,columns=['Most Popular Cat','MC','IP+MC','CP+MC','LW+MC','IP+CP+MC','IP+LW+MC','CP+LW+MC','All','None','PropReused','PropSpecialized'])
 
-fig, ax = plt.subplots(4,2,figsize=(10,10),sharey=True)
+fig, ax = plt.subplots(5,2,figsize=(10,10),sharey=True)
 
 ax1 = sns.kdeplot(ax=ax[0,0],data=df, x="PropReused", hue="Most Popular Cat")
 ax1.legend_.remove()
@@ -212,6 +230,45 @@ ax8 = sns.kdeplot(ax=ax[3,1],data=df3, x="PropSpecialized", hue="Most Popular Ca
 #x4.legend_.remove()
 #ax2.set_title('Specialization')
 ax8.set_title('2x3')
+
+
+#############################################
+#SEQUENTIAL (2x5)
+#############################################
+mc_pairs4 = {'Most Popular Cat': most_pop4,
+'MC': mc4,
+'IP+MC': ipmc4,
+'CP+MC': cpmc4,
+'LW+MC': lwmc4,
+'IP+CP+MC': ipcpmc4,
+'IP+LW+MC': iplwmc4,
+'CP+LW+MC': cplwmc4,
+'All': all_4,
+'None': none_4,
+'PropReused': reused_seq,
+'PropSpecialized': special_seq}
+
+df4 = pd.DataFrame(mc_pairs4,columns=['Most Popular Cat','MC','IP+MC','CP+MC','LW+MC','IP+CP+MC','IP+LW+MC','CP+LW+MC','All','None','PropReused','PropSpecialized'])
+
+
+ax8 = sns.kdeplot(ax=ax[4,0],data=df4, x="PropReused", hue="Most Popular Cat")
+ax8.set_title('Sequential')
+ax8.legend_.remove()
+
+#sns.pairplot(df,hue='Most Popular')
+#sns.pairplot(df,hue='Most Popular', diag_kind='kde',plot_kws={'alpha': 0.5, 's': 70, 'edgecolor': 'k'},
+             #size = 1.2)
+
+ax8 = sns.kdeplot(ax=ax[4,1],data=df3, x="PropSpecialized", hue="Most Popular Cat")
+#x4.legend_.remove()
+#ax2.set_title('Specialization')
+ax8.set_title('Sequential')
+
+
+
+
+
+
 plt.tight_layout()
-plt.savefig("./Combined/4T_2x5/Figures/density_reuse.png")
+plt.savefig("./Combined/4T_2x5/Figures/density_reuseNEW.png")
 plt.show()
