@@ -3,10 +3,11 @@ import numpy as np
 import seaborn as sns
 import matplotlib.pyplot as plt
 import os 
-print(os.getcwd())
+#print(os.getcwd())
 #Reuse data
 
 reused_2x5 = np.load("./Combined/4T_2x5/Data/reused_prop.npy")
+#print(reused_2x5)
 reused_2x3 = np.load("./Combined/4T_2x3/Data/reused_prop.npy")
 reused_2x10 = np.load("./Combined/4T_2x10/Data/reused_prop.npy")
 reused_2x20 = np.load("./Combined/4T_2x20/Data/reused_prop.npy")
@@ -128,7 +129,7 @@ ax1.set_title('Reuse: 2x5')
 
 ax2 = sns.kdeplot(ax=ax[0,1],data=df, x="PropSpecialized", hue="Most Popular Cat")
 ax2.set_title('Specialization: 2x5')
-plt.savefig("./Combined/4T_2x5/Figures/density_reuse.png")
+#plt.savefig("./Combined/4T_2x5/Figures/density_reuse.png")
 
 
 #############################################
