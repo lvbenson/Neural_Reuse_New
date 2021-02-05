@@ -1,6 +1,6 @@
 
 import numpy as np
-import infotheory
+#import infotheory
 import ffann                #Controller
 import invpend              #Task 1
 import cartpole             #Task 2
@@ -354,7 +354,7 @@ def find_all_lesions(dir,ind):
     nn = np.load("./{}/state_MC_{}.npy".format(dir,ind))
     max[3] = np.max(nn[:,nI:nI+nH1+nH2],axis=0)
 
-    steps = 3
+    steps = 6
     actvalues = np.linspace(0.0, max, num=steps)
 
     bi = np.load("./{}/best_individual2x3_{}.npy".format(dir,ind))
@@ -372,6 +372,7 @@ def find_all_lesions(dir,ind):
     np.save(dir+"/lesions_LW_"+str(ind)+".npy",lwp)
     np.save(dir+"/lesions_MC_"+str(ind)+".npy",mcp)
 
+    """
     # Stats on neurons for Ablations
     Threshold = 0.95
     count = np.zeros(12)
@@ -402,7 +403,7 @@ def find_all_lesions(dir,ind):
             count[11] += 1
 
     np.save(dir+"/stats_"+str(ind)+".npy",count)
-
+    """
     #plt.plot(ipp,'ro')
     #plt.plot(cpp,'go')
     #plt.plot(lwp,'bo')
@@ -414,8 +415,8 @@ def find_all_lesions(dir,ind):
 
 def find_all_var(dir,ind):
     nI = 4
-    nH = 3
-    v = np.zeros((4,10))
+    nH = 6
+    v = np.zeros((4,6))
     nn = np.load("./{}/state_IP_{}.npy".format(dir,ind))
     v[0] = np.var(nn[:,nI:nI+nH],axis=0)
     nn = np.load("./{}/state_CP_{}.npy".format(dir,ind))
@@ -425,8 +426,8 @@ def find_all_var(dir,ind):
     nn = np.load("./{}/state_MC_{}.npy".format(dir,ind))
     v[3] = np.var(nn[:,nI:nI+nH],axis=0)
     max = np.max(v,axis=0)
-    norm_var = np.zeros((3,4))
-    for i in range(3):
+    norm_var = np.zeros((6,4))
+    for i in range(6):
         if max[i] > 0.0:
             norm_var[i] = v.T[i]/max[i]
         else:
@@ -534,9 +535,9 @@ for i in range(start,finish):
         #print('perf:',np.prod(f)**(1/4))
         #print('evol:',bf[index][-1]**(1/4))
         #plt.scatter(np.arange(1, 11), f, c='red',s=5, alpha=0.7)
-        plt.scatter(np.prod(f)**(1/4), bf[index][-1]**(1/4), c='blue',s=5, alpha=0.7)
+        #plt.scatter(np.prod(f)**(1/4), bf[index][-1]**(1/4), c='blue',s=5, alpha=0.7)
         
-        """
+        
         np.save(dir+"/perf_"+str(i)+".npy",f)
         #print(f,'analysis performance')
         
@@ -576,11 +577,10 @@ for i in range(start,finish):
         # plt.savefig(dir+"/perfmap_LW_"+str(i)+".png")
         # plt.show()
         
-        #find_all_lesions(dir,i)
-        #find_all_var(dir,i)
+        find_all_lesions(dir,i)
+        find_all_var(dir,i)
         #find_all_mis(dir,i)
-        """
-        
+                
     index += 1
     #plt.xticks(np.arange(1, 11))
     #plt.xlim([0.5, 10.5])
@@ -590,10 +590,10 @@ for i in range(start,finish):
     #plt.legend(bbox_to_anchor=(1.05, 1), loc='upper left')
     #plt.tight_layout()
     #plt.savefig("./Combined/Experiments/Comb_4T_2x5_NEW/Figures/figure_5_lesions.pdf")
-plt.xlabel("performance")
-plt.ylabel("evolved fitness")
+#plt.xlabel("performance")
+#plt.ylabel("evolved fitness")
 #plt.savefig("./Combined/4T_2x3/Figures/performance_eval.pdf")
-plt.show()
+#plt.show()
 
 #print("Ensemble count:", count)
 #print(bf[:,-1])

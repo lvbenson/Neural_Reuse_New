@@ -7,6 +7,7 @@ import matplotlib.pyplot as plt
 import pandas as pd
 import seaborn as sns
 
+#reuse proportions calculated in figure_5_lesions.py
 
 reused_2x5 = np.load("./Combined/4T_2x5/Data/reused_prop.npy")
 reused_2x5_2 = np.load("./Combined/4T_2x5/Data/reused_prop_2.npy")
