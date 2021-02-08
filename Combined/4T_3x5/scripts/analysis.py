@@ -19,6 +19,7 @@ reps = finish-start
 nI = 4
 nH1 = 5
 nH2 = 5
+nH3 = 5
 nO = 1
 WeightRange = 15.0
 BiasRange = 15.0
@@ -42,15 +43,15 @@ MaxFit = 0.627 #Leggedwalker
 
 # Fitness initialization ranges
 #Inverted Pendulum
-trials_theta_IP = 10
-trials_thetadot_IP = 10
+trials_theta_IP = 6
+trials_thetadot_IP = 6
 total_trials_IP = trials_theta_IP*trials_thetadot_IP
 theta_range_IP = np.linspace(-np.pi, np.pi, num=trials_theta_IP)
 thetadot_range_IP = np.linspace(-1.0,1.0, num=trials_thetadot_IP)
 
 #Cartpole
-trials_theta_CP = 10
-trials_thetadot_CP = 10
+trials_theta_CP = 6
+trials_thetadot_CP = 6
 trials_x_CP = 2
 trials_xdot_CP = 2
 total_trials_CP = trials_theta_CP*trials_thetadot_CP*trials_x_CP*trials_xdot_CP
@@ -60,9 +61,9 @@ x_range_CP = np.linspace(0.0, 0.0, num=trials_x_CP)
 xdot_range_CP = np.linspace(0.0, 0.0, num=trials_xdot_CP)
 
 #Legged walker
-trials_theta = 10
+trials_theta = 3
 theta_range_LW = np.linspace(0.0, 0.0, num=trials_theta)
-trials_omega_LW = 10
+trials_omega_LW = 3
 omega_range_LW = np.linspace(0.0, 0.0, num=trials_omega_LW)
 total_trials_LW = trials_theta * trials_omega_LW
 
@@ -199,14 +200,14 @@ def analysis(genotype):
 
 def lesions(genotype,actvalues):
 
-    nn = ffann.ANN(nI,nH1,nH2,nO)
+    nn = ffann3.ANN(nI,nH1,nH2,nH3,nO)
 
     # Task 1
     ip_fit = np.zeros(nH1+nH2)
     body = invpend.InvPendulum()
     nn.setParameters(genotype,WeightRange,BiasRange)
     index = 0
-    for layer in [1,2]:
+    for layer in [1,2,3]:
         for neuron in range(nH1):
             if layer == 1:
                 n = neuron
@@ -241,7 +242,7 @@ def lesions(genotype,actvalues):
     body = cartpole.Cartpole()
     nn.setParameters(genotype,WeightRange,BiasRange)
     index = 0
-    for layer in [1,2]:
+    for layer in [1,2,3]:
         for neuron in range(nH1):
             if layer == 1:
                 n = neuron
@@ -277,7 +278,7 @@ def lesions(genotype,actvalues):
     body = leggedwalker.LeggedAgent(0.0,0.0)
     nn.setParameters(genotype,WeightRange,BiasRange)
     index = 0
-    for layer in [1,2]:
+    for layer in [1,2,3]:
         for neuron in range(nH1):
             if layer == 1:
                 n = neuron
@@ -311,7 +312,7 @@ def lesions(genotype,actvalues):
     body = mountaincar.MountainCar()
     nn.setParameters(genotype,WeightRange,BiasRange)
     index = 0
-    for layer in [1,2]:
+    for layer in [1,2,3]:
         for neuron in range(nH1):
             if layer ==1:
                 n = neuron
@@ -319,7 +320,7 @@ def lesions(genotype,actvalues):
                 n = nH1 + neuron
             #print("MC:",n)
             maxfit = 0.0
-            for act in actvalues[:,2,n]:
+            for act in actvalues[:,3,n]:
                 fit = 0.0
                 for position in position_range_MC:
                     for velocity in velocity_range_MC:
@@ -343,18 +344,18 @@ def lesions(genotype,actvalues):
     return ip_fit,cp_fit,lw_fit,mc_fit
 
 def find_all_lesions(dir,ind):
-    max = np.zeros((4,nH1+nH2))
+    max = np.zeros((4,nH1+nH2+nH3))
     #/Users/lvbenson/Research_Projects/Neural_Reuse_New/Combined/4T_2x5/Data/state_IP_0.npy
     nn = np.load("./{}/state_IP_{}.npy".format(dir,ind))
-    max[0] = np.max(nn[:,nI:nI+nH1+nH2],axis=0)
+    max[0] = np.max(nn[:,nI:nI+nH1+nH2+nH3],axis=0)
     nn = np.load("./{}/state_CP_{}.npy".format(dir,ind))
-    max[1] = np.max(nn[:,nI:nI+nH1+nH2],axis=0)
+    max[1] = np.max(nn[:,nI:nI+nH1+nH2+nH3],axis=0)
     nn = np.load("./{}/state_LW_{}.npy".format(dir,ind))
-    max[2] = np.max(nn[:,nI:nI+nH1+nH2],axis=0)
+    max[2] = np.max(nn[:,nI:nI+nH1+nH2+nH3],axis=0)
     nn = np.load("./{}/state_MC_{}.npy".format(dir,ind))
-    max[3] = np.max(nn[:,nI:nI+nH1+nH2],axis=0)
+    max[3] = np.max(nn[:,nI:nI+nH1+nH2+nH3],axis=0)
 
-    steps = 10
+    steps = 15
     actvalues = np.linspace(0.0, max, num=steps)
 
     bi = np.load("./{}/best_individualC_{}.npy".format(dir,ind))

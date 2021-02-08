@@ -16,12 +16,13 @@ Neural_Reuse_New_ws.code-workspace
 #Combined/Separate/Data_LW
 #Combined/Separate/Data_MC
 #Combined/4T_2x5/Data
-#Combined/CP_Reuse/Data_2x5
-#Combined/CP_Reuse/Data_2x10
+Combined/CP_Reuse/Data_2x5
+Combined/CP_Reuse/Data_2x10
+Combined/CP_Reuse/Data_2x20
 #Combined/IP_Reuse/Data_2x5
-#Combined/4T_2x10/Data
+Combined/4T_2x10/Data
 #Combined/4T_2x20/Data
-#Combined/4T_2x50/Data
+Combined/4T_2x5/Data
 Combined/4T_2x3/Data
 #Combined/4T_3x5/Data
 #Combined/4T_3x10/Data

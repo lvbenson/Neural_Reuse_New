@@ -1,6 +1,6 @@
 
 import numpy as np
-import infotheory
+#import infotheory
 import ffann                #Controller
 import invpend              #Task 1
 import cartpole             #Task 2
@@ -42,15 +42,15 @@ MaxFit = 0.627 #Leggedwalker
 
 # Fitness initialization ranges
 #Inverted Pendulum
-trials_theta_IP = 6
-trials_thetadot_IP = 6
+trials_theta_IP = 5
+trials_thetadot_IP = 5
 total_trials_IP = trials_theta_IP*trials_thetadot_IP
 theta_range_IP = np.linspace(-np.pi, np.pi, num=trials_theta_IP)
 thetadot_range_IP = np.linspace(-1.0,1.0, num=trials_thetadot_IP)
 
 #Cartpole
-trials_theta_CP = 6
-trials_thetadot_CP = 6
+trials_theta_CP = 5
+trials_thetadot_CP = 5
 trials_x_CP = 2
 trials_xdot_CP = 2
 total_trials_CP = trials_theta_CP*trials_thetadot_CP*trials_x_CP*trials_xdot_CP
@@ -67,8 +67,8 @@ omega_range_LW = np.linspace(0.0, 0.0, num=trials_omega_LW)
 total_trials_LW = trials_theta * trials_omega_LW
 
 #Mountain Car
-trials_position_MC = 6 #6
-trials_velocity_MC = 6 #6
+trials_position_MC = 5 #6
+trials_velocity_MC = 5 #6
 total_trials_MC = trials_position_MC*trials_velocity_MC
 position_range_MC = np.linspace(0.1, 0.1, num=trials_position_MC)
 velocity_range_MC = np.linspace(0.01,0.01, num=trials_velocity_MC)
@@ -319,7 +319,7 @@ def lesions(genotype,actvalues):
                 n = nH1 + neuron
             #print("MC:",n)
             maxfit = 0.0
-            for act in actvalues[:,2,n]:
+            for act in actvalues[:,3,n]:
                 fit = 0.0
                 for position in position_range_MC:
                     for velocity in velocity_range_MC:
@@ -534,10 +534,10 @@ for i in range(start,finish):
         #print('perf:',np.prod(f)**(1/4))
         #print('evol:',bf[index][-1]**(1/4))
         #plt.scatter(np.arange(1, 11), f, c='red',s=5, alpha=0.7)
-        plt.scatter(np.prod(f)**(1/4), bf[index][-1]**(1/4), c='blue',s=5, alpha=0.7)
+        #plt.scatter(np.prod(f)**(1/4), bf[index][-1]**(1/4), c='blue',s=5, alpha=0.7)
         
         
-        """
+        
         np.save(dir+"/perf_"+str(i)+".npy",f)
         #print(f,'analysis performance')
         
@@ -577,10 +577,10 @@ for i in range(start,finish):
         # plt.savefig(dir+"/perfmap_LW_"+str(i)+".png")
         # plt.show()
         
-        #find_all_lesions(dir,i)
+        find_all_lesions(dir,i)
         #find_all_var(dir,i)
         #find_all_mis(dir,i)
-        """
+        
         
     index += 1
     #plt.xticks(np.arange(1, 11))
@@ -591,9 +591,9 @@ for i in range(start,finish):
     #plt.legend(bbox_to_anchor=(1.05, 1), loc='upper left')
     #plt.tight_layout()
     #plt.savefig("./Combined/Experiments/Comb_4T_2x5_NEW/Figures/figure_5_lesions.pdf")
-plt.xlabel("performance")
-plt.ylabel("evolved fitness")
-plt.show()
+#plt.xlabel("performance")
+#plt.ylabel("evolved fitness")
+#plt.show()
 
 #print("Ensemble count:", count)
 #print(bf[:,-1])

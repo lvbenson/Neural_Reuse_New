@@ -17,8 +17,8 @@ reps = finish-start
 
 # ANN Params
 nI = 4
-nH1 = 10
-nH2 = 10
+nH1 = 20
+nH2 = 20
 nO = 1
 WeightRange = 15.0
 BiasRange = 15.0
@@ -358,7 +358,7 @@ def find_all_lesions(dir,ind):
     max[3] = np.max(nn[:,nI:nI+nH1+nH2],axis=0)
     """
 
-    steps = 20
+    steps = 40
     actvalues = np.linspace(0.0, max, num=steps)
 
     bi = np.load("./{}/best_individualCP_{}.npy".format(dir,ind))
@@ -424,7 +424,7 @@ def find_all_lesions(dir,ind):
 
 def find_all_var(dir,ind):
     nI = 4
-    nH = 10
+    nH = 20
     v = np.zeros((4,10))
     nn = np.load("./{}/state_IP_{}.npy".format(dir,ind))
     v[0] = np.var(nn[:,nI:nI+nH],axis=0)

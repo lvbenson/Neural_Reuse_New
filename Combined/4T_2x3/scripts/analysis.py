@@ -319,7 +319,7 @@ def lesions(genotype,actvalues):
                 n = nH1 + neuron
             #print("MC:",n)
             maxfit = 0.0
-            for act in actvalues[:,2,n]:
+            for act in actvalues[:,3,n]:
                 fit = 0.0
                 for position in position_range_MC:
                     for velocity in velocity_range_MC:
