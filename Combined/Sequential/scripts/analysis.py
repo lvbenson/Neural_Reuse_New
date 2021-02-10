@@ -60,15 +60,15 @@ x_range_CP = np.linspace(0.0, 0.0, num=trials_x_CP)
 xdot_range_CP = np.linspace(0.0, 0.0, num=trials_xdot_CP)
 
 #Legged walker
-trials_theta = 5
+trials_theta = 3
 theta_range_LW = np.linspace(0.0, 0.0, num=trials_theta)
-trials_omega_LW = 5
+trials_omega_LW = 3
 omega_range_LW = np.linspace(0.0, 0.0, num=trials_omega_LW)
 total_trials_LW = trials_theta * trials_omega_LW
 
 #Mountain Car
-trials_position_MC = 5 #6
-trials_velocity_MC = 5 #6
+trials_position_MC = 6 #6
+trials_velocity_MC = 6 #6
 total_trials_MC = trials_position_MC*trials_velocity_MC
 position_range_MC = np.linspace(0.1, 0.1, num=trials_position_MC)
 velocity_range_MC = np.linspace(0.01,0.01, num=trials_velocity_MC)
@@ -319,7 +319,7 @@ def lesions(genotype,actvalues):
                 n = nH1 + neuron
             #print("MC:",n)
             maxfit = 0.0
-            for act in actvalues[:,2,n]:
+            for act in actvalues[:,3,n]:
                 fit = 0.0
                 for position in position_range_MC:
                     for velocity in velocity_range_MC:
@@ -373,6 +373,7 @@ def find_all_lesions(dir,ind):
     np.save(dir+"/lesions_MC_"+str(ind)+".npy",mcp)
 
     # Stats on neurons for Ablations
+    """
     Threshold = 0.95
     count = np.zeros(12)
     for (ip_neuron, cp_neuron, lw_neuron, mc_neuron) in zip(ipp,cpp,lwp,mcp):
@@ -402,7 +403,7 @@ def find_all_lesions(dir,ind):
             count[11] += 1 #All
 
     #np.save(dir+"/stats_"+str(ind)+".npy",count)
-
+    """
     #plt.plot(ipp,'ro')
     #plt.plot(cpp,'go')
     #plt.plot(lwp,'bo')
@@ -526,7 +527,7 @@ for i in range(start,finish):
     bf[index] = np.load(dir+"/best_history_"+str(i)+".npy")
     bi[index] = np.load(dir+"/best_individual_"+str(i)+".npy")
     #evol_fit = bf[index][-1]**(1/4)
-    if bf[index][-1]**(1/4) > 0.8:
+    if bf[index][-1]**(1/4) > 0.0:
 
         #plt.scatter(np.arange(1, 11), evol_fit, c='blue',s=5, alpha=0.7)
         count += 1
