@@ -1,4 +1,4 @@
-import mga                  #Optimimizer
+import mga_seq                  #Optimimizer
 import ffann                #Controller
 import invpend              #Task 1
 import cartpole             #Task 2
