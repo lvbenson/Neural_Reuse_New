@@ -57,7 +57,7 @@ def connected_swarms(dir):
         # hue="network_id",
         data=df,
         alpha=0.8,
-        palette={"IP": "xkcd:tomato", "CP": "xkcd:azure", "LW": "xkcd:teal green", "MC": "xkcd:yellow"},
+        palette={"IP": "xkcd:azure", "CP": "xkcd:teal green", "LW": "xkcd:tomato", "MC": "xkcd:purple"},
     )
     # ax.legend_.remove()
 
@@ -91,7 +91,7 @@ def connected_swarms(dir):
 
     plt.ylim([0.85, 1.01])
     plt.yticks(np.arange(0.85, 1.01, 0.05))
-    plt.title('Best Performance on Ind Tasks: Agent 11')
+    plt.title('Simultaneously Trained Agents')
     plt.tight_layout()
     plt.savefig("./Combined/4T_2x5/Figures/figure_3_4T_new.pdf")
     plt.show()
