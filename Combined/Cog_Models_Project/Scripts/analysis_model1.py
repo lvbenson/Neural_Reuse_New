@@ -1,5 +1,5 @@
 import numpy as np
-import infotheory
+#import infotheory
 import ffann                #Controller
 import invpend              #Task 1
 import cartpole             #Task 2
@@ -376,6 +376,7 @@ def find_all_lesions(dir,ind):
     np.save(dir+"/lesions_LW_"+str(ind)+".npy",lwp)
     np.save(dir+"/lesions_MC_"+str(ind)+".npy",mcp)
 
+    """
     # Stats on neurons for Ablations
     Threshold = 0.95
     count = np.zeros(12)
@@ -406,6 +407,7 @@ def find_all_lesions(dir,ind):
             count[11] += 1 #All
 
     np.save(dir+"/stats_"+str(ind)+".npy",count)
+    """
 
     #plt.plot(ipp,'ro')
     #plt.plot(cpp,'go')

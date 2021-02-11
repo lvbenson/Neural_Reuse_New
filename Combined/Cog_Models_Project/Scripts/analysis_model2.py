@@ -1,6 +1,6 @@
 
 import numpy as np
-import infotheory
+#import infotheory
 import ffann                #Controller
 import invpend              #Task 1
 import cartpole             #Task 2
@@ -517,9 +517,9 @@ def find_all_mis(dir,ind):
     # plt.savefig(dir+"/NormMI_"+str(ind)+".png")
     # plt.show()
 
-gens = len(np.load(dir+"/average_history_0.npy"))
+gens = len(np.load(dir+"/average_history2_0.npy"))
 #print(gens)
-gs=len(np.load(dir+"/best_individual_0.npy"))
+gs=len(np.load(dir+"/best_individual2_0.npy"))
 af = np.zeros((reps,gens))
 bf = np.zeros((reps,gens))
 bi = np.zeros((reps,gs))
@@ -528,9 +528,9 @@ index = 0
 count = 0
 #plt.figure(figsize=[6, 4])
 for i in range(start,finish):
-    af[index] = np.load(dir+"/average_history_"+str(i)+".npy")
-    bf[index] = np.load(dir+"/best_history_"+str(i)+".npy")
-    bi[index] = np.load(dir+"/best_individual_"+str(i)+".npy")
+    af[index] = np.load(dir+"/average_history2_"+str(i)+".npy")
+    bf[index] = np.load(dir+"/best_history2_"+str(i)+".npy")
+    bi[index] = np.load(dir+"/best_individual2_"+str(i)+".npy")
     #evol_fit = bf[index][-1]**(1/4)
     if bf[index][-1] > 0.0:
 

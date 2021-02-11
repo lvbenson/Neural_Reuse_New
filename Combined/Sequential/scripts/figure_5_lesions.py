@@ -11,118 +11,27 @@ import matplotlib.pyplot as plt
 import pandas as pd
 import seaborn as sns
 
-"""
-def all_lesion_data():
-    plt.figure(figsize=[6, 4])
-    # load data
-    #dir = "../New"
-    dir = "./Combined/4T_2x10/Data"
+
+def plot_lesion_analysis():
+   
+    dir = "./Combined/Sequential/Data/"
     files = glob.glob(os.path.join(dir, "perf_*.npy"))
     files.sort()
-    print("Found {} files in {}".format(len(files), dir))
-    dat = []
-    all_fits = []
-    best_fits = []
-    count = 0
-    for i, file in enumerate(files):
-        fits = np.load(file)
-        fits = fits**(1/4)
-        # if np.prod(fits) > 0.8:
-        if np.min(fits) > 0.8:
-            run_num = file.split("/")[-1].split(".")[-2].split("_")[-1]
-            #lesion_data = np.load("../New/lesions_IP_{}.npy".format(run_num))
-            lesion_data = np.load("./Combined/4T_2x10/Data/lesions_IP_{}.npy".format(run_num))
-            #print(lesion_data.shape)
-            plt.scatter(np.arange(1, 21), lesion_data, c='blue', s=5, alpha=0.7, label = 'IP' )
-            lesion_data = np.load("./Combined/4T_2x10/Data/lesions_CP_{}.npy".format(run_num))
-            plt.scatter(np.arange(1, 21), lesion_data, c='green',s=5, alpha=0.7, label='CP')
-            lesion_data = np.load("./Combined/4T_2x10/Data/lesions_LW_{}.npy".format(run_num))
-            plt.scatter(np.arange(1, 21), lesion_data, c='red',s=5, alpha=0.7,label='LW')
-            lesion_data = np.load("./Combined/4T_2x10/Data/lesions_MC_{}.npy".format(run_num))
-            plt.scatter(np.arange(1, 21), lesion_data, c='yellow',s=5, alpha=0.7,label='MC')
-
-    # plt.plot([0.5,10.5],[0.8,0.8], "k--", alpha=0.7)
-    plt.xticks(np.arange(1, 11))
-
-    plt.xlim([0.5, 20.5])
-    plt.ylim([-0.03,1.1])
-    plt.xlabel("Neuron #")
-    plt.ylabel("Fitness after lesion")
-    #plt.legend(bbox_to_anchor=(1.05, 1), loc='upper left')
-    plt.tight_layout()
-    plt.savefig("./Combined/4T_2x10/Figures/figure_5_lesions.pdf")
-    plt.show()
-
-all_lesion_data()
-"""
-
-def plot_lesion_analysis(run_num):
-    """
-    plt.figure(figsize=[5, 5])
-
-    #plt.subplot2grid([1, 3], [0, 0])
-    plt.plot([0.5, 20.5], [0.85, 0.85], "k--", alpha=0.7)
-    for i in np.arange(1, 20):
-        plt.plot([i + 0.5, i + 0.5], [-0.05, 1.1], "gray", alpha=0.5)
-
-    lesion_data = np.load("./Combined/4T_2x10/Data/lesions_IP_{}.npy".format(run_num))
-    plt.scatter(
-        np.arange(1, 21) - 0.1,
-        lesion_data,
-        s=50,
-        alpha=0.7,
-        c="xkcd:azure",
-        label="IP",
-    )
-    lesion_data = np.load("./Combined/4T_2x10/Data/lesions_CP_{}.npy".format(run_num))
-    plt.scatter(
-        np.arange(1, 21)-0.05, lesion_data, s=50, alpha=0.7, c="xkcd:teal green", label="CP"
-    )
-    lesion_data = np.load("./Combined/4T_2x10/Data/lesions_LW_{}.npy".format(run_num))
-    plt.scatter(
-        np.arange(1, 21),
-        lesion_data,
-        s=50,
-        alpha=0.7,
-        c="xkcd:tomato",
-        label="LW",
-    )
-    lesion_data = np.load("./Combined/4T_2x10/Data/lesions_MC_{}.npy".format(run_num))
-    plt.scatter(
-        np.arange(1, 21) + 0.05,
-        lesion_data,
-        s=50,
-        alpha=0.7,
-        c="xkcd:yellow",
-        label="MC",
-    )
-
-    plt.legend()
-    plt.xticks(np.arange(1, 21))
-    plt.xlim([0.5, 20.5])
-    plt.ylim([-0.1, 1.05])
-    plt.title('Lesion Example: Agent #11')
-    plt.xlabel("Neuron #")
-    plt.ylabel("Fitness after lesion")
-    plt.show()
-    """
-    dir = "./Combined/4T_2x5/Data/"
-    files = glob.glob(os.path.join(dir, "perf_*.npy"))
-    files.sort()
-
+    #print(len(files))
     all_categs = []
     all_counts = []
     
     for i, file in enumerate(files):
         fits = np.load(file)
         # if np.prod(fits) > 0.8:
-        fits = fits**(1/4)
-        if np.min(fits) > 0.8:
+        #fits = fits**(1/4)
+        if 0 + 1 == 1:
+            print(1)
             ind = file.split("/")[-1].split(".")[-2].split("_")[-1]
-            ipp = np.load("./Combined/4T_2x5/Data/lesions_IP_" + str(ind) + ".npy") #10 values, one for each neuron in a circuit
-            cpp = np.load("./Combined/4T_2x5/Data/lesions_CP_" + str(ind) + ".npy")
-            lwp = np.load("./Combined/4T_2x5/Data/lesions_LW_" + str(ind) + ".npy")
-            mcp = np.load("./Combined/4T_2x5/Data/lesions_MC_" + str(ind) + ".npy")
+            ipp = np.load("./Combined/Sequential/Data/lesions_IP_" + str(ind) + ".npy") #10 values, one for each neuron in a circuit
+            cpp = np.load("./Combined/Sequential/Data/lesions_CP_" + str(ind) + ".npy")
+            lwp = np.load("./Combined/Sequential/Data/lesions_LW_" + str(ind) + ".npy")
+            mcp = np.load("./Combined/Sequential/Data/lesions_MC_" + str(ind) + ".npy")
 
             # Stats on neurons for Ablations
             
@@ -193,11 +102,11 @@ def plot_lesion_analysis(run_num):
                     ip_neuron <=  Threshold and cp_neuron <= Threshold and lw_neuron <= Threshold and mc_neuron <= Threshold
                 ):  #all 
                     count[15] += 1
-                
 
             # making it dataframe ready
             all_counts.append(count) #count is a 1x15 array for each agent. All_counts is 15xensemble size 
             #all categories: reuse and specialization
+            np.save("C:/Users/benso/Desktop/Projects/Neural_Reuse/Neural_Reuse_New/Combined/Sequential/Data"+"/NEWSTATS_" + str(i) + ".npy",count)
             categs = ["None","IP","CP","LW","MC","IP+CP","IP+LW","IP+MC","CP+LW","CP+MC","LW+MC","IP+CP+LW","IP+CP+MC","IP+LW+MC","CP+LW+MC","All"]
             #2-neuron reuse categs:
             #5,6,7,8,9,10
@@ -281,17 +190,17 @@ def plot_lesion_analysis(run_num):
     #print(lw_mc)
     #print(ensemble_labels)
     """
-    np.save("./Combined/4T_2x5/Data"+"/MC"+".npy",mc_inv)
-    np.save("./Combined/4T_2x5/Data"+"/ip_mc"+".npy",ip_mc)
-    np.save("./Combined/4T_2x5/Data"+"/cp_mc"+".npy",cp_mc)
-    np.save("./Combined/4T_2x5/Data"+"/lw_mc"+".npy",lw_mc)
-    np.save("./Combined/4T_2x5/Data"+"/ip_cp_mc"+".npy",ip_cp_mc)
-    np.save("./Combined/4T_2x5/Data"+"/ip_lw_mc"+".npy",ip_lw_mc)
-    np.save("./Combined/4T_2x5/Data"+"/cp_lw_mc"+".npy",cp_lw_mc)
-    np.save("./Combined/4T_2x5/Data"+"/all"+".npy",all_tasks)
-    np.save("./Combined/4T_2x5/Data"+"/none"+".npy",no_tasks)
+    np.save("./Combined/Sequential/Data"+"/MC"+".npy",mc_inv)
+    np.save("./Combined/Sequential/Data"+"/ip_mc"+".npy",ip_mc)
+    np.save("./Combined/Sequential/Data"+"/cp_mc"+".npy",cp_mc)
+    np.save("./Combined/Sequential/Data"+"/lw_mc"+".npy",lw_mc)
+    np.save("./Combined/Sequential/Data"+"/ip_cp_mc"+".npy",ip_cp_mc)
+    np.save("./Combined/Sequential/Data"+"/ip_lw_mc"+".npy",ip_lw_mc)
+    np.save("./Combined/Sequential/Data"+"/cp_lw_mc"+".npy",cp_lw_mc)
+    np.save("./Combined/Sequential/Data"+"/all"+".npy",all_tasks)
+    np.save("./Combined/Sequential/Data"+"/none"+".npy",no_tasks)
     print(most_pop)
-    np.save("./Combined/4T_2x5/Data"+"/most_pop_cat"+".npy",most_pop)
+    np.save("./Combined/Sequential/Data"+"/most_pop_cat"+".npy",most_pop)
     
 
     #np.save("./Combined/4T_2x5/Data"+"/task_labels"+".npy",task_labels)
@@ -342,11 +251,11 @@ def plot_lesion_analysis(run_num):
     print(reused_count_4)
     print(special_count)
 
-    np.save("./Combined/4T_2x5/Data"+"/reused_prop"+".npy",reused_count)
-    np.save("./Combined/4T_2x5/Data"+"/reused_prop_2"+".npy",reused_count_2)
-    np.save("./Combined/4T_2x5/Data"+"/reused_prop_3"+".npy",reused_count_3)
-    np.save("./Combined/4T_2x5/Data"+"/reused_prop_4"+".npy",reused_count_4)
-    np.save("./Combined/4T_2x5/Data"+"/special_prop"+".npy",special_count)
+    np.save("./Combined/Sequential/Data"+"/reused_prop"+".npy",reused_count)
+    np.save("./Combined/Sequential/Data"+"/reused_prop_2"+".npy",reused_count_2)
+    np.save("./Combined/Sequential/Data"+"/reused_prop_3"+".npy",reused_count_3)
+    np.save("./Combined/Sequential/Data"+"/reused_prop_4"+".npy",reused_count_4)
+    np.save("./Combined/Sequential/Data"+"/special_prop"+".npy",special_count)
 
 
 """
@@ -409,4 +318,4 @@ def plot_lesion_analysis(run_num):
     
 """
 
-plot_lesion_analysis(11)
+plot_lesion_analysis()

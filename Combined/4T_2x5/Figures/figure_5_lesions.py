@@ -56,7 +56,7 @@ def all_lesion_data():
 all_lesion_data()
 """
 
-def plot_lesion_analysis(run_num):
+def plot_lesion_analysis():
     """
     plt.figure(figsize=[5, 5])
 
@@ -117,7 +117,7 @@ def plot_lesion_analysis(run_num):
         fits = np.load(file)
         # if np.prod(fits) > 0.8:
         fits = fits**(1/4)
-        if np.min(fits) > 0.8:
+        if 1+2 == 3:
             ind = file.split("/")[-1].split(".")[-2].split("_")[-1]
             ipp = np.load("./Combined/4T_2x5/Data/lesions_IP_" + str(ind) + ".npy") #10 values, one for each neuron in a circuit
             cpp = np.load("./Combined/4T_2x5/Data/lesions_CP_" + str(ind) + ".npy")
@@ -196,6 +196,7 @@ def plot_lesion_analysis(run_num):
                 
 
             # making it dataframe ready
+            np.save("C:/Users/benso/Desktop/Projects/Neural_Reuse/Neural_Reuse_New/Combined/4T_2x5/Data"+"/NEWSTATS_" + str(i) + ".npy",count)
             all_counts.append(count) #count is a 1x15 array for each agent. All_counts is 15xensemble size 
             #all categories: reuse and specialization
             categs = ["None","IP","CP","LW","MC","IP+CP","IP+LW","IP+MC","CP+LW","CP+MC","LW+MC","IP+CP+LW","IP+CP+MC","IP+LW+MC","CP+LW+MC","All"]
@@ -409,4 +410,4 @@ def plot_lesion_analysis(run_num):
     
 """
 
-plot_lesion_analysis(11)
+plot_lesion_analysis()
