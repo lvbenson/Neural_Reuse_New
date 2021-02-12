@@ -21,12 +21,12 @@ WeightRange = 15.0
 BiasRange = 15.0
 
 # EA Params
-popsize = 30 ##
+popsize = 10 ##
 genesize = (nI*nH1) + (nH1*nH2) + (nH1*nO) + nH1 + nH2 + nO #length of the genotype
 recombProb = 0.5
 mutatProb = 0.05 #1/genesize
 demeSize = 49 ##
-generations = 300 ##
+generations = 10 ##
 boundaries = 0 ##
 
 # Task Params
@@ -131,21 +131,25 @@ def fitnessFunction(genotype):
 
 #f = fitnessFunction()
 
-ga = mga.Microbial(fitnessFunction, popsize, genesize, recombProb, mutatProb, demeSize, generations, boundaries)
+ga = mga_seq.Microbial(fitnessFunction, popsize, genesize, recombProb, mutatProb, demeSize, generations, boundaries)
 ga.run(0)
 af,bf,bi = ga.fitStats()
 if bf < 0.8:
     print('Not good enough')
+    print(bf)
+    print(np.mean(bi))
     pass
 else:
     print('good enough')
+    print(bf)
+    print(np.mean(bi))
     ga.run(1)
     af,bf,bi = ga.fitStats()
 
-    ga.showFitness()
-    np.save('average_history_'+id+'.npy',ga.avgHistory)
-    np.save('best_history_'+id+'.npy',ga.bestHistory)
-    np.save('best_individual_'+id+'.npy',bi)
+    #ga.showFitness()
+    #np.save('average_history_'+id+'.npy',ga.avgHistory)
+    #np.save('best_history_'+id+'.npy',ga.bestHistory)
+    #np.save('best_individual_'+id+'.npy',bi)
 
 # Get best evolved network and show its activity
 #af,bf,bi = ga.fitStats()

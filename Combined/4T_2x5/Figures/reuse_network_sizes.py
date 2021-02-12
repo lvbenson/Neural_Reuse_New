@@ -15,11 +15,24 @@ reused_2x5_3 = np.load("./Combined/4T_2x5/Data/reused_prop_3.npy")
 reused_2x5_4 = np.load("./Combined/4T_2x5/Data/reused_prop_4.npy")
 special_2x5 = np.load("./Combined/4T_2x5/Data/special_prop.npy")
 
+num_reuse_2x5 = np.load("./Combined/4T_2x5/Data/neuron_nums_reuse.npy")
+num_reuse_2_2x5 = np.load("./Combined/4T_2x5/Data/neuron_nums_reuse_2.npy")
+num_reuse_3_2x5 = np.load("./Combined/4T_2x5/Data/neuron_nums_reuse_3.npy")
+num_reuse_4_2x5 = np.load("./Combined/4T_2x5/Data/neuron_nums_reuse_4.npy")
+num_special_2x5 = np.load("./Combined/4T_2x5/Data/neuron_nums_special.npy")
+
+
 reused_2x3 = np.load("./Combined/4T_2x3/Data/reused_prop.npy")
 reused_2x3_2 = np.load("./Combined/4T_2x3/Data/reused_prop_2.npy")
 reused_2x3_3 = np.load("./Combined/4T_2x3/Data/reused_prop_3.npy")
 reused_2x3_4 = np.load("./Combined/4T_2x3/Data/reused_prop_4.npy")
 special_2x3 = np.load("./Combined/4T_2x3/Data/special_prop.npy")
+
+num_reuse_2x3 = np.load("./Combined/4T_2x3/Data/neuron_nums_reuse.npy")
+num_reuse_2_2x3 = np.load("./Combined/4T_2x3/Data/neuron_nums_reuse_2.npy")
+num_reuse_3_2x3 = np.load("./Combined/4T_2x3/Data/neuron_nums_reuse_3.npy")
+num_reuse_4_2x3 = np.load("./Combined/4T_2x3/Data/neuron_nums_reuse_4.npy")
+num_special_2x3 = np.load("./Combined/4T_2x3/Data/neuron_nums_special.npy")
 
 reused_2x10 = np.load("./Combined/4T_2x10/Data/reused_prop.npy")
 reused_2x10_2 = np.load("./Combined/4T_2x10/Data/reused_prop_2.npy")
@@ -27,11 +40,37 @@ reused_2x10_3 = np.load("./Combined/4T_2x10/Data/reused_prop_3.npy")
 reused_2x10_4 = np.load("./Combined/4T_2x10/Data/reused_prop_4.npy")
 special_2x10 = np.load("./Combined/4T_2x10/Data/special_prop.npy")
 
+num_reuse_2x10 = np.load("./Combined/4T_2x10/Data/neuron_nums_reuse.npy")
+num_reuse_2_2x10 = np.load("./Combined/4T_2x10/Data/neuron_nums_reuse_2.npy")
+num_reuse_3_2x10 = np.load("./Combined/4T_2x10/Data/neuron_nums_reuse_3.npy")
+num_reuse_4_2x10 = np.load("./Combined/4T_2x10/Data/neuron_nums_reuse_4.npy")
+num_special_2x10 = np.load("./Combined/4T_2x10/Data/neuron_nums_special.npy")
+
 reused_2x20 = np.load("./Combined/4T_2x20/Data/reused_prop.npy")
 reused_2x20_2 = np.load("./Combined/4T_2x20/Data/reused_prop_2.npy")
 reused_2x20_3 = np.load("./Combined/4T_2x20/Data/reused_prop_3.npy")
 reused_2x20_4 = np.load("./Combined/4T_2x20/Data/reused_prop_4.npy")
 special_2x20 = np.load("./Combined/4T_2x20/Data/special_prop.npy")
+
+num_reuse_2x20 = np.load("./Combined/4T_2x20/Data/neuron_nums_reuse.npy")
+num_reuse_2_2x20 = np.load("./Combined/4T_2x20/Data/neuron_nums_reuse_2.npy")
+num_reuse_3_2x20 = np.load("./Combined/4T_2x20/Data/neuron_nums_reuse_3.npy")
+num_reuse_4_2x20 = np.load("./Combined/4T_2x20/Data/neuron_nums_reuse_4.npy")
+num_special_2x20 = np.load("./Combined/4T_2x20/Data/neuron_nums_special.npy")
+
+
+reused_3x10 = np.load("./Combined/4T_3x10/Data/reused_prop.npy")
+reused_3x10_2 = np.load("./Combined/4T_3x10/Data/reused_prop_2.npy")
+reused_3x10_3 = np.load("./Combined/4T_3x10/Data/reused_prop_3.npy")
+reused_3x10_4 = np.load("./Combined/4T_3x10/Data/reused_prop_4.npy")
+special_3x10 = np.load("./Combined/4T_3x10/Data/special_prop.npy")
+
+num_reuse_3x10 = np.load("./Combined/4T_3x10/Data/neuron_nums_reuse.npy")
+num_reuse_2_3x10 = np.load("./Combined/4T_3x10/Data/neuron_nums_reuse_2.npy")
+num_reuse_3_3x10 = np.load("./Combined/4T_3x10/Data/neuron_nums_reuse_3.npy")
+num_reuse_4_3x10 = np.load("./Combined/4T_3x10/Data/neuron_nums_reuse_4.npy")
+num_special_3x10 = np.load("./Combined/4T_3x10/Data/neuron_nums_special.npy")
+
 """
 colors = ['#E69F00', '#56B4E9','#009E73','#D55E00']
 names = ['2x5','2x10','2x20','2x3']
@@ -91,22 +130,36 @@ for r in list(reused_2x20):
     size20.append('2x20')
 
 
-dfnew = pd.DataFrame({"Reused2x3": list(reused_2x3),
-"Reused2x5":list(reused_2x5),
-"Reused2x10":list(reused_2x10),
-"Reused2x20":list(reused_2x20)})
 
-"""
 dfnew = pd.DataFrame({"Reused": [sum(reused_2x3)/len(reused_2x3),sum(reused_2x5)/len(reused_2x5),sum(reused_2x10)/len(reused_2x10),sum(reused_2x20)/len(reused_2x20)],
 "Reused,2": [sum(reused_2x3_2)/len(reused_2x3_2),sum(reused_2x5_2)/len(reused_2x5_2),sum(reused_2x10_2)/len(reused_2x10_2),sum(reused_2x20_2)/len(reused_2x20_2)],
 "Reused,3": [sum(reused_2x3_3)/len(reused_2x3_3),sum(reused_2x5_3)/len(reused_2x5_3),sum(reused_2x10_3)/len(reused_2x10_3),sum(reused_2x20_3)/len(reused_2x20_3)],
 "Reused,4": [sum(reused_2x3_4)/len(reused_2x3_4),sum(reused_2x5_4)/len(reused_2x5_4),sum(reused_2x10_4)/len(reused_2x10_4),sum(reused_2x20_4)/len(reused_2x20_4)],
 "Specialized": [sum(special_2x3)/len(special_2x3),sum(special_2x5)/len(special_2x5),sum(special_2x10)/len(special_2x10),sum(special_2x20)/len(special_2x20)],
 "NetworkSize": ["2x3","2x5","2x10","2x20"]})
-#index=(['2x3'],['2x5'],['2x10'],['2x20'])
-"""
+index=(['2x3'],['2x5'],['2x10'],['2x20'])
 
-print(dfnew)
+df = pd.DataFrame({"Reused": [reused_2x3,reused_2x5,reused_2x10,reused_2x20,reused_3x10],
+"Reused,2": [reused_2x3_2,reused_2x5_2,reused_2x10_2,reused_2x20_2,reused_3x10_2],
+"Reused,3": [reused_2x3_3,reused_2x5_3,reused_2x10_3,reused_2x20_3,reused_3x10_3],
+"Reused,4": [reused_2x3_4,reused_2x5_4,reused_2x10_4,reused_2x20_4,reused_3x10_4],
+"Specialized": [special_2x3,special_2x5,special_2x10,special_2x20,special_3x10],
+"NetworkSize": ["2x3","2x5","2x10","2x20","3x10"]},
+index=['2x3','2x5','2x10','2x20','3x10'])
+#print(df)
+
+dfnum = pd.DataFrame({"Reused": [num_reuse_2x3,num_reuse_2x5,num_reuse_2x10,num_reuse_2x20,num_reuse_3x10],
+"Reused,2": [num_reuse_2_2x3,num_reuse_2_2x5,num_reuse_2_2x10,num_reuse_2_2x20,num_reuse_2_3x10],
+"Reused,3": [num_reuse_3_2x3,num_reuse_3_2x5,num_reuse_3_2x10,num_reuse_3_2x20,num_reuse_3_3x10],
+"Reused,4": [num_reuse_4_2x3,num_reuse_4_2x5,num_reuse_4_2x10,num_reuse_4_2x20,num_reuse_4_3x10],
+"Specialized": [num_special_2x3,num_special_2x5,num_special_2x10,num_special_2x20,num_special_3x10],
+"NetworkSize": ["2x3","2x5","2x10","2x20","3x10"]},
+index=['2x3','2x5','2x10','2x20','3x10'])
+
+
+
+
+
 #dfnew.to_csv("./Combined/4T_2x5/Data/dataframe.csv")
 #df = pd.read_csv("./Combined/4T_2x5/Data/dataframe.csv")
 import joypy
@@ -116,19 +169,24 @@ from matplotlib import cm
 
 
 """
-df[['Reused','Reused,2','Reused,3','Reused,4','Specialized']].applymap(lambda x: x[0]).plot.bar(rot=0)
-plt.title('Reuse Proportions')
+dfnum[['Reused','Reused,2','Reused,3','Reused,4','Specialized']].applymap(lambda x: x[0]).plot.bar(rot=0)
+plt.title('# Neurons in Reuse Categories')
 plt.xlabel('Experiment')
 plt.ylabel('Proportions')
-plt.savefig("./Combined/4T_2x5/Figures/REUSE_extent.pdf")
+#plt.savefig("./Combined/4T_2x5/Figures/REUSE_extent.pdf")
 plt.show()
 """
 
 
-#plt.figure(figsize=(10,8), dpi= 50)
-fig, axes = joypy.joyplot(dfnew, ylim='own', figsize=(4,5))
 
-# Decoration
-#plt.title('Reuse Extent Over Multiple Network Sizes', fontsize=14)
+fig, ax = plt.subplots(2, 1, figsize=(6, 5))
+
+dfnum[['Reused','Reused,2','Reused,3','Reused,4','Specialized']].applymap(lambda x: x[0]).plot.bar(ax=ax[0],rot=0)
+ax[0].set_title('# of neurons per reuse category')
+
+df[['Reused','Reused,2','Reused,3','Reused,4','Specialized']].applymap(lambda x: x[0]).plot.bar(ax=ax[1],rot=0)
+ax[1].set_title('Proportion of neurons per reuse category')
+ax[1].get_legend().remove()
+plt.tight_layout()
+plt.savefig("./Combined/4T_2x5/Figures/reuse_categories_networks.pdf")
 plt.show()
-#SHOWS MULTIPLE CATEGORIES OF REUSE AND SPECIALIZATION (2 neurons reused, 3 neurons reused, 4)
