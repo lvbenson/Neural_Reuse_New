@@ -106,7 +106,7 @@ def plot_lesion_analysis():
     plt.ylabel("Fitness after lesion")
     plt.show()
     """
-    dir = "./Combined/4T_2x5/Data/"
+    dir = "./Combined/4T_2x3/Data/"
     files = glob.glob(os.path.join(dir, "perf_*.npy"))
     files.sort()
 
@@ -117,12 +117,12 @@ def plot_lesion_analysis():
         fits = np.load(file)
         # if np.prod(fits) > 0.8:
         fits = fits**(1/4)
-        if 1+2 == 3:
+        if 1 + 1 == 2:
             ind = file.split("/")[-1].split(".")[-2].split("_")[-1]
-            ipp = np.load("./Combined/4T_2x5/Data/lesions_IP_" + str(ind) + ".npy") #10 values, one for each neuron in a circuit
-            cpp = np.load("./Combined/4T_2x5/Data/lesions_CP_" + str(ind) + ".npy")
-            lwp = np.load("./Combined/4T_2x5/Data/lesions_LW_" + str(ind) + ".npy")
-            mcp = np.load("./Combined/4T_2x5/Data/lesions_MC_" + str(ind) + ".npy")
+            ipp = np.load("./Combined/4T_2x3/Data/lesions_IP_" + str(ind) + ".npy") #10 values, one for each neuron in a circuit
+            cpp = np.load("./Combined/4T_2x3/Data/lesions_CP_" + str(ind) + ".npy")
+            lwp = np.load("./Combined/4T_2x3/Data/lesions_LW_" + str(ind) + ".npy")
+            mcp = np.load("./Combined/4T_2x3/Data/lesions_MC_" + str(ind) + ".npy")
 
             # Stats on neurons for Ablations
             
@@ -196,7 +196,7 @@ def plot_lesion_analysis():
                 
 
             # making it dataframe ready
-            np.save("C:/Users/benso/Desktop/Projects/Neural_Reuse/Neural_Reuse_New/Combined/4T_2x5/Data"+"/NEWSTATS_" + str(i) + ".npy",count)
+            np.save("C:/Users/benso/Desktop/Projects/Neural_Reuse/Neural_Reuse_New/Combined/4T_2x3/Data"+"/NEWSTATS_" + str(i) + ".npy",count)
             all_counts.append(count) #count is a 1x15 array for each agent. All_counts is 15xensemble size 
             #all categories: reuse and specialization
             categs = ["None","IP","CP","LW","MC","IP+CP","IP+LW","IP+MC","CP+LW","CP+MC","LW+MC","IP+CP+LW","IP+CP+MC","IP+LW+MC","CP+LW+MC","All"]
@@ -282,17 +282,17 @@ def plot_lesion_analysis():
     #print(lw_mc)
     #print(ensemble_labels)
     """
-    np.save("./Combined/4T_2x5/Data"+"/MC"+".npy",mc_inv)
-    np.save("./Combined/4T_2x5/Data"+"/ip_mc"+".npy",ip_mc)
-    np.save("./Combined/4T_2x5/Data"+"/cp_mc"+".npy",cp_mc)
-    np.save("./Combined/4T_2x5/Data"+"/lw_mc"+".npy",lw_mc)
-    np.save("./Combined/4T_2x5/Data"+"/ip_cp_mc"+".npy",ip_cp_mc)
-    np.save("./Combined/4T_2x5/Data"+"/ip_lw_mc"+".npy",ip_lw_mc)
-    np.save("./Combined/4T_2x5/Data"+"/cp_lw_mc"+".npy",cp_lw_mc)
-    np.save("./Combined/4T_2x5/Data"+"/all"+".npy",all_tasks)
-    np.save("./Combined/4T_2x5/Data"+"/none"+".npy",no_tasks)
-    print(most_pop)
-    np.save("./Combined/4T_2x5/Data"+"/most_pop_cat"+".npy",most_pop)
+    np.save("./Combined/4T_2x3/Data"+"/MC"+".npy",mc_inv)
+    np.save("./Combined/4T_2x3/Data"+"/ip_mc"+".npy",ip_mc)
+    np.save("./Combined/4T_2x3/Data"+"/cp_mc"+".npy",cp_mc)
+    np.save("./Combined/4T_2x3/Data"+"/lw_mc"+".npy",lw_mc)
+    np.save("./Combined/4T_2x3/Data"+"/ip_cp_mc"+".npy",ip_cp_mc)
+    np.save("./Combined/4T_2x3/Data"+"/ip_lw_mc"+".npy",ip_lw_mc)
+    np.save("./Combined/4T_2x3/Data"+"/cp_lw_mc"+".npy",cp_lw_mc)
+    np.save("./Combined/4T_2x3/Data"+"/all"+".npy",all_tasks)
+    np.save("./Combined/4T_2x3/Data"+"/none"+".npy",no_tasks)
+    #print(most_pop2)
+    np.save("./Combined/4T_2x3/Data"+"/most_pop_cat"+".npy",most_pop)
     
 
     #np.save("./Combined/4T_2x5/Data"+"/task_labels"+".npy",task_labels)
@@ -343,11 +343,11 @@ def plot_lesion_analysis():
     print(reused_count_4)
     print(special_count)
 
-    np.save("./Combined/4T_2x5/Data"+"/reused_prop"+".npy",reused_count)
-    np.save("./Combined/4T_2x5/Data"+"/reused_prop_2"+".npy",reused_count_2)
-    np.save("./Combined/4T_2x5/Data"+"/reused_prop_3"+".npy",reused_count_3)
-    np.save("./Combined/4T_2x5/Data"+"/reused_prop_4"+".npy",reused_count_4)
-    np.save("./Combined/4T_2x5/Data"+"/special_prop"+".npy",special_count)
+    np.save("./Combined/4T_2x3/Data"+"/reused_prop"+".npy",reused_count)
+    np.save("./Combined/4T_2x3/Data"+"/reused_prop_2"+".npy",reused_count_2)
+    np.save("./Combined/4T_2x3/Data"+"/reused_prop_3"+".npy",reused_count_3)
+    np.save("./Combined/4T_2x3/Data"+"/reused_prop_4"+".npy",reused_count_4)
+    np.save("./Combined/4T_2x3/Data"+"/special_prop"+".npy",special_count)
 
 
 """

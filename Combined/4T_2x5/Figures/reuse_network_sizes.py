@@ -64,40 +64,71 @@ data.append([reused_2x3,special_2x3])
 data2.append([reused_2x5,special_2x5])
 data3.append([reused_2x10,special_2x10])
 data4.append([reused_2x20,special_2x20])
-
+"""
 data = {'name': ['Prop Reused','Prop Specialized'],
 '2x3': [reused_2x3,special_2x3],
 '2x5': [reused_2x5,special_2x5],
 '2x10': [reused_2x10,special_2x10],
 '2x20': [reused_2x20,special_2x20]}
+"""
+"""
+df = pd.DataFrame({'Exp': ['2x3','2x5','2x10','2x20'],
+'Prop Reused': [reused_2x3,reused_2x5,reused_2x10,reused_2x20],
+'Prop Specialized': [special_2x3,special_2x5,special_2x10,special_2x20]})
 
-#df = pd.DataFrame({'Exp': ['2x3','2x5','2x10','2x20'],
-#'Prop Reused': [reused_2x3,reused_2x5,reused_2x10,reused_2x20],
-#'Prop Specialized': [special_2x3,special_2x5,special_2x10,special_2x20]})
+"""
+size3 = []
+size5 = []
+size10 = []
+size20 = []
+for r in list(reused_2x3):
+    size3.append('2x3')
+for r in list(reused_2x5):
+    size5.append('2x5')
+for r in list(reused_2x10):
+    size10.append('2x10')
+for r in list(reused_2x20):
+    size20.append('2x20')
 
-df = pd.DataFrame({'Reused': [reused_2x3,reused_2x5,reused_2x10,reused_2x20],
-'Reused,2': [reused_2x3_2,reused_2x5_2,reused_2x10_2,reused_2x20_2],
-'Reused,3': [reused_2x3_3,reused_2x5_3,reused_2x10_3,reused_2x20_3],
-'Reused,4': [reused_2x3_4,reused_2x5_4,reused_2x10_4,reused_2x20_4],
-'Specialized': [special_2x3,special_2x5,special_2x10,special_2x20]},
-index=(['2x3'],['2x5'],['2x10'],['2x20']))
 
-#print(df)
-#sns.pairplot(df)
-#plt.show()
+dfnew = pd.DataFrame({"Reused2x3": list(reused_2x3),
+"Reused2x5":list(reused_2x5),
+"Reused2x10":list(reused_2x10),
+"Reused2x20":list(reused_2x20)})
+
+"""
+dfnew = pd.DataFrame({"Reused": [sum(reused_2x3)/len(reused_2x3),sum(reused_2x5)/len(reused_2x5),sum(reused_2x10)/len(reused_2x10),sum(reused_2x20)/len(reused_2x20)],
+"Reused,2": [sum(reused_2x3_2)/len(reused_2x3_2),sum(reused_2x5_2)/len(reused_2x5_2),sum(reused_2x10_2)/len(reused_2x10_2),sum(reused_2x20_2)/len(reused_2x20_2)],
+"Reused,3": [sum(reused_2x3_3)/len(reused_2x3_3),sum(reused_2x5_3)/len(reused_2x5_3),sum(reused_2x10_3)/len(reused_2x10_3),sum(reused_2x20_3)/len(reused_2x20_3)],
+"Reused,4": [sum(reused_2x3_4)/len(reused_2x3_4),sum(reused_2x5_4)/len(reused_2x5_4),sum(reused_2x10_4)/len(reused_2x10_4),sum(reused_2x20_4)/len(reused_2x20_4)],
+"Specialized": [sum(special_2x3)/len(special_2x3),sum(special_2x5)/len(special_2x5),sum(special_2x10)/len(special_2x10),sum(special_2x20)/len(special_2x20)],
+"NetworkSize": ["2x3","2x5","2x10","2x20"]})
+#index=(['2x3'],['2x5'],['2x10'],['2x20'])
+"""
+
+print(dfnew)
+#dfnew.to_csv("./Combined/4T_2x5/Data/dataframe.csv")
+#df = pd.read_csv("./Combined/4T_2x5/Data/dataframe.csv")
+import joypy
+import pandas as pd
+from matplotlib import pyplot as plt
+from matplotlib import cm
 
 
-#df_lists = df[['Prop Reused','Prop Specialized']].unstack().apply(pd.Series)
-#df_lists.plot.bar(rot=0, cmap=plt.cm.jet, fontsize=8, width=0.7, figsize=(8,4))
-
-#, color=list('br')
-#SHOWS DISCRETE CATEGORIES OF REUSE AND SPECIALIZATION
+"""
 df[['Reused','Reused,2','Reused,3','Reused,4','Specialized']].applymap(lambda x: x[0]).plot.bar(rot=0)
 plt.title('Reuse Proportions')
 plt.xlabel('Experiment')
 plt.ylabel('Proportions')
 plt.savefig("./Combined/4T_2x5/Figures/REUSE_extent.pdf")
 plt.show()
+"""
 
 
+#plt.figure(figsize=(10,8), dpi= 50)
+fig, axes = joypy.joyplot(dfnew, ylim='own', figsize=(4,5))
+
+# Decoration
+#plt.title('Reuse Extent Over Multiple Network Sizes', fontsize=14)
+plt.show()
 #SHOWS MULTIPLE CATEGORIES OF REUSE AND SPECIALIZATION (2 neurons reused, 3 neurons reused, 4)
