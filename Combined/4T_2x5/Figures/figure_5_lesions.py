@@ -106,7 +106,7 @@ def plot_lesion_analysis():
     plt.ylabel("Fitness after lesion")
     plt.show()
     """
-    dir = "./Combined/4T_2x20/Data/"
+    dir = "./Combined/4T_3x5/Data/"
     files = glob.glob(os.path.join(dir, "perf_*.npy"))
     ensemble = len(files)
     files.sort()
@@ -120,10 +120,10 @@ def plot_lesion_analysis():
         fits = fits**(1/4)
         if 1 + 1 == 2:
             ind = file.split("/")[-1].split(".")[-2].split("_")[-1]
-            ipp = np.load("./Combined/4T_2x20/Data/lesions_IP_" + str(ind) + ".npy") #10 values, one for each neuron in a circuit
-            cpp = np.load("./Combined/4T_2x20/Data/lesions_CP_" + str(ind) + ".npy")
-            lwp = np.load("./Combined/4T_2x20/Data/lesions_LW_" + str(ind) + ".npy")
-            mcp = np.load("./Combined/4T_2x20/Data/lesions_MC_" + str(ind) + ".npy")
+            ipp = np.load("./Combined/4T_3x5/Data/lesions_IP_" + str(ind) + ".npy") #10 values, one for each neuron in a circuit
+            cpp = np.load("./Combined/4T_3x5/Data/lesions_CP_" + str(ind) + ".npy")
+            lwp = np.load("./Combined/4T_3x5/Data/lesions_LW_" + str(ind) + ".npy")
+            mcp = np.load("./Combined/4T_3x5/Data/lesions_MC_" + str(ind) + ".npy")
 
             # Stats on neurons for Ablations
             
@@ -197,7 +197,7 @@ def plot_lesion_analysis():
                 
 
             # making it dataframe ready
-            np.save("C:/Users/benso/Desktop/Projects/Neural_Reuse/Neural_Reuse_New/Combined/4T_2x20/Data"+"/NEWSTATS_" + str(i) + ".npy",count)
+            np.save("C:/Users/benso/Desktop/Projects/Neural_Reuse/Neural_Reuse_New/Combined/4T_3x5/Data"+"/NEWSTATS_" + str(i) + ".npy",count)
             all_counts.append(count) #count is a 1x15 array for each agent. All_counts is 15xensemble size 
             #all categories: reuse and specialization
             categs = ["None","IP","CP","LW","MC","IP+CP","IP+LW","IP+MC","CP+LW","CP+MC","LW+MC","IP+CP+LW","IP+CP+MC","IP+LW+MC","CP+LW+MC","All"]
@@ -283,17 +283,17 @@ def plot_lesion_analysis():
     #print(lw_mc)
     #print(ensemble_labels)
     """
-    np.save("./Combined/4T_2x20/Data"+"/MC"+".npy",mc_inv)
-    np.save("./Combined/4T_2x20/Data"+"/ip_mc"+".npy",ip_mc)
-    np.save("./Combined/4T_2x20/Data"+"/cp_mc"+".npy",cp_mc)
-    np.save("./Combined/4T_2x20/Data"+"/lw_mc"+".npy",lw_mc)
-    np.save("./Combined/4T_2x20/Data"+"/ip_cp_mc"+".npy",ip_cp_mc)
-    np.save("./Combined/4T_2x20/Data"+"/ip_lw_mc"+".npy",ip_lw_mc)
-    np.save("./Combined/4T_2x20/Data"+"/cp_lw_mc"+".npy",cp_lw_mc)
-    np.save("./Combined/4T_2x20/Data"+"/all"+".npy",all_tasks)
-    np.save("./Combined/4T_2x20/Data"+"/none"+".npy",no_tasks)
+    np.save("./Combined/4T_3x5/Data"+"/MC"+".npy",mc_inv)
+    np.save("./Combined/4T_3x5/Data"+"/ip_mc"+".npy",ip_mc)
+    np.save("./Combined/4T_3x5/Data"+"/cp_mc"+".npy",cp_mc)
+    np.save("./Combined/4T_3x5/Data"+"/lw_mc"+".npy",lw_mc)
+    np.save("./Combined/4T_3x5/Data"+"/ip_cp_mc"+".npy",ip_cp_mc)
+    np.save("./Combined/4T_3x5/Data"+"/ip_lw_mc"+".npy",ip_lw_mc)
+    np.save("./Combined/4T_3x5/Data"+"/cp_lw_mc"+".npy",cp_lw_mc)
+    np.save("./Combined/4T_3x5/Data"+"/all"+".npy",all_tasks)
+    np.save("./Combined/4T_3x5/Data"+"/none"+".npy",no_tasks)
     #print(most_pop25
-    np.save("./Combined/4T_2x20/Data"+"/most_pop_cat"+".npy",most_pop)
+    np.save("./Combined/4T_3x5/Data"+"/most_pop_cat"+".npy",most_pop)
     
 
     #np.save("./Combined/4T_2x5/Data"+"/task_labels"+".npy",task_labels)
@@ -337,47 +337,47 @@ def plot_lesion_analysis():
         #count_data.append([count[1] + count[2] + count[3] + count[4], np.sum(count[5:])])
         #count_data_prop.append([((count[1] + count[2] + count[3] + count[4])/20), ((np.sum(count[5:]))/20)])
         #count_data_prop.append([((np.sum(count[:4]))/20), ((np.sum(count[5:]))/20)])
-        #reused_count.append((np.sum(count[5:]))/30)
+        reused_count.append((np.sum(count[5:]))/15)
         neuron_nums_reuse.append(np.sum(count[5:]))
 
-        #reused_count_2.append((count[5]+count[6]+count[7]+count[8]+count[9]+count[10])/30)
+        reused_count_2.append((count[5]+count[6]+count[7]+count[8]+count[9]+count[10])/15)
         neuron_nums_2.append(count[5]+count[6]+count[7]+count[8]+count[9]+count[10])
 
-        #reused_count_3.append((count[1]+count[12]+count[13]+count[14])/30)
+        reused_count_3.append((count[1]+count[12]+count[13]+count[14])/15)
         neuron_nums_3.append(count[1]+count[12]+count[13]+count[14])
         
-        #reused_count_4.append((count[15])/30)
+        reused_count_4.append((count[15])/15)
         neuron_nums_4.append(count[15])
 
-        #special_count.append((count[1]+count[2]+count[3]+count[4])/30)
+        special_count.append((count[1]+count[2]+count[3]+count[4])/15)
         neuron_nums_special.append(count[1]+count[2]+count[3]+count[4])
 
 
         #print(len(count_data_prop))
     
     #print(reuse_neuron_nums/ensemble)
-    np.save("./Combined/4T_2x20/Data"+"/neuron_nums_reuse"+".npy",neuron_nums_reuse)
-    np.save("./Combined/4T_2x20/Data"+"/neuron_nums_reuse_2"+".npy",neuron_nums_2)
-    np.save("./Combined/4T_2x20/Data"+"/neuron_nums_reuse_3"+".npy",neuron_nums_3)
-    np.save("./Combined/4T_2x20/Data"+"/neuron_nums_reuse_4"+".npy",neuron_nums_4)
-    np.save("./Combined/4T_2x20/Data"+"/neuron_nums_special"+".npy",neuron_nums_special)
-    """
-    print(reused_count)
-    print(reused_count_2)
-    print(reused_count_3)
-    print(reused_count_4)
-    print(special_count)
+    np.save("./Combined/4T_3x5/Data"+"/neuron_nums_reuse"+".npy",neuron_nums_reuse)
+    np.save("./Combined/4T_3x5/Data"+"/neuron_nums_reuse_2"+".npy",neuron_nums_2)
+    np.save("./Combined/4T_3x5/Data"+"/neuron_nums_reuse_3"+".npy",neuron_nums_3)
+    np.save("./Combined/4T_3x5/Data"+"/neuron_nums_reuse_4"+".npy",neuron_nums_4)
+    np.save("./Combined/4T_3x5/Data"+"/neuron_nums_special"+".npy",neuron_nums_special)
     
-    np.save("./Combined/4T_2x3/Data"+"/reused_prop"+".npy",reused_count)
-    np.save("./Combined/4T_2x3/Data"+"/reused_prop_2"+".npy",reused_count_2)
-    np.save("./Combined/4T_2x3/Data"+"/reused_prop_3"+".npy",reused_count_3)
-    np.save("./Combined/4T_2x3/Data"+"/reused_prop_4"+".npy",reused_count_4)
-    np.save("./Combined/4T_2x3/Data"+"/special_prop"+".npy",special_count)
+    #print(neuron_nums_reuse)
+    #print(neuron_nums_4)
+    #print(neuron_nums_3)
+    print(neuron_nums_2)
+    
+    
+    np.save("./Combined/4T_3x5/Data"+"/reused_prop"+".npy",reused_count)
+    np.save("./Combined/4T_3x5/Data"+"/reused_prop_2"+".npy",reused_count_2)
+    np.save("./Combined/4T_3x5/Data"+"/reused_prop_3"+".npy",reused_count_3)
+    np.save("./Combined/4T_3x5/Data"+"/reused_prop_4"+".npy",reused_count_4)
+    np.save("./Combined/4T_3x5/Data"+"/special_prop"+".npy",special_count)
     
 
 
 #NEW REUSE PLOT: PROPORTION OF REUSED NEURONS
-
+    """
     plt.scatter(reused_count,special_count)
     plt.title("Proportion of Neural Reuse, 2x5")
     plt.ylabel("Prop. of specialized neurons")

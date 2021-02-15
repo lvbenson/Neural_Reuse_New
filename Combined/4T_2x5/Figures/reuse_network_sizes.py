@@ -58,6 +58,18 @@ num_reuse_3_2x20 = np.load("./Combined/4T_2x20/Data/neuron_nums_reuse_3.npy")
 num_reuse_4_2x20 = np.load("./Combined/4T_2x20/Data/neuron_nums_reuse_4.npy")
 num_special_2x20 = np.load("./Combined/4T_2x20/Data/neuron_nums_special.npy")
 
+reused_3x5 = np.load("./Combined/4T_3x5/Data/reused_prop.npy")
+reused_3x5_2 = np.load("./Combined/4T_3x5/Data/reused_prop_2.npy")
+reused_3x5_3 = np.load("./Combined/4T_3x5/Data/reused_prop_3.npy")
+reused_3x5_4 = np.load("./Combined/4T_3x5/Data/reused_prop_4.npy")
+special_3x5 = np.load("./Combined/4T_3x5/Data/special_prop.npy")
+
+num_reuse_3x5 = np.load("./Combined/4T_3x5/Data/neuron_nums_reuse.npy")
+num_reuse_2_3x5 = np.load("./Combined/4T_3x5/Data/neuron_nums_reuse_2.npy")
+num_reuse_3_3x5 = np.load("./Combined/4T_3x5/Data/neuron_nums_reuse_3.npy")
+num_reuse_4_3x5 = np.load("./Combined/4T_3x5/Data/neuron_nums_reuse_4.npy")
+#print(num_reuse_4_3x5)
+num_special_3x5 = np.load("./Combined/4T_3x5/Data/neuron_nums_special.npy")
 
 reused_3x10 = np.load("./Combined/4T_3x10/Data/reused_prop.npy")
 reused_3x10_2 = np.load("./Combined/4T_3x10/Data/reused_prop_2.npy")
@@ -139,22 +151,22 @@ dfnew = pd.DataFrame({"Reused": [sum(reused_2x3)/len(reused_2x3),sum(reused_2x5)
 "NetworkSize": ["2x3","2x5","2x10","2x20"]})
 index=(['2x3'],['2x5'],['2x10'],['2x20'])
 
-df = pd.DataFrame({"Reused": [reused_2x3,reused_2x5,reused_2x10,reused_2x20,reused_3x10],
-"Reused,2": [reused_2x3_2,reused_2x5_2,reused_2x10_2,reused_2x20_2,reused_3x10_2],
-"Reused,3": [reused_2x3_3,reused_2x5_3,reused_2x10_3,reused_2x20_3,reused_3x10_3],
-"Reused,4": [reused_2x3_4,reused_2x5_4,reused_2x10_4,reused_2x20_4,reused_3x10_4],
-"Specialized": [special_2x3,special_2x5,special_2x10,special_2x20,special_3x10],
-"NetworkSize": ["2x3","2x5","2x10","2x20","3x10"]},
-index=['2x3','2x5','2x10','2x20','3x10'])
+df = pd.DataFrame({"Reused": [reused_2x3,reused_2x5,reused_2x10,reused_2x20,reused_3x10,reused_3x10],
+"Reused,2": [reused_2x3_2,reused_2x5_2,reused_2x10_2,reused_2x20_2,reused_3x5_2,reused_3x10_2],
+"Reused,3": [reused_2x3_3,reused_2x5_3,reused_2x10_3,reused_2x20_3,reused_3x5_3,reused_3x10_3],
+"Reused,4": [reused_2x3_4,reused_2x5_4,reused_2x10_4,reused_2x20_4,reused_3x5_4,reused_3x10_4],
+"Specialized": [special_2x3,special_2x5,special_2x10,special_2x20,special_3x5,special_3x10],
+"NetworkSize": ["2x3","2x5","2x10","2x20","3x5","3x10"]},
+index=['2x3','2x5','2x10','2x20','3x5','3x10'])
 #print(df)
 
-dfnum = pd.DataFrame({"Reused": [num_reuse_2x3,num_reuse_2x5,num_reuse_2x10,num_reuse_2x20,num_reuse_3x10],
-"Reused,2": [num_reuse_2_2x3,num_reuse_2_2x5,num_reuse_2_2x10,num_reuse_2_2x20,num_reuse_2_3x10],
-"Reused,3": [num_reuse_3_2x3,num_reuse_3_2x5,num_reuse_3_2x10,num_reuse_3_2x20,num_reuse_3_3x10],
-"Reused,4": [num_reuse_4_2x3,num_reuse_4_2x5,num_reuse_4_2x10,num_reuse_4_2x20,num_reuse_4_3x10],
-"Specialized": [num_special_2x3,num_special_2x5,num_special_2x10,num_special_2x20,num_special_3x10],
-"NetworkSize": ["2x3","2x5","2x10","2x20","3x10"]},
-index=['2x3','2x5','2x10','2x20','3x10'])
+dfnum = pd.DataFrame({"Reused": [num_reuse_2x3,num_reuse_2x5,num_reuse_2x10,num_reuse_2x20,num_reuse_3x5,num_reuse_3x10],
+"Reused,2": [num_reuse_2_2x3,num_reuse_2_2x5,num_reuse_2_2x10,num_reuse_2_2x20,num_reuse_2_3x5,num_reuse_2_3x10],
+"Reused,3": [num_reuse_3_2x3,num_reuse_3_2x5,num_reuse_3_2x10,num_reuse_3_2x20,num_reuse_3_3x5,num_reuse_3_3x10],
+"Reused,4": [num_reuse_4_2x3,num_reuse_4_2x5,num_reuse_4_2x10,num_reuse_4_2x20,num_reuse_4_3x5,num_reuse_4_3x10],
+"Specialized": [num_special_2x3,num_special_2x5,num_special_2x10,num_special_2x20,num_special_3x5,num_special_3x10],
+"NetworkSize": ["2x3","2x5","2x10","2x20","3x5","3x10"]},
+index=['2x3','2x5','2x10','2x20','3x5','3x10'])
 
 
 
