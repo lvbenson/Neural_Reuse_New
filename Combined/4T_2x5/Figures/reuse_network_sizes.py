@@ -160,24 +160,27 @@ df = pd.DataFrame({"Reused": [reused_2x3,reused_2x5,reused_2x10,reused_2x20,reus
 index=['2x3','2x5','2x10','2x20','3x5','3x10'])
 #print(df)
 
-dfnum = pd.DataFrame({"Reused": [num_reuse_2x3,num_reuse_2x5,num_reuse_2x10,num_reuse_2x20,num_reuse_3x5,num_reuse_3x10],
-"Reused,2": [num_reuse_2_2x3,num_reuse_2_2x5,num_reuse_2_2x10,num_reuse_2_2x20,num_reuse_2_3x5,num_reuse_2_3x10],
-"Reused,3": [num_reuse_3_2x3,num_reuse_3_2x5,num_reuse_3_2x10,num_reuse_3_2x20,num_reuse_3_3x5,num_reuse_3_3x10],
-"Reused,4": [num_reuse_4_2x3,num_reuse_4_2x5,num_reuse_4_2x10,num_reuse_4_2x20,num_reuse_4_3x5,num_reuse_4_3x10],
-"Specialized": [num_special_2x3,num_special_2x5,num_special_2x10,num_special_2x20,num_special_3x5,num_special_3x10],
+dfnum = pd.DataFrame({"Reused": [np.average(num_reuse_2x3),np.average(num_reuse_2x5),np.average(num_reuse_2x10),np.average(num_reuse_2x20),np.average(num_reuse_3x5),np.average(num_reuse_3x10)],
+"Reused,2": [np.average(num_reuse_2_2x3),np.average(num_reuse_2_2x5),np.average(num_reuse_2_2x10),np.average(num_reuse_2_2x20),np.average(num_reuse_2_3x5),np.average(num_reuse_2_3x10)],
+"Reused,3": [np.average(num_reuse_3_2x3),np.average(num_reuse_3_2x5),np.average(num_reuse_3_2x10),np.average(num_reuse_3_2x20),np.average(num_reuse_3_3x5),np.average(num_reuse_3_3x10)],
+"Reused,4": [np.average(num_reuse_4_2x3),np.average(num_reuse_4_2x5),np.average(num_reuse_4_2x10),np.average(num_reuse_4_2x20),np.average(num_reuse_4_3x5),np.average(num_reuse_4_3x10)],
+"Specialized": [np.average(num_special_2x3),np.average(num_special_2x5),np.average(num_special_2x10),np.average(num_special_2x20),np.average(num_special_3x5),np.average(num_special_3x10)],
 "NetworkSize": ["2x3","2x5","2x10","2x20","3x5","3x10"]},
 index=['2x3','2x5','2x10','2x20','3x5','3x10'])
 
 
 
+ax = dfnum.plot.bar(rot=0, stacked=True)
+plt.ylabel("Number of Neurons")
+plt.title("4-Task Agents: Reuse Categories")
+plt.savefig("C:/Users/benso/Desktop/Projects/Neural_Reuse/Neural_Reuse_New/Combined/4T_2x5/Figures/reuse_categories_networks.png")
+plt.show()
 
 
-#dfnew.to_csv("./Combined/4T_2x5/Data/dataframe.csv")
-#df = pd.read_csv("./Combined/4T_2x5/Data/dataframe.csv")
-import joypy
-import pandas as pd
-from matplotlib import pyplot as plt
-from matplotlib import cm
+
+
+
+
 
 
 """
@@ -187,7 +190,7 @@ plt.xlabel('Experiment')
 plt.ylabel('Proportions')
 #plt.savefig("./Combined/4T_2x5/Figures/REUSE_extent.pdf")
 plt.show()
-"""
+
 
 
 
@@ -202,3 +205,4 @@ ax[1].get_legend().remove()
 plt.tight_layout()
 plt.savefig("./Combined/4T_2x5/Figures/reuse_categories_networks.pdf")
 plt.show()
+"""     
