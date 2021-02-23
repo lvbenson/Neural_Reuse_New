@@ -15,7 +15,7 @@ import seaborn as sns
 
 def plot_lesion_analysis():
     
-    dir = "./Combined/4T_2x10/Data/"
+    dir = "./Combined/4T_3x20/Data/"
     files = glob.glob(os.path.join(dir, "perf_*.npy"))
     #agentlen = 40
     files.sort()
