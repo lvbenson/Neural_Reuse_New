@@ -5,11 +5,11 @@ import matplotlib.pyplot as plt
 import sys
 import os
 
-dir = "Data3"
+dir = "Data"
 id = str(sys.argv[1])
 condition = str(sys.argv[2])
 nh = int(sys.argv[3])
-steps = int(sys.argv[4])
+#steps = int(sys.argv[4])
 
 # ANN Params
 nI = 4
@@ -146,6 +146,36 @@ def find_all_lesions(dir,ind,steps):
             count[1] += 1 #CP task
     np.save(dir+"/stats_"+condition+"_LW_"+str(ind)+".npy",count)
 
+
+def find_all_var(dir,ind,steps):
+    nI = 4
+    nH = 10
+    v = np.zeros((1,10))
+    nn = np.load(dir+"/state_LW5_"+str(ind)+".npy")
+    v = np.var(nn[:,nI:nI+nH],axis=0)
+    """
+    nn = np.load("./{}/state_IP_{}.npy".format(dir,ind))
+    v[0] = np.var(nn[:,nI:nI+nH],axis=0)
+    nn = np.load("./{}/state_CP_{}.npy".format(dir,ind))
+    v[1] = np.var(nn[:,nI:nI+nH],axis=0)
+    nn = np.load("./{}/state_LW_{}.npy".format(dir,ind))
+    v[2] = np.var(nn[:,nI:nI+nH],axis=0)
+    nn = np.load("./{}/state_MC_{}.npy".format(dir,ind))
+    v[3] = np.var(nn[:,nI:nI+nH],axis=0)
+    """
+    max = np.max(v,axis=0)
+    norm_var = np.zeros((10,1))
+    for i in range(10):
+        if max[i] > 0.0:
+            norm_var[i] = v.T[i]/max[i]
+        else:
+            norm_var[i] = 0.0
+    norm_var = norm_var.T
+    print(norm_var)
+
+    np.save(dir+"/NormVar_"+condition+"_LW_"+str(steps)+"_"+str(ind)+".npy",norm_var)
+
+
 bf = np.load(dir+"/best_history"+condition+"_"+str(id)+".npy")
 bi = np.load(dir+"/best_individual"+condition+"_"+str(id)+".npy")
 
@@ -154,4 +184,5 @@ if bf[-1] > 0.0:
     np.save(dir+"/perf_"+condition+"_LW_"+str(id)+".npy",f)
     np.save(dir+"/perfmap_"+condition+"_LW_"+str(id)+".npy",m1)
     np.save(dir+"/state_"+condition+"_LW_"+str(id)+".npy",ns1)
-    find_all_lesions(dir,id,steps)
+    #find_all_lesions(dir,id,steps)
+    find_all_var(dir,id,steps)
