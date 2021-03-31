@@ -76,25 +76,28 @@ axs[0].set_xlabel("Neuron (sorted)")
 #LW
 
 v5x = np.zeros((reps,nn5))
+nI = 4
+nH = 10
 
 for i in range(reps):
     nn = np.load("Eduardo/Data/state_LW5_"+str(i)+".npy")
-    nn = nn.T[4:-1]
-    nn = np.mean(np.abs(np.diff(nn)),axis=1)
+    #print(len(nn))
+    #variance
+    nn = np.var(nn[:,nI:nI+nH],axis=0)
     nn = np.sort(nn)[::-1]
     max = np.max(nn)
     v5x[i] = nn/max
-
+    #print('lw',v5x[i])
 
 mcv5x = np.zeros((reps,nn5))
 
 for i in range(reps):
     nn = np.load("Eduardo/Data/state_MC5_"+str(i)+".npy")
-    nn = nn.T[4:-1]
-    nn = np.mean(np.abs(np.diff(nn)),axis=1)
+    nn = np.var(nn[:,nI:nI+nH],axis=0)
     nn = np.sort(nn)[::-1]
     max = np.max(nn)
     mcv5x[i] = nn/max
+    #print('mc',mcv5x[i])
 
 
 err5 = []
@@ -194,22 +197,47 @@ v5x = np.zeros((reps,nn5))
 
 for i in range(reps):
     nn = np.load("Eduardo/Data3/state_MCLW5_LW_"+str(i)+".npy")
-    nn = nn.T[4:-1]
-    nn = np.mean(np.abs(np.diff(nn)),axis=1)
+    nn = np.var(nn[:,nI:nI+nH],axis=0)
     nn = np.sort(nn)[::-1]
     max = np.max(nn)
     v5x[i] = nn/max
+    #nn = nn.T[4:-1]
+    #nn = np.mean(np.abs(np.diff(nn)),axis=1)
+    #nn = np.sort(nn)[::-1]
+    #max = np.max(nn)
+    #v5x[i] = nn/max
 
 
 mcv5x = np.zeros((reps,nn5))
 
 for i in range(reps):
     nn = np.load("Eduardo/Data3/state_MCLW5_MC_"+str(i)+".npy")
-    nn = nn.T[4:-1]
-    nn = np.mean(np.abs(np.diff(nn)),axis=1)
+    nn = np.var(nn[:,nI:nI+nH],axis=0)
     nn = np.sort(nn)[::-1]
     max = np.max(nn)
     mcv5x[i] = nn/max
+    #nn = nn.T[4:-1]
+    #nn = np.mean(np.abs(np.diff(nn)),axis=1)
+    #nn = np.sort(nn)[::-1]
+    #max = np.max(nn)
+    #mcv5x[i] = nn/max
+
+
+comb = np.zeros((reps,nn5))
+
+for i in range(reps):
+    mc = np.load("Eduardo/Data3/state_MCLW5_MC_"+str(i)+".npy")
+    lw = np.load("Eduardo/Data3/state_MCLW5_LW_"+str(i)+".npy")
+    nn = np.concatenate((mc, lw), axis=0)
+    #print(len(mc))
+
+
+    nn = np.var(nn[:,nI:nI+nH],axis=0)
+    nn = np.sort(nn)[::-1]
+    max = np.max(nn)
+    comb[i] = nn/max
+    
+
 
 
 err5 = []
@@ -222,6 +250,13 @@ mcerr5 = []
 for i in mcv5x.T:
     mcerr5.append(np.std(i))
 
+comberr = []
+for i in comb.T:
+    comberr.append(np.std(i))
+
+
+print('single',np.mean(v5x,axis=0))
+print('double',np.mean(comb,axis=0))
 
 axs[1].plot(np.mean(v5x,axis=0),'o-',markersize=2,label="MCLW_LW",color='#3F7F4C')
 axs[1].fill_between(x5, np.mean(v5x,axis=0)-(np.divide(err5,math.sqrt(10))), np.mean(v5x,axis=0)+(np.divide(err5,math.sqrt(10))),alpha=0.2, edgecolor='#3F7F4C', facecolor='#7EFF99')
@@ -229,8 +264,14 @@ axs[1].fill_between(x5, np.mean(v5x,axis=0)-(np.divide(err5,math.sqrt(10))), np.
 axs[1].plot(np.mean(mcv5x,axis=0),'o-',markersize=2,label="MCLW_MC",color='#CC4F1B')
 axs[1].fill_between(x5, np.mean(mcv5x,axis=0)-(np.divide(mcerr5,math.sqrt(10))), np.mean(mcv5x,axis=0)+(np.divide(mcerr5,math.sqrt(10))),alpha=0.2, edgecolor='#c88700', facecolor='#c88700')
 
+axs[1].plot(np.mean(comb,axis=0),'o-',markersize=2,label="MCLW",color='#507ad0')
+axs[1].fill_between(x5, np.mean(comb,axis=0)-(np.divide(comberr,math.sqrt(10))), np.mean(comb,axis=0)+(np.divide(comberr,math.sqrt(10))),alpha=0.2, edgecolor='#507ad0', facecolor='#507ad0')
+
 axs[1].set_title("Participation")
 axs[1].legend()
+
+
+
 
 fig.suptitle("Size: 2x5, Pairwise Multifunctional: MCLW")
 plt.savefig("Eduardo/PairwiseMulti_2x5.png")
@@ -258,7 +299,7 @@ for i in range(reps):
 
     #print('before',len(f1))
     for p, (x,y) in enumerate(zip(f1,f2)):
-        if x < 0.01 and y < 0.01:
+        if x < 0.75 and y < 0.75:
             #print(x)
             #indx = np.where(f1 == x)
             #print(indx)
@@ -302,7 +343,7 @@ for i in range(reps):
     f2 = nnmc/maxmc
 
     for p, (x,y) in enumerate(zip(f1,f2)):
-        if x < 0.01 and y < 0.01:
+        if x < 0.75 and y < 0.75:
             f1[p] = 200
             f2[p] = 100
             #print(x)

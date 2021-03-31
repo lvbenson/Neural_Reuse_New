@@ -11,23 +11,39 @@ nn5 = 2*5
 b5xlw = np.zeros((reps,nn5))
 
 for i in range(reps):
-    f = 1 - (np.load("Eduardo/Data3/lesions_MCLW5_LW_40_"+str(i)+".npy"))
+    f = 1 - (np.load("Eduardo/Data/lesions_MC5_40_"+str(i)+".npy"))
+    #f = 1 - (np.load("Eduardo/Data3/lesions_MCLW5_MC_40_"+str(i)+".npy"))
     b5xlw[i] = f
 
 
 v5x = np.zeros((reps,nn5))
+nI = 4
+nH = 10
 
 for i in range(reps):
-    nn = np.load("Eduardo/Data3/state_MCLW5_LW_"+str(i)+".npy")
-    nn = nn.T[4:-1]
-    nn = np.mean(np.abs(np.diff(nn)),axis=1)
-    nn = np.sort(nn)[::-1]
-    max = np.max(nn)
-    v5x[i] = nn/max
+    nn = np.load("Eduardo/Data/state_MC5_"+str(i)+".npy")
+    print(nn)
 
-"""
-plt.plot(b5xlw[0],v5x[0],'o-')
+    #nn = np.load("Eduardo/Data3/state_MCLW5_MC_"+str(i)+".npy")
+    #print(nn.shape)
+    
+    #state is an array of total trials*time, 15
+    #total trials = 
+    nn = np.var(nn[:,nI:nI+nH],axis=0)
+    
+    #print(nn)
+    #nn = np.sort(nn)[::-1]
+    #max = np.max(nn)
+    v5x[i] = nn
+
+
+
+plt.plot(b5xlw,v5x,'o')
+plt.xlabel("Lesions")
+plt.ylabel("Variance")
+plt.title("LW")
 plt.show()
+
 """
 
 coeffs = []
@@ -38,29 +54,29 @@ for (x,y) in zip(b5xlw,v5x):
     coeffs.append(r[0, 1])
 
 
+
 plt.hist(coeffs,15,density=False,alpha=0.5)
-plt.title("MCLW_LW correlation coeff")
+plt.title("MCLW_MC correlation coeff")
 plt.xlabel("Pearson Correlation Coefficients")
 plt.ylabel("Number of networks")
 plt.show()
 
 
 
-"""
 for (x,y) in zip(b5xlw,v5x):
     plt.plot(x,y,'o')
 plt.xlabel('Impact')
 plt.ylabel('Participation')
 plt.title('MC-individual')
 plt.show()
-"""
 
 
 
-"""
+
+
 meanx = []
 meany = []
-for (x,y) in zip(b5xlw,b5xmc):
+for (x,y) in zip(b5xlw,v5x):
     meanx.append(np.mean(x))
     meany.append(np.mean(y))
 

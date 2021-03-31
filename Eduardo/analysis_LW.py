@@ -147,7 +147,7 @@ def find_all_lesions(dir,ind,steps):
     np.save(dir+"/stats_"+condition+"_LW_"+str(ind)+".npy",count)
 
 
-def find_all_var(dir,ind,steps):
+def find_all_var(dir,ind):
     nI = 4
     nH = 10
     v = np.zeros((1,10))
@@ -173,7 +173,7 @@ def find_all_var(dir,ind,steps):
     norm_var = norm_var.T
     print(norm_var)
 
-    np.save(dir+"/NormVar_"+condition+"_LW_"+str(steps)+"_"+str(ind)+".npy",norm_var)
+    np.save(dir+"/NormVar_"+"LW5_40_"+str(ind)+".npy",norm_var)
 
 
 bf = np.load(dir+"/best_history"+condition+"_"+str(id)+".npy")
@@ -185,4 +185,4 @@ if bf[-1] > 0.0:
     np.save(dir+"/perfmap_"+condition+"_LW_"+str(id)+".npy",m1)
     np.save(dir+"/state_"+condition+"_LW_"+str(id)+".npy",ns1)
     #find_all_lesions(dir,id,steps)
-    find_all_var(dir,id,steps)
+    find_all_var(dir,id)
