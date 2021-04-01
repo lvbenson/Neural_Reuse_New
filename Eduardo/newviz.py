@@ -321,7 +321,7 @@ fig, axs = plt.subplots(2, sharex=True, sharey=True, constrained_layout=True)
 #newimpact = np.array(newimpact)
 flat_list = [item for sublist in newimpact for item in sublist]
 
-axs[0].hist(flat_list,10,density=False,alpha=0.5,label="2x5")
+axs[0].hist(flat_list,100,density=False,alpha=0.5,label="2x5")
 axs[0].set_title("Distance of Impact")
 
 #participation histogram
@@ -356,7 +356,7 @@ for i in range(reps):
 flat_list_part = [item for sublist in newpart for item in sublist]
 #print(len(flat_list_part))
 
-axs[1].hist(flat_list_part,10,density=False,alpha=0.5,label="2x5")
+axs[1].hist(flat_list_part,100,density=False,alpha=0.5,label="2x5")
 axs[1].set_title("Distance of Participation")
 
 fig.suptitle("Size: 2x5, Pairwise Multifunctional: MCLW")

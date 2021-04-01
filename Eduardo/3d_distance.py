@@ -4,68 +4,128 @@ import numpy as np
 import matplotlib.colors as mcolors
 
 cmap = mcolors.LinearSegmentedColormap.from_list("", ["yellow", "orange", "red"])
-
-thresholds = [0.01,0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,0.99]
-#thresholds.reverse()
+#[0,0.1],
+thresholds = [[0.1,0.2],[0.2,0.3],[0.3,0.4],[0.4,0.5],[0.5,0.6],[0.6,0.7],[0.7,0.8],[0.8,0.9],[0.9,1.0]]
+#thresholds = [0,0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9]
 
 reps = 100
 nn5 = 2*5
 impact5 = np.zeros((reps,nn5))
 
-newimpact = []
+#newimpact = []
+#totalimpact = []
 
 nI = 4
 nH = 10
 fig = plt.figure()
-ax = fig.add_subplot(111, projection='3d')
-nbins = 50
+ax = fig.add_subplot(111)
+#ax = fig.add_subplot(111, projection='3d')
+#nbins = 10
+
+#all_f1f2 = []
+
+all_hists = []
 for z in thresholds:
+    newimpact = []
     for i in range(reps):
-        #lesions
-        #f1 = 1 - (np.load("Eduardo/Data3/lesions_MCLW5_LW_40_"+str(i)+".npy"))
-        #f2 = 1 - (np.load("Eduardo/Data3/lesions_MCLW5_MC_40_"+str(i)+".npy"))
 
-        #variance
-        nn = np.load("Eduardo/Data3/state_MCLW5_LW_"+str(i)+".npy")
-        nn = np.var(nn[:,nI:nI+nH],axis=0)
-        max = np.max(nn)
-        f1 = nn/max
+        #print(z)
+        #large lesion value = large impact
+        f1 = 1 - (np.load("Eduardo/Data3/lesions_MCLW5_LW_40_"+str(i)+".npy"))
+        f2 = 1 - (np.load("Eduardo/Data3/lesions_MCLW5_MC_40_"+str(i)+".npy"))
 
-        nn = np.load("Eduardo/Data3/state_MCLW5_MC_"+str(i)+".npy")
-        nn = np.var(nn[:,nI:nI+nH],axis=0)
-        max = np.max(nn)
-        f2 = nn/max
+        f1[f1<0]=0
+        f2[f2<0]=0
 
-        #print('before',len(f1))
+        if z[0] == thresholds[0][0]:
+
+            plt.plot(f1,f2,'o',color='blue',alpha=0.5)
+        
+
+        #all_f1f2.append(f1+f2)
+
+        #np.logical_and(np.logical_and(f1>z[0], f2<z[1]), np.logical_and(f2>z[0],f2<z[1]))
+        inds = np.logical_and(np.logical_and(f1>=z[0], f2<z[1]), np.logical_and(f2>=z[0],f2<z[1]))
+        f1_vals = f1[inds]
+        f2_vals = f2[inds]
+
+        """
+
         for p, (x,y) in enumerate(zip(f1,f2)):
-            if x < z and y < z:
+
+            #ONLY PLOT things in between thresholds
+            
+            if x < z[0] and y < z[0]:
                 #print(x)
-                #indx = np.where(f1 == x)
-                #print(indx)
+                #print(y)
                 f1[p] = 200
                 f2[p] = 100
+            if x > z[1] and y > z[1]:
+                f1[p] = 200
+                f2[p] = 100
+            
 
-        impact5[i] = (f1-f2)
-        imp = impact5[i]
-        imp = imp[imp != 100]
-        newimpact.append(imp)
+            #try keepning neurons instead of discarding
+            if x > z[0] and y > z[0] and x < z[1] and y < z[1]:
+                f1[p] = x
+                f2[p] = y
+            else:
+                f1[p] = 200
+                f2[p] = 100
+        """
 
-    flat_list = [item for sublist in newimpact for item in sublist]
+
+            
+
+        newimpact.append(f1_vals-f2_vals)
+        #impact5[i] = (f1_vals-f2_vals)
+        #imp = impact5[i]
+        #imp = imp[imp != 100]
+        #print(len(imp))
+        #print(z)
+        #newimpact.append(imp)
+
+    #print(newimpact)
+    flat_list = np.concatenate(newimpact)
+    #flat_list = [item for sublist in newimpact for item in sublist]
 
 
-    #ys = np.random.normal(loc=10, scale=10, size=2000)
-
-    hist, bins = np.histogram(flat_list, bins=nbins)
+    hist, bins = np.histogram(flat_list, bins=np.arange(-1.01,1.01,0.1))
     xs = (bins[:-1] + bins[1:])/2
 
+    all_hists.append(hist)
+
+
+#plt.figure()
+
+#all_f1f2 = np.concatenate(all_f1f2)
+#plt.hist(all_f1f2,bins=100)
+
+plt.figure()
+
+print(np.sum(all_hists))
+print(np.shape(all_hists))
+#print(all_hists)
+plt.imshow(all_hists,extent=[-1,1,0,1],interpolation='nearest',  origin='lower',aspect='auto')
+ticks = np.arange(0,1,0.1)
+plt.gca().set_yticks(ticks)
+#plt.yticks(ticks)
+plt.colorbar()
+plt.xlabel("Distance")
+plt.ylabel("Threshold")
+plt.title("Neurons per threshold of Impact distance")
+plt.show()
+
+"""
     ax.bar(xs, hist, zs=z, zdir='y', color=cmap(hist/hist.max()),ec=cmap(hist/hist.max()), alpha=0.8)
 
 ax.set_xlabel('Distance')
 ax.set_ylabel('Threshold')
 ax.set_zlabel('# of neurons')
-ax.set_title("Distance of Variance: MCLW")
+ax.set_title("Distance of Impact: MCLW")
+#ax.view_init(30, -180)
 plt.show()
-
+"""
 
 
 
