@@ -222,6 +222,8 @@ for i in range(reps):
     #max = np.max(nn)
     #mcv5x[i] = nn/max
 
+#clean this up: load and sort data altogether, plot separately
+#one script per *perfected* figure
 
 comb = np.zeros((reps,nn5))
 

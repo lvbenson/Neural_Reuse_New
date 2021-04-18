@@ -11,8 +11,8 @@ nn5 = 2*5
 b5xlw = np.zeros((reps,nn5))
 
 for i in range(reps):
-    f = 1 - (np.load("Eduardo/Data/lesions_MC5_40_"+str(i)+".npy"))
-    #f = 1 - (np.load("Eduardo/Data3/lesions_MCLW5_MC_40_"+str(i)+".npy"))
+    #f = 1 - (np.load("Eduardo/Ind_Data/lesions_MC5_MC_40_"+str(i)+".npy"))
+    f = 1 - (np.load("Eduardo/Data3/lesions_MCLW5_LW_40_"+str(i)+".npy"))
     b5xlw[i] = f
 
 
@@ -21,7 +21,8 @@ nI = 4
 nH = 10
 
 for i in range(reps):
-    nn = np.load("Eduardo/Data/state_MC5_"+str(i)+".npy")
+    #nn = np.load("Eduardo/Ind_Data/state_MC5_MC_"+str(i)+".npy")
+    nn = np.load("Eduardo/Multi_Data/state_MCLW5_LW_"+str(i)+".npy")
     print(nn)
 
     #nn = np.load("Eduardo/Data3/state_MCLW5_MC_"+str(i)+".npy")
@@ -41,7 +42,7 @@ for i in range(reps):
 plt.plot(b5xlw,v5x,'o')
 plt.xlabel("Lesions")
 plt.ylabel("Variance")
-plt.title("LW")
+plt.title("MCLW-LW")
 plt.show()
 
 """
